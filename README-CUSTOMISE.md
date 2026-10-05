@@ -7,6 +7,9 @@
 
 The page frame is server-rendered by Blogger. Posts, label/search/archive lists, single posts, pages and comments are drawn from your blog's public feed, so no Blog Posts gadget is needed (the Blog section is locked on purpose).
 
+## What you get pre-filled (Layouts v3 format)
+The file is a modern Blogger *Layouts v3* theme (`b:layoutsVersion='3'`), so these gadgets are created on import: Hero (intro text + search box), Sidebar (Popular posts, Topics cloud), Footer 1 (About text), Footer 2 (Categories), Footer 3 (Quick links). Edit or remove them in **Layout** like any gadget.
+
 ## Layout areas (Blogger > Layout)
 Every area is a normal drag-and-drop gadget area, like a commercial theme:
 
@@ -59,5 +62,28 @@ Paste your provider's form **action URL** into `newsletterAction` (the field nam
 ## Rebuilding from source (optional)
 `src/theme.css`, `src/theme.js`, `src/skeleton.xml` are the editable sources; run `python3 src/build.py` to regenerate `template.xml` and validate the XML.
 
-## Post page layout (Medium style)
-Left rail: sticky *On this page* contents that highlights as you scroll (falls back to an about card when a post has fewer than two headings). Centre: topic chips, large title, author line, share icons, hero image, serif body, tags, comments, more posts. Right rail: your ad slot. Below 1240px wide everything stacks into one column.
+## Page layout (all pages)
+Three columns on wide screens (1240px and up), one column below:
+- **Left sidebar (sticky, collapsible):** brand header, then *Explore*: Home, All articles, *On this page* (posts only; highlights the section you are reading), Categories (expandable, current one highlighted) and your header menu links, then a "Stay updated" block. Click the panel icon at the left of the header (or press **B**) to collapse it to an icon-only rail; the choice is remembered. On tablets and phones it becomes a slide-in drawer from the same button.
+- **Centre:** the content. Posts: topic chips, title, byline with share icons, hero image, body, tags, comments, follow-by-email. Home: featured post with a recent list, random category panels (3 cards per row), latest articles.
+- **Right rail (sticky):** Recent posts, Recommended posts (same topic on posts), your ad slot, then any Sidebar gadgets.
+- Ads in the middle: *Post ads 1* (before the body), *inside content* (after paragraph N), *Post ads 2* (after the body), *Home ads* (below the featured post).
+- **Header (two rows, with mega menu):** row 1 has the sidebar toggle, logo, search, theme toggle and a Subscribe button (jumps to the footer form, or the RSS feed if no newsletter URL is set). Row 2 lists your six busiest topics plus "More"; hover or click one to open a panel with the latest posts in that topic, other topics to explore and a featured post card. Your menu links (`menuLinks`) sit at the right of row 2. Below 1240px wide the second row hides and the sidebar drawer does the navigation.
+- **Footer:** brand + social + newsletter form, three gadget columns, then copyright, legal links, sitemap, RSS and Back to top.
+- **Themes:** dark by default (`defaultTheme`); the toggle remembers the visitor's choice. Light mode is a clean white layout.
+
+## Loading skeletons
+While the feed loads, every page shows grey shimmer placeholders in the exact layout (feature + cards on home, card grid on lists, title / byline / hero / text on posts, rows in the right rail, lines in the Categories menu and comments), so nothing jumps when content arrives. Turned off automatically for visitors who prefer reduced motion.
+
+## Mobile and tablet
+- **Under 1240px wide** everything stacks to one column: content first, then Recent and Recommended. The second header row hides and the sidebar becomes a slide-in drawer (panel icon, top left) with a dimmed backdrop. Esc or a tap outside closes it.
+- **Under 720px** cards go single column, the byline and share icons stack, buttons go full width, the search overlay and footer are compacted, and tap targets are at least 44px on touch screens.
+- No horizontal scrolling at 375px, 768px or desktop widths. Wide tables and code blocks scroll inside the post instead of the page.
+
+## Post blocks for tech writing
+Code windows (macOS style, closed by default), tabbed code, Mermaid diagrams, callouts, captioned images with a zoom viewer, sliders, sortable / filterable tables, FAQ accordions, numbered steps, responsive video and heading anchors are all built in. Copy-paste snippets for each are in **POST-BLOCKS.md**.
+
+Settings: `codeDefault` (closed, preview or open) and `codeLines` (yes or no). Syntax highlighting (highlight.js from cdnjs) and Mermaid (from jsDelivr) are loaded only on pages that contain code or diagrams.
+
+## Sidebar default
+The sidebar starts collapsed (icon rail). A visitor's choice (panel icon or **B**) is remembered.

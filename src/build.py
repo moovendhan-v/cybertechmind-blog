@@ -20,15 +20,15 @@ VARS = [
   ("darkMuted","Dark: muted text","color","#9aa3b2"),
   ("darkLine","Dark: border","color","#2a2f38"),
   ("lightBg","Light: page background","color","#ffffff"),
-  ("lightPanel","Light: panel background","color","#f7f8fa"),
-  ("lightText","Light: text","color","#14171c"),
-  ("lightMuted","Light: muted text","color","#5b6472"),
-  ("lightLine","Light: border","color","#e5e7eb"),
+  ("lightPanel","Light: panel background","color","#ffffff"),
+  ("lightText","Light: text","color","#111114"),
+  ("lightMuted","Light: muted text","color","#6b7280"),
+  ("lightLine","Light: border","color","#e6e8ec"),
   ("bodyFont","Body font","font","normal normal 16px Inter, system-ui, -apple-system, 'Segoe UI', sans-serif"),
   ("defaultTheme","Default theme (dark / light / auto)","string","dark"),
  ]),
  ("Layout", [
-  ("contentWidth","Content width","length","1200px"),
+  ("contentWidth","Content width","length","1440px"),
   ("cornerRadius","Corner radius","length","16px"),
   ("wallpaperImage","Wallpaper image URL (blank = none)","string",""),
   ("wallpaperOpacity","Wallpaper opacity (0 to 1)","string","0.18"),
@@ -47,6 +47,10 @@ VARS = [
   ("menuLinks","Header menu","string","Articles|/search;About|/p/about.html;Contact|/p/contact.html"),
   ("socialLinks","Social icons (name X / GitHub / LinkedIn / YouTube / Facebook / Instagram / Telegram / Website)","string","X|https://x.com/;GitHub|https://github.com/;YouTube|https://www.youtube.com/"),
   ("footerLinks","Footer links","string","Archive|/search;Privacy|/p/privacy.html;Terms|/p/terms.html;Contact|/p/contact.html"),
+ ]),
+ ("Post blocks", [
+  ("codeDefault","Code windows start closed or preview or open","string","closed"),
+  ("codeLines","Show line numbers in code windows yes or no","string","yes"),
  ]),
  ("Newsletter", [
   ("showNewsletter","Show newsletter panel (yes / no)","string","yes"),
@@ -75,8 +79,8 @@ for g, items in VARS:
     out.append('</Group>\n')
 out.append("*/")
 s = rd('skeleton.xml')
-s = s.replace('/*@@VARS@@*/', ''.join(out)).replace('/*@@CSS@@*/', rd('theme.css'))
-s = s.replace('/*@@JS@@*/', rd('theme.js'))
+s = s.replace('/*@@VARS@@*/', ''.join(out)).replace('/*@@CSS@@*/', rd('theme.css') + rd('blocks.css'))
+s = s.replace('/*@@JS@@*/', rd('theme.js').replace('/*@@BLOCKS@@*/', rd('blocks.js'))).replace('/*@@LAYOUTCSS@@*/', rd('layout-mode.css'))
 inc = open(os.path.join(here, 'blog-includables.xml'), encoding='utf-8').read()
 w = rd('blog-widget.tpl.xml').replace('<!--@@INCLUDABLES@@-->', inc)
 open(os.path.join(here, 'blog-widget.optional.xml'), 'w', encoding='utf-8').write(w)

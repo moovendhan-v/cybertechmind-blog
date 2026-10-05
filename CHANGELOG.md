@@ -7,3 +7,9 @@
 - SEO: noindex on archive/search, JSON-LD, verification tags, GA4, OG fallback image.
 - Customisation via Theme Variables; 5 ad slots; Link List menus/social/footer.
 - Removed: fake newsletter success, placeholder category section, `prompt()` search, unused scripts.
+- Converted to Blogger Layouts v3 (b:layoutsVersion 3, view booleans, layout-mode skin) so gadgets declared in the file are created on import; 20 gadget areas, 7 pre-filled gadgets.
+- Three-column shell on every page (sticky left rail with active-section contents + categories, content, sticky right rail with recent / recommended / ads); professional header CTA and footer; white-style comments with card list; light mode redesigned. Fixed sticky rails (they were not stretched, so never stuck).
+- shadcn-style collapsible sidebar (brand header, icon menu with expandable sub-menus, footer block, icon-only collapsed rail, remembered state, B shortcut, mobile drawer) and skeleton loaders on every loading state.
+- Two-row navbar with category mega menu (latest in topic, explore topics, featured post card), built from the feed; header height variable keeps sticky rails aligned.
+- Mobile / tablet pass: single-column shell, off-canvas sidebar drawer, compact header, stacked byline and share icons, full-width buttons, touch-size targets, safe-area padding, no horizontal overflow.
+- Sidebar closed by default. Post blocks: macOS code windows (closed by default, preview / open, tabs, copy, line numbers, syntax highlighting), Mermaid, callouts, figures + lightbox, slider, sortable/filterable tables, accordions, steps, embeds, heading anchors. Added POST-BLOCKS.md.

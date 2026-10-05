@@ -1,0 +1,12 @@
+html,body#layout{background:#f7f7f7}
+body#layout{position:relative;width:auto;max-width:980px;margin:0 auto;padding:16px;font-family:Arial,sans-serif}
+body#layout div.section{display:block;background:#efefef!important;border:1px solid #dcdcdc;border-radius:4px;margin:0 0 12px!important;padding:12px 14px!important}
+body#layout .no-items.section{display:block}
+body#layout .section h4{font-size:13px;text-transform:uppercase;color:#222;margin:0 0 8px}
+body#layout .add_widget a{color:#1a73e8!important}
+body#layout .widget-content{max-width:none;width:auto}
+body#layout .cm-home-only,body#layout .cm-pitem,body#layout .cm-ad,body#layout .cm-sidebar,body#layout .cm-hide{display:block!important}
+body#layout .cm-foot-cols{display:grid!important;grid-template-columns:repeat(3,1fr);gap:10px}
+body#layout .cm-header-in,body#layout .cm-foot-bottom{display:block;height:auto;padding:0}
+body#layout .cm-search,body#layout .cm-actions,body#layout .cm-logo,body#layout .cm-links{display:none!important}
+body#layout .cm-wall{display:none}
