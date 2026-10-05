@@ -1,0 +1,192 @@
+      <b:widget id='Blog1' locked='false' title='Blog Posts' type='Blog' version='1'>
+        <b:widget-settings>
+          <b:widget-setting name='showDateHeader'>false</b:widget-setting>
+          <b:widget-setting name='style.textcolor'>#ffffff</b:widget-setting>
+          <b:widget-setting name='showShareButtons'>false</b:widget-setting>
+          <b:widget-setting name='authorLabel'>By</b:widget-setting>
+          <b:widget-setting name='showCommentLink'>false</b:widget-setting>
+          <b:widget-setting name='style.urlcolor'>#ffffff</b:widget-setting>
+          <b:widget-setting name='showAuthor'>true</b:widget-setting>
+          <b:widget-setting name='style.linkcolor'>#ffffff</b:widget-setting>
+          <b:widget-setting name='style.unittype'>TextAndImage</b:widget-setting>
+          <b:widget-setting name='style.bgcolor'>#ffffff</b:widget-setting>
+          <b:widget-setting name='timestampLabel'>Posted on</b:widget-setting>
+          <b:widget-setting name='reactionsLabel'/>
+          <b:widget-setting name='showAuthorProfile'>false</b:widget-setting>
+          <b:widget-setting name='style.layout'>1x1</b:widget-setting>
+          <b:widget-setting name='showLabels'>true</b:widget-setting>
+          <b:widget-setting name='showLocation'>false</b:widget-setting>
+          <b:widget-setting name='showTimestamp'>true</b:widget-setting>
+          <b:widget-setting name='postsPerAd'>1</b:widget-setting>
+          <b:widget-setting name='showBacklinks'>false</b:widget-setting>
+          <b:widget-setting name='style.bordercolor'>#ffffff</b:widget-setting>
+          <b:widget-setting name='showInlineAds'>false</b:widget-setting>
+          <b:widget-setting name='showReactions'>false</b:widget-setting>
+        </b:widget-settings>
+
+        <b:includable id='main' var='this'>
+
+          <!-- ================= HOME / LABEL / SEARCH / ARCHIVE ================= -->
+          <b:if cond='data:blog.pageType != &quot;item&quot; and data:blog.pageType != &quot;static_page&quot;'>
+            <b:if cond='data:posts'>
+
+              <b:if cond='data:blog.url == data:blog.homepageUrl and data:blog.pageType == &quot;index&quot;'>
+                <!-- Feature strip: 2 small, 1 large, 2 small -->
+                <section aria-label='Featured' class='cm-panel cm-feature'>
+                  <div class='cm-col'>
+                    <b:loop index='i' values='data:posts' var='post'>
+                      <b:if cond='data:i == 1 or data:i == 2'><b:include data='post' name='cmMini'/></b:if>
+                    </b:loop>
+                  </div>
+                  <b:loop index='i' values='data:posts' var='post'>
+                    <b:if cond='data:i == 0'><b:include data='post' name='cmBig'/></b:if>
+                  </b:loop>
+                  <div class='cm-col'>
+                    <b:loop index='i' values='data:posts' var='post'>
+                      <b:if cond='data:i == 3 or data:i == 4'><b:include data='post' name='cmMini'/></b:if>
+                    </b:loop>
+                  </div>
+                </section>
+
+                <div id='cm-slot-brand'/>
+                <div class='cm-cats' id='cm-cats'/>
+
+                <b:if cond='data:posts.size &gt; 5'>
+                  <section aria-label='Latest articles' class='cm-panel'>
+                    <div class='cm-panel-head'><h2>Latest articles</h2><a href='/search'>View full articles &#8594;</a></div>
+                    <div class='cm-grid'>
+                      <b:loop index='i' values='data:posts' var='post'>
+                        <b:if cond='data:i &gt; 4'><b:include data='post' name='cmCard'/></b:if>
+                      </b:loop>
+                    </div>
+                  </section>
+                </b:if>
+                <div class='cm-actions-row'><a class='cm-btn' href='/search'>View full articles</a></div>
+              <b:else/>
+                <div class='cm-listing-head'>
+                  <h1>
+                    <b:if cond='data:blog.searchLabel'><data:blog.searchLabel/>
+                    <b:elseif cond='data:blog.searchQuery'/>Results for &#8220;<data:blog.searchQuery/>&#8221;
+                    <b:elseif cond='data:blog.pageType == &quot;archive&quot;'/><data:blog.pageName/>
+                    <b:else/>All articles</b:if>
+                  </h1>
+                </div>
+                <section class='cm-panel'>
+                  <div class='cm-grid'>
+                    <b:loop values='data:posts' var='post'><b:include data='post' name='cmCard'/></b:loop>
+                  </div>
+                </section>
+              </b:if>
+
+              <nav aria-label='Pagination' class='cm-pager'>
+                <b:if cond='data:newerPageUrl'><a class='cm-btn ghost' expr:href='data:newerPageUrl' rel='prev'>&#8592; Newer posts</a><b:else/><span/></b:if>
+                <b:if cond='data:olderPageUrl'><a class='cm-btn ghost' expr:href='data:olderPageUrl' rel='next'>Older posts &#8594;</a></b:if>
+              </nav>
+            <b:else/>
+              <p class='cm-muted' style='text-align:center;padding:60px 0'>No posts found.</p>
+            </b:if>
+          </b:if>
+
+          <!-- ================= SINGLE POST ================= -->
+          <b:if cond='data:blog.pageType == &quot;item&quot;'>
+            <b:loop values='data:posts' var='post'>
+              <article class='cm-panel cm-article' expr:data-post-id='data:post.id'>
+                <nav aria-label='Breadcrumb' class='cm-crumbs'>
+                  <a expr:href='data:blog.homepageUrl'>Home</a>
+                  <b:if cond='data:post.labels'><span>/</span><a expr:href='data:post.labels.first.url'><data:post.labels.first.name/></a></b:if>
+                </nav>
+                <h1 class='cm-title'><data:post.title/></h1>
+                <b:if cond='data:skin.vars.showSubtitle == &quot;yes&quot;'><p class='cm-sub'><data:post.snippet/></p></b:if>
+                <p class='cm-artmeta'>Updated <span id='cm-updated'><data:post.date/></span> &#183; <span id='cm-rt'>&#8203;</span></p>
+                <b:if cond='data:post.thumbnailUrl and data:skin.vars.showHeroImage == &quot;yes&quot;'>
+                  <figure class='cm-hero' style='margin:0 0 34px'>
+                    <img expr:alt='data:post.title' expr:src='resizeImage(data:post.thumbnailUrl, 1200, &quot;16:9&quot;)' fetchpriority='high' height='600' width='1200'/>
+                  </figure>
+                </b:if>
+                <div class='cm-reading'>
+                  <div class='cm-author'>
+                    <span aria-hidden='true' class='av'><b:if cond='data:post.author'><data:post.author/></b:if></span>
+                    <div><b><data:post.author/></b><small>Author</small></div>
+                  </div>
+                  <details class='cm-toc' hidden='hidden' id='cm-toc' open='open'><summary>Table of contents</summary></details>
+                  <div class='cm-body post-content entry-content' expr:id='&quot;post-body-&quot; + data:post.id' id='cm-body' itemprop='articleBody'>
+                    <data:post.body/>
+                  </div>
+                </div>
+                <b:if cond='data:post.labels'>
+                  <div class='cm-tags'><b:loop values='data:post.labels' var='label'><a expr:href='data:label.url' rel='tag'>#<data:label.name/></a></b:loop></div>
+                </b:if>
+                <div class='cm-share' id='cm-share'><span>Share:</span></div>
+              </article>
+
+              <b:if cond='data:post.allowComments'>
+                <section class='cm-panel cm-comments' id='comments'>
+                  <b:include data='post' name='comment_picker'/>
+                </section>
+              </b:if>
+
+              <nav aria-label='Post navigation' class='cm-pager'>
+                <b:if cond='data:newerPageUrl'><a class='cm-btn ghost' expr:href='data:newerPageUrl' rel='prev'>&#8592; Newer</a><b:else/><span/></b:if>
+                <b:if cond='data:olderPageUrl'><a class='cm-btn ghost' expr:href='data:olderPageUrl' rel='next'>Older &#8594;</a></b:if>
+              </nav>
+
+              <section class='cm-related' id='cm-related'>
+                <h2>More from this blog</h2>
+                <div class='cm-panel'/>
+              </section>
+            </b:loop>
+          </b:if>
+
+          <!-- ================= STATIC PAGE ================= -->
+          <b:if cond='data:blog.pageType == &quot;static_page&quot;'>
+            <b:loop values='data:posts' var='post'>
+              <article class='cm-panel cm-static'>
+                <h1 class='cm-title'><data:post.title/></h1>
+                <div class='cm-reading' style='margin-top:28px'>
+                  <div class='cm-body post-content entry-content'><data:post.body/></div>
+                </div>
+              </article>
+            </b:loop>
+          </b:if>
+        </b:includable>
+
+        <!-- Card: big (feature centre) -->
+        <b:includable id='cmBig' var='post'>
+          <article class='cm-big'>
+            <a class='cm-img' expr:href='data:post.url' tabindex='-1'>
+              <b:if cond='data:post.thumbnailUrl'><img expr:alt='data:post.title' expr:src='resizeImage(data:post.thumbnailUrl, 1000, &quot;16:9&quot;)' fetchpriority='high' height='420' width='1000'/><b:else/><div class='cm-noimg'/></b:if>
+            </a>
+            <h2><a expr:href='data:post.url'><data:post.title/></a></h2>
+            <p class='cm-ex'><data:post.snippet/></p>
+            <div class='cm-meta'><data:post.date/><span class='dot cm-rt' expr:data-href='data:post.url'/></div>
+          </article>
+        </b:includable>
+
+        <!-- Card: mini (feature sides) -->
+        <b:includable id='cmMini' var='post'>
+          <article class='cm-mini'>
+            <a class='cm-img' expr:href='data:post.url' tabindex='-1'>
+              <b:if cond='data:post.thumbnailUrl'><img expr:alt='data:post.title' expr:src='resizeImage(data:post.thumbnailUrl, 500, &quot;16:9&quot;)' height='280' loading='lazy' width='500'/><b:else/><div class='cm-noimg'/></b:if>
+            </a>
+            <h3><a expr:href='data:post.url'><data:post.title/></a></h3>
+            <div class='cm-meta'><data:post.date/><span class='dot cm-rt' expr:data-href='data:post.url'/></div>
+          </article>
+        </b:includable>
+
+        <!-- Card: standard (grids) -->
+        <b:includable id='cmCard' var='post'>
+          <article class='cm-post'>
+            <a class='cm-img' expr:href='data:post.url' tabindex='-1'>
+              <b:if cond='data:post.thumbnailUrl'><img expr:alt='data:post.title' expr:src='resizeImage(data:post.thumbnailUrl, 640, &quot;16:9&quot;)' height='360' loading='lazy' width='640'/><b:else/><div class='cm-noimg'/></b:if>
+            </a>
+            <h3><a expr:href='data:post.url'><data:post.title/></a></h3>
+            <p class='cm-ex'><data:post.snippet/></p>
+            <div class='cm-foot'>
+              <span class='cm-meta'><data:post.date/><span class='dot cm-rt' expr:data-href='data:post.url'/></span>
+              <a class='cm-more' expr:href='data:post.url'>Read more &#8594;</a>
+            </div>
+          </article>
+        </b:includable>
+
+<!--@@INCLUDABLES@@-->
+      </b:widget>

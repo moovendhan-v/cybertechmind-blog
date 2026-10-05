@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html b:version='2' class='v2' expr:data-theme='data:skin.vars.defaultTheme' expr:dir='data:blog.languageDirection' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+  <meta charset='UTF-8'/>
+  <meta content='width=device-width,initial-scale=1' name='viewport'/>
+  <title><data:blog.pageTitle/></title>
+
+  <!-- ===== SEO / HEAD =====
+       Blogger's all-head-content already prints canonical, Open Graph, feeds and the
+       meta description (set it in Settings > Search preferences / per-post Search description). -->
+  <b:include data='blog' name='all-head-content'/>
+  <meta content='summary_large_image' name='twitter:card'/>
+  <meta content='#14171c' name='theme-color'/>
+  <b:if cond='data:blog.pageType == &quot;archive&quot; or data:blog.searchQuery'>
+    <meta content='noindex,follow' name='robots'/>
+  </b:if>
+  <b:if cond='data:skin.vars.googleVerify != &quot;&quot;'>
+    <meta expr:content='data:skin.vars.googleVerify' name='google-site-verification'/>
+  </b:if>
+  <b:if cond='data:skin.vars.bingVerify != &quot;&quot;'>
+    <meta expr:content='data:skin.vars.bingVerify' name='msvalidate.01'/>
+  </b:if>
+  <b:if cond='data:skin.vars.shareImage != &quot;&quot; and data:blog.pageType != &quot;item&quot;'>
+    <meta expr:content='data:skin.vars.shareImage' property='og:image'/>
+  </b:if>
+  <link href='https://fonts.googleapis.com' rel='preconnect'/>
+  <link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect'/>
+  <link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap' rel='stylesheet'/>
+  <script>
+    //<![CDATA[
+    (function(){var h=document.documentElement,d=h.getAttribute('data-theme')||'dark',t=null;try{t=localStorage.getItem('cmTheme')}catch(e){}
+    if(!t){t=d==='auto'?(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):d}
+    h.setAttribute('data-theme',t==='light'?'light':'dark')})();
+    //]]>
+  </script>
+
+  <b:skin><![CDATA[/*@@VARS@@*/
+/*@@CSS@@*/
+]]></b:skin>
+</head>
+
+<body expr:class='&quot;pt-&quot; + data:blog.pageType + (data:blog.url == data:blog.homepageUrl ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
+  <a class='cm-skip' href='#cm-main'>Skip to content</a>
+
+  <!-- Optional wallpaper (Theme Settings: wallpaperImage) -->
+  <b:if cond='data:skin.vars.wallpaperImage != &quot;&quot;'>
+    <div aria-hidden='true' class='cm-wall' expr:style='&quot;background-image:url(&quot; + data:skin.vars.wallpaperImage + &quot;);opacity:&quot; + data:skin.vars.wallpaperOpacity'/>
+  </b:if>
+
+  <!-- ===== HEADER ===== -->
+  <header class='cm-header' id='cm-header'>
+    <div class='cm-header-in'>
+      <a class='cm-logo' expr:href='data:blog.homepageUrl'>
+        <b:if cond='data:skin.vars.logoImage != &quot;&quot;'>
+          <img expr:alt='data:skin.vars.brandName' expr:src='data:skin.vars.logoImage' height='32'/>
+        </b:if>
+        <span><data:skin.vars.brandName/></span>
+      </a>
+      <div class='cm-logo-sec'>
+        <b:section class='cm-logo-s' id='header-logo' maxwidgets='1' name='Header logo - image gadget, recommended height 34px' showaddelement='yes'/>
+      </div>
+      <nav aria-label='Primary' class='cm-nav' id='cm-nav' expr:data-links='data:skin.vars.menuLinks'>
+        <b:section class='cm-menu-s' id='main-menu' maxwidgets='1' name='Main menu - link list gadget' showaddelement='yes'/>
+        <ul class='cm-links'/>
+      </nav>
+      <div class='cm-actions'>
+        <button aria-label='Search' class='cm-ib' id='cm-search-open' type='button'>
+          <svg fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-width='2' viewBox='0 0 24 24' width='19'><circle cx='11' cy='11' r='7'/><path d='m21 21-4.3-4.3'/></svg>
+        </button>
+        <button aria-label='Toggle light / dark theme' class='cm-ib' id='cm-theme' type='button'>
+          <svg class='cm-ic-moon' fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' width='19'><path d='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.800z'/></svg>
+          <svg class='cm-ic-sun' fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-width='2' viewBox='0 0 24 24' width='19'><circle cx='12' cy='12' r='4'/><path d='M12 2v2M12 20v2M4.9 4.9l1.400 1.400M17.700 17.700l1.400 1.400M2 12h2M20 12h2M4.900 19.100l1.400-1.400M17.700 6.300l1.400-1.400'/></svg>
+        </button>
+        <button aria-label='Menu' class='cm-ib cm-burger' id='cm-burger' type='button'>
+          <svg fill='none' height='20' stroke='currentColor' stroke-linecap='round' stroke-width='2' viewBox='0 0 24 24' width='20'><path d='M4 6h16M4 12h16M4 18h16'/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div aria-label='Search' class='cm-search' id='cm-search' role='dialog'>
+    <form expr:action='data:blog.searchUrl' method='get'>
+      <input aria-label='Search' autocomplete='off' id='cm-search-input' name='q' placeholder='Search articles…' type='search'/>
+      <button class='cm-btn' type='submit'>Search</button>
+    </form>
+  </div>
+
+  <!-- AD SLOT: header leaderboard -->
+  <div class='cm-ad cm-wrap'>
+    <b:section class='cm-adsec' id='ad-header' maxwidgets='2' name='Header ads - leaderboard' showaddelement='yes'/>
+  </div>
+
+  <!-- ===== MAIN ===== -->
+  <main class='cm-wrap' id='cm-main'>
+
+    <!-- Optional banner image (Theme Settings: bannerImage) -->
+    <b:if cond='data:skin.vars.bannerImage != &quot;&quot; and data:blog.url == data:blog.homepageUrl'>
+      <div class='cm-banner' role='img' expr:aria-label='data:skin.vars.brandName' expr:style='&quot;background-image:url(&quot; + data:skin.vars.bannerImage + &quot;);height:&quot; + data:skin.vars.bannerHeight'/>
+    </b:if>
+
+    <!-- HOME ONLY: hero section + featured post gadgets -->
+    <div class='cm-home-only'>
+      <div class='cm-hero-sec'>
+        <b:section class='cm-hero-s' id='hero-section' maxwidgets='3' name='Hero section - image, text, search box' showaddelement='yes'/>
+      </div>
+      <div class='cm-feat-sec'>
+        <b:section class='cm-feat-s' id='featured-post' maxwidgets='1' name='Featured post - featured post gadget' showaddelement='yes'/>
+      </div>
+    </div>
+
+    <b:section class='main' id='main' maxwidgets='1' name='Blog posts - filled automatically (do not add)' showaddelement='no'/>
+
+    <!-- Brand / author panel (moved under the feature strip on the homepage by JS) -->
+    <section class='cm-panel cm-brand'>
+      <span class='av'>
+        <b:if cond='data:skin.vars.logoImage != &quot;&quot;'><img expr:alt='data:skin.vars.brandName' expr:src='data:skin.vars.logoImage'/><b:else/>C</b:if>
+      </span>
+      <strong><data:skin.vars.brandName/></strong>
+      <p><data:skin.vars.tagline/></p>
+      <div class='cm-social' expr:data-links='data:skin.vars.socialLinks'>
+        <ul class='cm-links'/>
+      </div>
+    </section>
+
+    <!-- AD SLOT: below feature strip (homepage; moved by JS) -->
+    <div class='cm-ad cm-ad-home'>
+      <b:section class='cm-adsec' id='ad-home' maxwidgets='2' name='Home ads - below featured posts' showaddelement='yes'/>
+    </div>
+    <!-- AD SLOT: inside article (moved after paragraph N by JS) -->
+    <div class='cm-ad cm-ad-post cm-ad-in'>
+      <b:section class='cm-adsec' id='ad-in-article' maxwidgets='2' name='Post ads - inside content, after paragraph N' showaddelement='yes'/>
+    </div>
+
+    <!-- AD SLOTS: post page side rails (moved into the left / right rails by JS) -->
+    <div class='cm-ad cm-ad-post cm-ad-sl'>
+      <b:section class='cm-adsec' id='ad-side-left' maxwidgets='2' name='Post page left rail - ads' showaddelement='yes'/>
+    </div>
+    <div class='cm-ad cm-ad-post cm-ad-sr'>
+      <b:section class='cm-adsec' id='ad-side-right' maxwidgets='2' name='Post page right rail - ads' showaddelement='yes'/>
+    </div>
+    <!-- POST PAGE: ads before content / follow by email / sidebar -->
+    <div class='cm-ad cm-ad-post cm-ad-pa1'>
+      <b:section class='cm-adsec' id='post-ads-1' maxwidgets='2' name='Post ads 1 - before post content' showaddelement='yes'/>
+    </div>
+    <div class='cm-pitem cm-pfe'>
+      <b:section class='cm-pfe-s' id='post-follow-email' maxwidgets='1' name='Post follow by email - after related posts' showaddelement='yes'/>
+    </div>
+    <aside class='cm-sidebar' id='cm-sidebar'>
+      <b:section class='cm-sidebar-s' id='sidebar' maxwidgets='20' name='Sidebar - beside posts on every page' showaddelement='yes'/>
+    </aside>
+
+    <!-- AD SLOT: end of post (moved above the tags by JS) -->
+    <div class='cm-ad cm-ad-post cm-ad-end'>
+      <b:section class='cm-adsec' id='ad-end-post' maxwidgets='2' name='Post ads 2 - after post content' showaddelement='yes'/>
+    </div>
+
+    <!-- Newsletter (homepage). Hidden unless a form action URL is set in Theme Settings. -->
+    <b:if cond='data:blog.url == data:blog.homepageUrl and data:skin.vars.newsletterAction != &quot;&quot; and data:skin.vars.showNewsletter == &quot;yes&quot;'>
+      <section class='cm-panel cm-news'>
+        <div>
+          <h2><data:skin.vars.newsletterTitle/></h2>
+          <p><data:skin.vars.newsletterText/></p>
+        </div>
+        <form expr:action='data:skin.vars.newsletterAction' method='post' target='_blank'>
+          <input aria-label='Email address' name='EMAIL' placeholder='you@example.com' required='required' type='email'/>
+          <button class='cm-btn' type='submit'>Subscribe</button>
+        </form>
+      </section>
+    </b:if>
+  </main>
+
+  <!-- AD SLOT: footer -->
+  <div class='cm-ad cm-wrap'>
+    <b:section class='cm-adsec' id='ad-footer' maxwidgets='2' name='Footer ads' showaddelement='yes'/>
+  </div>
+
+
+  <!-- ===== FOOTER ===== -->
+  <footer class='cm-footer'>
+    <div class='cm-foot-cols'>
+      <div class='cm-foot-col'><b:section class='cm-foot-s' id='footer-1' maxwidgets='3' name='Footer 1 - max 3 gadgets' showaddelement='yes'/></div>
+      <div class='cm-foot-col'><b:section class='cm-foot-s' id='footer-2' maxwidgets='3' name='Footer 2 - max 3 gadgets' showaddelement='yes'/></div>
+      <div class='cm-foot-col'><b:section class='cm-foot-s' id='footer-3' maxwidgets='3' name='Footer 3 - max 3 gadgets' showaddelement='yes'/></div>
+    </div>
+    <div class='cm-foot-bottom'>
+      <div class='cm-copy'>
+        <b:section class='cm-copy-s' id='footer-copyright' maxwidgets='1' name='Footer copyright - custom credits (text gadget)' showaddelement='yes'/>
+        <div class='cm-copy-default'>&#169; <data:skin.vars.brandName/> &#183; <data:skin.vars.footerText/></div>
+      </div>
+      <nav aria-label='Footer' class='cm-footnav' expr:data-links='data:skin.vars.footerLinks'>
+        <b:section class='cm-footmenu-s' id='footer-menu' maxwidgets='1' name='Footer menu - footer links (link list gadget)' showaddelement='yes'/>
+        <ul class='cm-links'/>
+      </nav>
+      <div class='mini'>
+        <a href='/sitemap.xml'>Sitemap</a>
+        <a href='/feeds/posts/default'>RSS</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    //<![CDATA[
+/*@@JS@@*/
+    //]]>
+  </script>
+</body>
+</html>
