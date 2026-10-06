@@ -329,7 +329,8 @@ body:not(.pt-index):not(.pt-item) .cm-brand{display:none}
 .cm-logo-sec .widget{margin:0}
 .cm-logo-sec .widget h2,.cm-logo-sec .widget .title{display:none}
 .cm-logo-sec img{height:34px;width:auto;max-width:200px}
-.cm-header:has(.cm-logo-sec .widget) .cm-logo{display:none}
+.cm-header:has(.cm-logo-sec .widget) .cm-logo:not(.cm-logo-w){display:none}
+.cm-logo-sec .cm-logo img{height:34px;width:34px;max-width:none}
 .cm-nav .widget{margin:0}
 .cm-nav .widget>h2,.cm-nav .widget>h3{display:none}
 .cm-nav .widget ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}

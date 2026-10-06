@@ -1,26 +1,42 @@
 html,body#layout #outer-wrapper,body#layout .row{width:auto;padding:0}
-body#layout{position:relative;width:910px;margin:0 auto;background:#f9f9f9;padding:95px 5px 0;font-family:Roboto,Arial,Helvetica,sans-serif}
-body#layout:before{content:'CyberTechMind theme \2014 drag gadgets between the areas';position:absolute;top:0;left:5px;right:5px;height:95px;font-size:21px;font-weight:700;line-height:95px;color:#1f2024;text-align:center}
+body#layout #outer-wrapper,body#layout .cm-lay{max-width:none}
+body#layout{position:relative;width:calc(100vw - 420px);min-width:900px;max-width:none;margin:0 auto;background:#f9f9f9;padding:70px 8px 0;font-family:Roboto,Arial,Helvetica,sans-serif}
+body#layout:before{content:'Your blog layout \2014 each box is a spot on the page. Click Edit on a gadget to change it.';position:absolute;top:0;left:5px;right:5px;height:70px;font-size:16px;font-weight:700;line-height:70px;color:#1f2024;text-align:center}
 body#layout:after{content:'';display:block;clear:both!important;height:24px}
 /* flatten wrappers so every area becomes a direct child of the page */
 body#layout .cm-lay{display:contents}
 body#layout .cm-lay>*:not(.cm-lay):not(.section){display:none!important}
 body#layout script,body#layout style{display:none}
 /* each area is a floated box; rows are made with widths and clear */
-body#layout div.section{display:block!important;float:left!important;box-sizing:border-box!important;width:calc(100% - 10px)!important;margin:0 5px 10px!important;padding:16px 16px 18px!important;background:#f1f1f1!important;border:1px solid #e5e5e5;border-radius:6px}
+body#layout div.section{display:block!important;float:left!important;box-sizing:border-box!important;width:calc(100% - 10px)!important;margin:0 5px 10px!important;padding:14px 16px 16px!important;background:#f1f1f1!important;border:1px solid #e5e5e5;border-radius:8px;position:relative}
 body#layout .no-items.section{display:block}
-body#layout .section h4{margin:0 0 10px;font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#1f2024}
+body#layout .section h4{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#1f2024;line-height:1.35}
 body#layout .add_widget a{color:#3c97ef!important}
 body#layout .widget-content{width:auto;max-width:none;max-height:none}
-body#layout .widget{margin:6px 0}
+body#layout .widget{margin:6px 0;border-radius:6px}
+/* row 1: settings */
 body#layout #theme-options{clear:both!important;background:#edf4ff!important;border-color:#cdd4ef}
-body#layout #header-logo{clear:both!important;width:calc(50% - 10px)!important}
-body#layout #main-menu{width:calc(50% - 10px)!important}
+body#layout #theme-options .widget{float:left;width:calc(33.333% - 10px);margin:6px 5px;box-sizing:border-box}
+/* row 2: header = logo | menu (like the rendered top bar) */
+body#layout #header-logo{clear:both!important;width:calc(35% - 10px)!important;background:#eef6ee!important}
+body#layout #main-menu{width:calc(65% - 10px)!important;background:#eef6ee!important}
+/* row 3-6: leaderboard, hero, featured, home ad, each full width */
 body#layout #ad-header,body#layout #hero-section,body#layout #featured-post,body#layout #ad-home,body#layout #ad-footer{clear:both!important}
-body#layout #main{clear:both!important;width:calc(66% - 10px)!important;min-height:170px}
+body#layout #hero-section{background:#f3eefc!important}
+body#layout #ad-header,body#layout #ad-home,body#layout #ad-footer,body#layout #post-ads-1,body#layout #ad-end-post,body#layout #ad-in-article,body#layout #ad-side-left,body#layout #ad-side-right{background:#fff8e6!important;border-color:#f0e0b0}
+/* row 7: posts | sidebar, as on the live page */
+body#layout #ad-side-left{width:calc(50% - 10px)!important}
+body#layout #main{clear:both!important;width:calc(66% - 10px)!important;min-height:150px;background:#e9f0fb!important}
 body#layout #sidebar{width:calc(34% - 10px)!important}
-body#layout #post-ads-1,body#layout #ad-in-article,body#layout #ad-side-left,body#layout #footer-copyright{clear:both!important;width:calc(50% - 10px)!important}
-body#layout #ad-end-post,body#layout #post-follow-email,body#layout #ad-side-right,body#layout #footer-menu{width:calc(50% - 10px)!important}
+/* post page ads: three across, then follow by email */
+body#layout #ad-side-left{clear:both!important}
+body#layout #post-ads-1{width:calc(33.333% - 10px)!important}
+body#layout #ad-in-article,body#layout #ad-end-post{width:calc(33.333% - 10px)!important}
+body#layout #post-follow-email{clear:both!important;width:calc(50% - 10px)!important}
+body#layout #ad-side-right{width:calc(50% - 10px)!important}
+/* footer: three columns, then credits | menu */
 body#layout #footer-1{clear:both!important}
 body#layout #footer-1,body#layout #footer-2,body#layout #footer-3{width:calc(33.333% - 10px)!important}
+body#layout #footer-copyright{clear:both!important;width:calc(50% - 10px)!important}
+body#layout #footer-menu{width:calc(50% - 10px)!important}
 body#layout .cm-wall,body#layout .cm-skip{display:none}

@@ -60,8 +60,8 @@
   </noscript>
   <!-- THEME OPTIONS: paste or edit the JSON in the gadget below (Layout page). See README-CUSTOMISE.md for every key. -->
   <div class='cm-opts cm-lay'>
-    <b:section class='cm-opts-s' id='theme-options' maxwidgets='1' name='Theme options - JSON settings gadget (sidebars, footer, favicon, logo, colors)' showaddelement='yes'>
-      <b:widget id='HTML151' locked='false' title='Theme settings (JSON)' type='HTML' visible='true'>
+    <b:section class='cm-opts-s' id='theme-options' maxwidgets='3' name='Theme Options - Click Edit on a gadget to change settings (JSON)' showaddelement='yes'>
+      <b:widget id='HTML151' locked='true' title='Layout and Sidebars (JSON)' type='HTML' visible='true'>
         <b:widget-settings>
           <b:widget-setting name='content'><![CDATA[<script type="application/json" id="cm-config">
 {
@@ -73,7 +73,38 @@
 }
 </script>]]></b:widget-setting>
         </b:widget-settings>
-        <b:includable id='main'>
+        <b:includable id='main' var='this'>
+          <data:content/>
+        </b:includable>
+      </b:widget>
+      <b:widget id='HTML152' locked='true' title='Brand, Logo and Hero (JSON)' type='HTML' visible='true'>
+        <b:widget-settings>
+          <b:widget-setting name='content'><![CDATA[<script type="application/json" id="cm-config-brand">
+{
+  "logoShape": "round",
+  "heroTitle": "Learn cybersecurity, AWS and full-stack by doing",
+  "heroSub": "Practical, tested tutorials with copy-paste code, diagrams and cheat sheets."
+}
+</script>]]></b:widget-setting>
+        </b:widget-settings>
+        <b:includable id='main' var='this'>
+          <data:content/>
+        </b:includable>
+      </b:widget>
+      <b:widget id='HTML153' locked='true' title='Community and SEO (JSON)' type='HTML' visible='true'>
+        <b:widget-settings>
+          <b:widget-setting name='content'><![CDATA[<script type="application/json" id="cm-config-community">
+{
+  "discordUrl": "",
+  "telegramUrl": "",
+  "whatsappUrl": "",
+  "connectPlaces": "home,post,footer",
+  "twitter": "",
+  "authorSameAs": ""
+}
+</script>]]></b:widget-setting>
+        </b:widget-settings>
+        <b:includable id='main' var='this'>
           <data:content/>
         </b:includable>
       </b:widget>
@@ -99,7 +130,24 @@
         <span><b:eval expr='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title'/></span>
       </a>
       <div class='cm-logo-sec cm-lay'>
-        <b:section class='cm-logo-s' id='header-logo' maxwidgets='1' name='Header logo - image gadget, recommended height 34px' showaddelement='yes'/>
+        <b:section class='cm-logo-s' id='header-logo' maxwidgets='1' name='Header Logo - Click Edit to upload your logo, recommended height 34px' showaddelement='yes'>
+        <b:widget id='Image151' locked='true' title='' type='Image' version='2' visible='true'>
+          <b:widget-settings>
+            <b:widget-setting name='displayUrl'>https://profile.cybertechmind.com/_next/image?url=%2Fimages%2Fprofile-pic.jpg&amp;w=128&amp;q=75</b:widget-setting>
+            <b:widget-setting name='displayHeight'>128</b:widget-setting>
+            <b:widget-setting name='displayWidth'>128</b:widget-setting>
+            <b:widget-setting name='sectionWidth'>128</b:widget-setting>
+            <b:widget-setting name='shrinkToFit'>true</b:widget-setting>
+            <b:widget-setting name='link'>/</b:widget-setting>
+          </b:widget-settings>
+          <b:includable id='main' var='this'>
+            <a class='cm-logo cm-logo-w' expr:href='data:link != &quot;&quot; ? data:link : data:blog.homepageUrl'>
+              <img expr:alt='data:title != &quot;&quot; ? data:title : data:blog.title' expr:src='data:sourceUrl' height='34' width='34'/>
+              <span><b:eval expr='data:title != &quot;&quot; ? data:title : data:blog.title'/></span>
+            </a>
+          </b:includable>
+        </b:widget>
+      </b:section>
       </div>
       <button aria-label='Search the blog' class='cm-hsearch' data-act='search' title='Search (Ctrl/Cmd + K)' type='button'>
         <svg fill='none' height='16' stroke='currentColor' stroke-linecap='round' stroke-width='2' viewBox='0 0 24 24' width='16'><circle cx='11' cy='11' r='7'/><path d='m21 21-4.3-4.3'/></svg>
@@ -125,7 +173,22 @@
         </button>
         <nav aria-label='Topics' class='cm-mega-nav' id='cm-mega-nav'/>
         <nav aria-label='Primary' class='cm-nav cm-lay' id='cm-nav' expr:data-links='data:skin.vars.menuLinks'>
-          <b:section class='cm-menu-s' id='main-menu' maxwidgets='1' name='Main menu - link list gadget' showaddelement='yes'/>
+          <b:section class='cm-menu-s' id='main-menu' maxwidgets='1' name='Header Menu - Click Edit to add or reorder links' showaddelement='yes'>
+          <b:widget id='LinkList153' locked='true' title='Main menu' type='LinkList' version='2' visible='true'>
+            <b:widget-settings>
+              <b:widget-setting name='sorting'>NONE</b:widget-setting>
+              <b:widget-setting name='text-0'>Articles</b:widget-setting>
+              <b:widget-setting name='link-0'>/search</b:widget-setting>
+              <b:widget-setting name='text-1'>About</b:widget-setting>
+              <b:widget-setting name='link-1'>/p/about.html</b:widget-setting>
+              <b:widget-setting name='text-2'>Contact</b:widget-setting>
+              <b:widget-setting name='link-2'>/p/contact.html</b:widget-setting>
+            </b:widget-settings>
+            <b:includable id='main' var='this'>
+              <div class='widget-content'><ul><b:loop values='data:links' var='link'><li><a expr:href='data:link.target'><data:link.name/></a></li></b:loop></ul></div>
+            </b:includable>
+          </b:widget>
+        </b:section>
           <ul class='cm-links'/>
         </nav>
         <button aria-label='Search (Ctrl or Cmd + K)' class='cm-ib cm-sub-tool' data-act='search' title='Search (Ctrl/Cmd + K)' type='button'>
@@ -142,7 +205,16 @@
 
   <!-- AD SLOT: header leaderboard -->
   <div class='cm-ad cm-wrap cm-lay'>
-    <b:section class='cm-adsec' id='ad-header' maxwidgets='2' name='Header ads - leaderboard' showaddelement='yes'/>
+    <b:section class='cm-adsec' id='ad-header' maxwidgets='1' name='Header Ads - Leaderboard below the header, click Edit and paste ad code' showaddelement='yes'>
+        <b:widget id='HTML161' locked='false' title='Header Ad (HTML/JavaScript)' type='HTML' visible='false'>
+          <b:widget-settings>
+            <b:widget-setting name='content'><![CDATA[<!-- Paste your code in this gadget (Edit). Leave empty to hide. -->]]></b:widget-setting>
+          </b:widget-settings>
+          <b:includable id='main' var='this'>
+            <b:if cond='data:content != &quot;&quot;'><div class='widget-content'><data:content/></div></b:if>
+          </b:includable>
+        </b:widget>
+      </b:section>
   </div>
 
   <!-- ===== MAIN ===== -->
@@ -156,7 +228,7 @@
     <!-- HOME ONLY: hero section + featured post gadgets -->
     <div class='cm-home-only cm-lay'>
       <div class='cm-hero-sec cm-lay'>
-        <b:section class='cm-hero-s' id='hero-section' maxwidgets='3' name='Hero section - image, text, search box' showaddelement='yes'>
+        <b:section class='cm-hero-s' id='hero-section' maxwidgets='3' name='Hero Section - Home page text and search box, click Edit on each' showaddelement='yes'>
         <b:widget id='Text151' locked='false' title='Practical guides on apps, Android and security' type='Text' visible='true'>
           <b:widget-settings>
             <b:widget-setting name='content'><![CDATA[Tutorials, app reviews and tips for people who love technology.]]></b:widget-setting>
@@ -179,19 +251,28 @@
       </b:section>
       </div>
       <div class='cm-feat-sec cm-lay'>
-        <b:section class='cm-feat-s' id='featured-post' maxwidgets='1' name='Featured post - featured post gadget' showaddelement='yes'/>
+        <b:section class='cm-feat-s' id='featured-post' maxwidgets='1' name='Featured Post - Add a Featured Post gadget and pick a post' showaddelement='yes'/>
       </div>
     </div>
 
     <!-- AD SLOT: below feature strip (homepage; moved by JS) -->
     <div class='cm-ad cm-ad-home cm-lay'>
-      <b:section class='cm-adsec' id='ad-home' maxwidgets='2' name='Home ads - below featured posts' showaddelement='yes'/>
+      <b:section class='cm-adsec' id='ad-home' maxwidgets='1' name='Home Ads - Below the featured post, click Edit and paste ad code' showaddelement='yes'>
+        <b:widget id='HTML162' locked='false' title='Home Ad (HTML/JavaScript)' type='HTML' visible='false'>
+          <b:widget-settings>
+            <b:widget-setting name='content'><![CDATA[<!-- Paste your code in this gadget (Edit). Leave empty to hide. -->]]></b:widget-setting>
+          </b:widget-settings>
+          <b:includable id='main' var='this'>
+            <b:if cond='data:content != &quot;&quot;'><div class='widget-content'><data:content/></div></b:if>
+          </b:includable>
+        </b:widget>
+      </b:section>
     </div>
 
-    <b:section class='main' id='main' maxwidgets='1' name='Blog posts - filled automatically (do not add)' showaddelement='no'/>
+    <b:section class='main' id='main' maxwidgets='1' name='Main Posts - Filled automatically from your posts, nothing to add' showaddelement='no'/>
 
     <aside class='cm-sidebar cm-lay' id='cm-sidebar'>
-      <b:section class='cm-sidebar-s' id='sidebar' maxwidgets='20' name='Sidebar - beside posts on every page' showaddelement='yes'>
+      <b:section class='cm-sidebar-s' id='sidebar' maxwidgets='20' name='Sidebar - On all pages, add any gadgets' showaddelement='yes'>
         <b:widget id='PopularPosts151' locked='false' title='Popular posts' type='PopularPosts' version='2' visible='true'>
           <b:widget-settings>
             <b:widget-setting name='numItemsToShow'>5</b:widget-setting>
@@ -238,27 +319,81 @@
 
     <!-- POST PAGE: ads before content / follow by email / sidebar -->
     <div class='cm-ad cm-ad-post cm-ad-pa1 cm-lay'>
-      <b:section class='cm-adsec' id='post-ads-1' maxwidgets='2' name='Post ads 1 - before post content' showaddelement='yes'/>
+      <b:section class='cm-adsec' id='post-ads-1' maxwidgets='1' name='Post Ads 1 - Before post content, click Edit and paste ad code' showaddelement='yes'>
+        <b:widget id='HTML163' locked='false' title='Post Ad 1 (HTML/JavaScript)' type='HTML' visible='false'>
+          <b:widget-settings>
+            <b:widget-setting name='content'><![CDATA[<!-- Paste your code in this gadget (Edit). Leave empty to hide. -->]]></b:widget-setting>
+          </b:widget-settings>
+          <b:includable id='main' var='this'>
+            <b:if cond='data:content != &quot;&quot;'><div class='widget-content'><data:content/></div></b:if>
+          </b:includable>
+        </b:widget>
+      </b:section>
     </div>
     <!-- AD SLOT: end of post (moved above the tags by JS) -->
     <div class='cm-ad cm-ad-post cm-ad-end cm-lay'>
-      <b:section class='cm-adsec' id='ad-end-post' maxwidgets='2' name='Post ads 2 - after post content' showaddelement='yes'/>
+      <b:section class='cm-adsec' id='ad-end-post' maxwidgets='1' name='Post Ads 2 - After post content, click Edit and paste ad code' showaddelement='yes'>
+        <b:widget id='HTML164' locked='false' title='Post Ad 2 (HTML/JavaScript)' type='HTML' visible='false'>
+          <b:widget-settings>
+            <b:widget-setting name='content'><![CDATA[<!-- Paste your code in this gadget (Edit). Leave empty to hide. -->]]></b:widget-setting>
+          </b:widget-settings>
+          <b:includable id='main' var='this'>
+            <b:if cond='data:content != &quot;&quot;'><div class='widget-content'><data:content/></div></b:if>
+          </b:includable>
+        </b:widget>
+      </b:section>
     </div>
 
     <!-- AD SLOT: inside article (moved after paragraph N by JS) -->
     <div class='cm-ad cm-ad-post cm-ad-in cm-lay'>
-      <b:section class='cm-adsec' id='ad-in-article' maxwidgets='2' name='Post ads - inside content, after paragraph N' showaddelement='yes'/>
+      <b:section class='cm-adsec' id='ad-in-article' maxwidgets='1' name='Post Ads In Article - Inside the post after paragraph N' showaddelement='yes'>
+        <b:widget id='HTML165' locked='false' title='In-Article Ad (HTML/JavaScript)' type='HTML' visible='false'>
+          <b:widget-settings>
+            <b:widget-setting name='content'><![CDATA[<!-- Paste your code in this gadget (Edit). Leave empty to hide. -->]]></b:widget-setting>
+          </b:widget-settings>
+          <b:includable id='main' var='this'>
+            <b:if cond='data:content != &quot;&quot;'><div class='widget-content'><data:content/></div></b:if>
+          </b:includable>
+        </b:widget>
+      </b:section>
     </div>
     <div class='cm-pitem cm-pfe cm-lay'>
-      <b:section class='cm-pfe-s' id='post-follow-email' maxwidgets='1' name='Post follow by email - after related posts' showaddelement='yes'/>
+      <b:section class='cm-pfe-s' id='post-follow-email' maxwidgets='1' name='Post Follow By Email - After related posts, paste your subscribe form' showaddelement='yes'>
+        <b:widget id='HTML169' locked='false' title='Subscribe Form (HTML)' type='HTML' visible='false'>
+          <b:widget-settings>
+            <b:widget-setting name='content'><![CDATA[<!-- Paste your code in this gadget (Edit). Leave empty to hide. -->]]></b:widget-setting>
+          </b:widget-settings>
+          <b:includable id='main' var='this'>
+            <b:if cond='data:content != &quot;&quot;'><div class='widget-content'><data:content/></div></b:if>
+          </b:includable>
+        </b:widget>
+      </b:section>
     </div>
 
     <!-- AD SLOTS: post page side rails (moved into the left / right rails by JS) -->
     <div class='cm-ad cm-ad-sl cm-lay'>
-      <b:section class='cm-adsec' id='ad-side-left' maxwidgets='2' name='Sidebar ads - inside the left sidebar, all pages' showaddelement='yes'/>
+      <b:section class='cm-adsec' id='ad-side-left' maxwidgets='1' name='Left Sidebar Ads - Inside the left sidebar on all pages' showaddelement='yes'>
+        <b:widget id='HTML166' locked='false' title='Left Sidebar Ad (HTML/JavaScript)' type='HTML' visible='false'>
+          <b:widget-settings>
+            <b:widget-setting name='content'><![CDATA[<!-- Paste your code in this gadget (Edit). Leave empty to hide. -->]]></b:widget-setting>
+          </b:widget-settings>
+          <b:includable id='main' var='this'>
+            <b:if cond='data:content != &quot;&quot;'><div class='widget-content'><data:content/></div></b:if>
+          </b:includable>
+        </b:widget>
+      </b:section>
     </div>
     <div class='cm-ad cm-ad-post cm-ad-sr cm-lay'>
-      <b:section class='cm-adsec' id='ad-side-right' maxwidgets='2' name='Post page right rail - ads' showaddelement='yes'/>
+      <b:section class='cm-adsec' id='ad-side-right' maxwidgets='1' name='Right Rail Ads - Beside posts' showaddelement='yes'>
+        <b:widget id='HTML167' locked='false' title='Right Rail Ad (HTML/JavaScript)' type='HTML' visible='false'>
+          <b:widget-settings>
+            <b:widget-setting name='content'><![CDATA[<!-- Paste your code in this gadget (Edit). Leave empty to hide. -->]]></b:widget-setting>
+          </b:widget-settings>
+          <b:includable id='main' var='this'>
+            <b:if cond='data:content != &quot;&quot;'><div class='widget-content'><data:content/></div></b:if>
+          </b:includable>
+        </b:widget>
+      </b:section>
     </div>
 
 
@@ -272,7 +407,16 @@
 
   <!-- AD SLOT: footer -->
   <div class='cm-ad cm-wrap cm-lay'>
-    <b:section class='cm-adsec' id='ad-footer' maxwidgets='2' name='Footer ads' showaddelement='yes'/>
+    <b:section class='cm-adsec' id='ad-footer' maxwidgets='1' name='Footer Ads - Above the footer' showaddelement='yes'>
+        <b:widget id='HTML168' locked='false' title='Footer Ad (HTML/JavaScript)' type='HTML' visible='false'>
+          <b:widget-settings>
+            <b:widget-setting name='content'><![CDATA[<!-- Paste your code in this gadget (Edit). Leave empty to hide. -->]]></b:widget-setting>
+          </b:widget-settings>
+          <b:includable id='main' var='this'>
+            <b:if cond='data:content != &quot;&quot;'><div class='widget-content'><data:content/></div></b:if>
+          </b:includable>
+        </b:widget>
+      </b:section>
   </div>
 
 
@@ -296,7 +440,7 @@
             </form>
           </b:if>
         </div>
-        <div class='cm-foot-col cm-lay'><b:section class='cm-foot-s' id='footer-1' maxwidgets='3' name='Footer 1 - max 3 gadgets' showaddelement='yes'>
+        <div class='cm-foot-col cm-lay'><b:section class='cm-foot-s' id='footer-1' maxwidgets='3' name='Footer 1 - Up to 3 gadgets' showaddelement='yes'>
           <b:widget id='LinkList151' locked='false' title='Quick links' type='LinkList' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='sorting'>NONE</b:widget-setting>
@@ -319,7 +463,7 @@
             </b:includable>
           </b:widget>
           </b:section></div>
-        <div class='cm-foot-col cm-lay'><b:section class='cm-foot-s' id='footer-2' maxwidgets='3' name='Footer 2 - max 3 gadgets' showaddelement='yes'>
+        <div class='cm-foot-col cm-lay'><b:section class='cm-foot-s' id='footer-2' maxwidgets='3' name='Footer 2 - Up to 3 gadgets' showaddelement='yes'>
           <b:widget id='Label152' locked='false' title='Categories' type='Label' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='sorting'>ALPHA</b:widget-setting>
@@ -340,7 +484,7 @@
             </b:includable>
           </b:widget>
           </b:section></div>
-        <div class='cm-foot-col cm-lay'><b:section class='cm-foot-s' id='footer-3' maxwidgets='3' name='Footer 3 - max 3 gadgets' showaddelement='yes'>
+        <div class='cm-foot-col cm-lay'><b:section class='cm-foot-s' id='footer-3' maxwidgets='3' name='Footer 3 - Up to 3 gadgets' showaddelement='yes'>
           <b:widget id='Text152' locked='false' title='Stay in touch' type='Text' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'><![CDATA[Questions, feedback or app requests? Visit the Contact page and we will get back to you.]]></b:widget-setting>
@@ -354,11 +498,11 @@
       </div>
       <div class='cm-foot-bottom cm-lay'>
         <div class='cm-copy cm-lay'>
-          <b:section class='cm-copy-s' id='footer-copyright' maxwidgets='1' name='Footer copyright - custom credits (text gadget)' showaddelement='yes'/>
+          <b:section class='cm-copy-s' id='footer-copyright' maxwidgets='1' name='Footer Copyright - Add a Text gadget for custom credits' showaddelement='yes'/>
           <div class='cm-copy-default'>&#169; <b:eval expr='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title'/> &#183; <data:skin.vars.footerText/></div>
         </div>
         <nav aria-label='Footer' class='cm-footnav cm-lay' expr:data-links='data:skin.vars.footerLinks'>
-          <b:section class='cm-footmenu-s' id='footer-menu' maxwidgets='1' name='Footer menu - footer links (link list gadget)' showaddelement='yes'/>
+          <b:section class='cm-footmenu-s' id='footer-menu' maxwidgets='1' name='Footer Menu - Add a Link List gadget for footer links' showaddelement='yes'/>
           <ul class='cm-links'/>
         </nav>
         <div class='mini'>
