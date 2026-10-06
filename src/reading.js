@@ -109,8 +109,8 @@
     });
     var wins = $$('.cm-win', art);
     if (wins.length >= 2) {
-      var allOpen = false;
-      var cb = tool('cm-tool-code', SI2.code, 'Expand code', function () {
+      var allOpen = wins.every(function (w) { return w.getAttribute('data-state') === 'open'; });
+      var cb = tool('cm-tool-code', SI2.code, allOpen ? 'Collapse code' : 'Expand code', function () {
         allOpen = !allOpen; wins.forEach(function (w) { var dot = w.querySelector(allOpen ? '.d.g' : '.d.r'); if (dot) dot.click(); }); cb.lastChild.textContent = allOpen ? 'Collapse code' : 'Expand code'; track('code_toggle_all', { open: allOpen ? 1 : 0 });
       });
     }

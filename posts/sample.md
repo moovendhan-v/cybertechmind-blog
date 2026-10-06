@@ -5,7 +5,7 @@ labels: AWS, Security
 
 # Sample - Every Block in One Post
 
-This post uses **every block** the theme supports. Code windows start *closed*: click the title bar or the green dot. Inline `code`, ==highlights==, <kbd>Cmd</kbd> + <kbd>K</kbd> and [links](https://example.com) all work.
+This post uses **every block** the theme supports. Code windows start open; click the title bar or the red dot to collapse one. Inline `code`, ==highlights==, <kbd>Cmd</kbd> + <kbd>K</kbd> and [links](https://example.com) all work.
 
 ## 1. Code windows
 
@@ -27,7 +27,7 @@ resource "aws_s3_bucket_public_access_block" "logs" {
 }
 ```
 
-Short commands (3 lines or fewer) start open, and the leading `$ ` is not copied:
+The leading `$ ` is not copied:
 
 ```bash
 $ npm install -g aws-cdk
@@ -35,7 +35,7 @@ $ cdk bootstrap
 $ cdk deploy --all
 ```
 
-Force a block open with the word `open`:
+Choose how a block starts with `open`, `preview` or `closed`:
 
 ```json title="policy.json" open
 {

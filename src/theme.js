@@ -63,10 +63,14 @@
     }
     return u;
   }
-  function getJSON(url, cb) {
-    var c = store.get('cm:' + url);
-    if (c) { try { return cb(JSON.parse(c)); } catch (e) {} }
-    fetch(url).then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) { store.set('cm:' + url, JSON.stringify(j)); cb(j); }).catch(function () { cb(null); });
+  /* feed fetch with a short session cache (5 min); { fresh: true } always goes to the network */
+  function getJSON(url, cb, opts) {
+    var fresh = opts && opts.fresh, key = 'cm:' + url;
+    if (!fresh) {
+      var c = store.get(key);
+      if (c) { try { var o = JSON.parse(c); if (o && o.t && Date.now() - o.t < 300000) return cb(o.v); } catch (e) {} }
+    }
+    fetch(fresh ? url + (url.indexOf('?') < 0 ? '?' : '&') + '_=' + Date.now() : url).then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) { if (!fresh) store.set(key, JSON.stringify({ t: Date.now(), v: j })); cb(j); }).catch(function () { cb(null); });
   }
   function entryUrl(e) { var l = (e.link || []).filter(function (x) { return x.rel === 'alternate'; })[0]; return l ? l.href : ''; }
 
@@ -141,6 +145,7 @@
 /*@@SEARCH@@*/
 /*@@BLOCKS@@*/
 /*@@READING@@*/
+/*@@LINKS@@*/
   /* =====================================================================
      SIDEBAR + PAGES: every page is drawn from the public feed into a
      3-column shell (collapsible sidebar / content / right rail)
@@ -658,6 +663,7 @@
     bx.appendChild(inp); bx.appendChild(rowb); cm.appendChild(bx);
     var list = el('div', 'cm-clist'); cm.appendChild(list);
     list.appendChild(sk('', '100%', '72px')); list.lastChild.style.borderRadius = '16px';
+    function load() {
     getJSON('/feeds/' + ids.post + '/comments/default?alt=json&max-results=50', function (j) {
       var items = (j && j.feed && j.feed.entry) || []; list.textContent = '';
       ht.textContent = 'Comments' + (items.length ? ' (' + items.length + ')' : '');
@@ -669,7 +675,12 @@
         bd.appendChild(top); bd.appendChild(el('p', '', plain((c.content && c.content.$t) || '')));
         card.appendChild(av); card.appendChild(bd); list.appendChild(card);
       });
-    });
+    }, { fresh: true });
+    }
+    load();
+    var lastLoad = Date.now();
+    d.addEventListener('visibilitychange', function () { if (!d.hidden && Date.now() - lastLoad > 15000) { lastLoad = Date.now(); load(); } });
+    window.addEventListener('focus', function () { if (Date.now() - lastLoad > 15000) { lastLoad = Date.now(); load(); } });
   }
 
   /* ---------- footer: newsletter validation, back to top ---------- */

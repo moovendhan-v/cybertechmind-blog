@@ -57,8 +57,9 @@ VARS = [
   ("footerLinks","Footer links","string","Archive|/search;Privacy|/p/privacy.html;Terms|/p/terms.html;Contact|/p/contact.html"),
  ]),
  ("Post blocks", [
-  ("codeDefault","Code windows start closed or preview or open","string","closed"),
+  ("codeDefault","Code windows start open or preview or closed","string","open"),
   ("codeLines","Show line numbers in code windows yes or no","string","yes"),
+  ("linkPreviews","Link hover previews on or rich or off","string","on"),
  ]),
  ("Homepage hero", [
   ("showHero","Show the homepage hero yes or no","string","yes"),
@@ -104,7 +105,7 @@ for g, items in VARS:
 out.append("*/")
 s = rd('skeleton.xml')
 s = s.replace('/*@@VARS@@*/', ''.join(out)).replace('/*@@CSS@@*/', rd('theme.css') + rd('blocks.css') + rd('search.css') + rd('reading.css'))
-s = s.replace('/*@@JS@@*/', rd('theme.js').replace('/*@@BLOCKS@@*/', rd('blocks.js')).replace('/*@@SEARCH@@*/', rd('search.js')).replace('/*@@READING@@*/', rd('reading.js')).replace('/*@@HOME@@*/', rd('home.js'))).replace('/*@@LAYOUTCSS@@*/', rd('layout-mode.css'))
+s = s.replace('/*@@JS@@*/', rd('theme.js').replace('/*@@BLOCKS@@*/', rd('blocks.js')).replace('/*@@SEARCH@@*/', rd('search.js')).replace('/*@@READING@@*/', rd('reading.js')).replace('/*@@LINKS@@*/', rd('links.js')).replace('/*@@HOME@@*/', rd('home.js'))).replace('/*@@LAYOUTCSS@@*/', rd('layout-mode.css'))
 inc = open(os.path.join(here, 'blog-includables.xml'), encoding='utf-8').read()
 w = rd('blog-widget.tpl.xml').replace('<!--@@INCLUDABLES@@-->', inc)
 open(os.path.join(here, 'blog-widget.optional.xml'), 'w', encoding='utf-8').write(w)

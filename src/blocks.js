@@ -64,8 +64,8 @@
     if (/^(closed|false|collapsed)$/.test(a)) return 'closed';
     if (a === 'preview') return 'preview';
     if (lines <= 3) return 'open';
-    var def = (ds.codeDefault || 'closed').toLowerCase();
-    return def === 'open' || def === 'preview' || def === 'closed' ? def : 'closed';
+    var def = (ds.codeDefault || 'open').toLowerCase();
+    return def === 'open' || def === 'preview' || def === 'closed' ? def : 'open';
   }
   function buildWindow(panes, opts) {
     /* panes: [{pre, code, text, lang, title}] */

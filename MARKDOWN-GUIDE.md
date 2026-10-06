@@ -55,7 +55,7 @@ Every conversion prints warnings (and runs `shellcheck` on bash blocks if it is 
 
 | You write | You get |
 |---|---|
-| ` ```python title="app.py" ` ... ` ``` ` | macOS code window, closed by default. Add the word `open` or `preview` to change how it starts |
+| ` ```python title="app.py" ` ... ` ``` ` | macOS code window, open by default. Add the word `closed` or `preview` to change how it starts |
 | ` ```mermaid ` ... ` ``` ` | Diagram |
 | `::: tabs` + several fenced blocks + `:::` | Tabbed code window |
 | `> [!NOTE] text` or `::: warning` ... `:::` | Callout. Types: note, info, tip, important, warning, caution, danger, security, success |

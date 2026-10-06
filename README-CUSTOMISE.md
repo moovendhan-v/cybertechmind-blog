@@ -81,9 +81,9 @@ While the feed loads, every page shows grey shimmer placeholders in the exact la
 - No horizontal scrolling at 375px, 768px or desktop widths. Wide tables and code blocks scroll inside the post instead of the page.
 
 ## Post blocks for tech writing
-Code windows (macOS style, closed by default), tabbed code, Mermaid diagrams, callouts, captioned images with a zoom viewer, sliders, sortable / filterable tables, FAQ accordions, numbered steps, responsive video and heading anchors are all built in. Easiest: write the post in Markdown and let `md2blog.py` produce the HTML (see **MARKDOWN-GUIDE.md**). Hand-written HTML snippets for each block are in **POST-BLOCKS.md**.
+Code windows (macOS style, open by default), tabbed code, Mermaid diagrams, callouts, captioned images with a zoom viewer, sliders, sortable / filterable tables, FAQ accordions, numbered steps, responsive video and heading anchors are all built in. Easiest: write the post in Markdown and let `md2blog.py` produce the HTML (see **MARKDOWN-GUIDE.md**). Hand-written HTML snippets for each block are in **POST-BLOCKS.md**.
 
-Settings: `codeDefault` (closed, preview or open) and `codeLines` (yes or no). Syntax highlighting (highlight.js from cdnjs) and Mermaid (from jsDelivr) are loaded only on pages that contain code or diagrams.
+Settings: `codeDefault` (open, preview or closed; default open) and `codeLines` (yes or no). Syntax highlighting (highlight.js from cdnjs) and Mermaid (from jsDelivr) are loaded only on pages that contain code or diagrams.
 
 ## Sidebar default
 The sidebar starts collapsed (icon rail). A visitor's choice (panel icon or **B**) is remembered.
@@ -147,3 +147,9 @@ Hero (variables `showHero`, `heroTitle`, `heroSub`) with four topic tiles, **Con
 | `gaId` | `"G-XXXXXXX"` | Google Analytics 4 |
 
 The same toggles also exist as Theme > Customize variables (`showLeftSidebar`, `showRightRail`, `showHeaderCategories`, `showFooter`, `sidebarDefault`, `faviconUrl`). Use either; the JSON gadget wins when both are set.
+
+## Link previews
+Hover (or keyboard-focus) a link inside a post to see a small card above it. Your own posts show the image, title, excerpt, read time and level; topic and series links show the post count and latest titles; GitHub repository links show the description, stars, language and last update; YouTube links show the thumbnail; other links show a simple domain card. Controlled by `linkPreviews`: `"on"` (default), `"rich"` (also fetches the title and image of other sites through the Microlink service, so the link addresses are sent to it) or `"off"`. Touch screens do not show previews.
+
+## Comments freshness
+Comments are always fetched live (never cached) and re-checked when a visitor returns to the tab, so a comment posted on Blogger's comment page appears as soon as they come back. Other feed data is cached for 5 minutes per tab.

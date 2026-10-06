@@ -92,8 +92,9 @@
 <Variable name="footerLinks" description="Footer links" type="string" default="Archive|/search;Privacy|/p/privacy.html;Terms|/p/terms.html;Contact|/p/contact.html" value="Archive|/search;Privacy|/p/privacy.html;Terms|/p/terms.html;Contact|/p/contact.html"/>
 </Group>
 <Group description="Post blocks">
-<Variable name="codeDefault" description="Code windows start closed or preview or open" type="string" default="closed" value="closed"/>
+<Variable name="codeDefault" description="Code windows start open or preview or closed" type="string" default="open" value="open"/>
 <Variable name="codeLines" description="Show line numbers in code windows yes or no" type="string" default="yes" value="yes"/>
+<Variable name="linkPreviews" description="Link hover previews on or rich or off" type="string" default="on" value="on"/>
 </Group>
 <Group description="Homepage hero">
 <Variable name="showHero" description="Show the homepage hero yes or no" type="string" default="yes" value="yes"/>
@@ -1285,6 +1286,27 @@ body.find-open{overflow:hidden}
   .cm-focus-exit{padding:10px}
 }
 
+/* =====================================================================
+   25. LINK PREVIEW CARD
+   ===================================================================== */
+.cm-lp{position:fixed;z-index:350;max-width:calc(100vw - 24px);border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:0 18px 50px rgba(0,0,0,.4);overflow:hidden;opacity:0;transform:translateY(6px);transition:opacity .15s ease,transform .15s ease;pointer-events:auto}
+.cm-lp.below{transform:translateY(-6px)}
+.cm-lp.on{opacity:1;transform:none}
+.cm-lp[hidden]{display:none}
+.cm-lp-media{aspect-ratio:16/8;background:color-mix(in srgb,var(--text) 7%,transparent);overflow:hidden}
+.cm-lp-media img{width:100%;height:100%;object-fit:cover;display:block}
+.cm-lp-body{padding:12px 14px 14px;display:grid;gap:6px}
+.cm-lp-k{display:flex;align-items:center;gap:7px;font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.cm-lp-fav{width:16px;height:16px;border-radius:4px;flex:none}
+.cm-lp-t{font-size:.98rem;font-weight:700;line-height:1.3;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cm-lp-d{font-size:.84rem;line-height:1.5;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.cm-lp-m{font-size:.76rem;color:var(--muted)}
+.cm-lp-list{margin:0;padding:0 0 0 16px;font-size:.82rem;color:var(--muted)}
+.cm-lp-list li{margin:2px 0;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.cm-lvl-inline{margin-left:auto;padding:2px 8px;border-radius:999px;font-size:.62rem;color:#fff;background:var(--accent)}
+.cm-lvl-inline.lv-beginner{background:#16a34a}.cm-lvl-inline.lv-intermediate{background:#d97706}.cm-lvl-inline.lv-advanced{background:#dc2626}
+@media (hover:none){.cm-lp{display:none!important}}
+
 ]]></b:skin>
   </b:if>
   <b:if cond='data:view.isLayoutMode'>
@@ -1318,7 +1340,7 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
   </b:if>
 </head>
 
-<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-sb-default='data:skin.vars.sidebarDefault' expr:data-show-footer='data:skin.vars.showFooter' expr:data-show-lsb='data:skin.vars.showLeftSidebar' expr:data-show-rrail='data:skin.vars.showRightRail' expr:data-show-subnav='data:skin.vars.showHeaderCategories' expr:data-hero-sub='data:skin.vars.heroSub' expr:data-hero-title='data:skin.vars.heroTitle' expr:data-news-action='data:skin.vars.newsletterAction' expr:data-news-text='data:skin.vars.newsletterText' expr:data-news-title='data:skin.vars.newsletterTitle' expr:data-show-hero='data:skin.vars.showHero' expr:data-show-news='data:skin.vars.showNewsletter' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
+<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-sb-default='data:skin.vars.sidebarDefault' expr:data-show-footer='data:skin.vars.showFooter' expr:data-show-lsb='data:skin.vars.showLeftSidebar' expr:data-show-rrail='data:skin.vars.showRightRail' expr:data-show-subnav='data:skin.vars.showHeaderCategories' expr:data-link-previews='data:skin.vars.linkPreviews' expr:data-hero-sub='data:skin.vars.heroSub' expr:data-hero-title='data:skin.vars.heroTitle' expr:data-news-action='data:skin.vars.newsletterAction' expr:data-news-text='data:skin.vars.newsletterText' expr:data-news-title='data:skin.vars.newsletterTitle' expr:data-show-hero='data:skin.vars.showHero' expr:data-show-news='data:skin.vars.showNewsletter' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
   <a class='cm-skip' href='#cm-main'>Skip to content</a>
   <!-- THEME OPTIONS: paste or edit the JSON in the gadget below (Layout page). See README-CUSTOMISE.md for every key. -->
   <div class='cm-opts cm-lay'>
@@ -1694,10 +1716,14 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     }
     return u;
   }
-  function getJSON(url, cb) {
-    var c = store.get('cm:' + url);
-    if (c) { try { return cb(JSON.parse(c)); } catch (e) {} }
-    fetch(url).then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) { store.set('cm:' + url, JSON.stringify(j)); cb(j); }).catch(function () { cb(null); });
+  /* feed fetch with a short session cache (5 min); { fresh: true } always goes to the network */
+  function getJSON(url, cb, opts) {
+    var fresh = opts && opts.fresh, key = 'cm:' + url;
+    if (!fresh) {
+      var c = store.get(key);
+      if (c) { try { var o = JSON.parse(c); if (o && o.t && Date.now() - o.t < 300000) return cb(o.v); } catch (e) {} }
+    }
+    fetch(fresh ? url + (url.indexOf('?') < 0 ? '?' : '&') + '_=' + Date.now() : url).then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) { if (!fresh) store.set(key, JSON.stringify({ t: Date.now(), v: j })); cb(j); }).catch(function () { cb(null); });
   }
   function entryUrl(e) { var l = (e.link || []).filter(function (x) { return x.rel === 'alternate'; })[0]; return l ? l.href : ''; }
 
@@ -2087,8 +2113,8 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     if (/^(closed|false|collapsed)$/.test(a)) return 'closed';
     if (a === 'preview') return 'preview';
     if (lines <= 3) return 'open';
-    var def = (ds.codeDefault || 'closed').toLowerCase();
-    return def === 'open' || def === 'preview' || def === 'closed' ? def : 'closed';
+    var def = (ds.codeDefault || 'open').toLowerCase();
+    return def === 'open' || def === 'preview' || def === 'closed' ? def : 'open';
   }
   function buildWindow(panes, opts) {
     /* panes: [{pre, code, text, lang, title}] */
@@ -2485,8 +2511,8 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     });
     var wins = $$('.cm-win', art);
     if (wins.length >= 2) {
-      var allOpen = false;
-      var cb = tool('cm-tool-code', SI2.code, 'Expand code', function () {
+      var allOpen = wins.every(function (w) { return w.getAttribute('data-state') === 'open'; });
+      var cb = tool('cm-tool-code', SI2.code, allOpen ? 'Collapse code' : 'Expand code', function () {
         allOpen = !allOpen; wins.forEach(function (w) { var dot = w.querySelector(allOpen ? '.d.g' : '.d.r'); if (dot) dot.click(); }); cb.lastChild.textContent = allOpen ? 'Collapse code' : 'Expand code'; track('code_toggle_all', { open: allOpen ? 1 : 0 });
       });
     }
@@ -2604,6 +2630,108 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     $$('.cm-win-copy').forEach(function (b) { b.addEventListener('click', function () { track('code_copy', {}); }); });
   }
   window.cmRead = { markRead: markRead, posMap: posMap, readSet: readSet };
+
+  /* =====================================================================
+     LINK PREVIEWS: hover (or keyboard focus) a link inside a post to see a
+     small card above it. Rich cards for your own posts, topics and pages,
+     GitHub repos and YouTube; a simple card (domain, icon) for other links.
+     Theme variable / JSON key linkPreviews: "on" (default), "rich" (also
+     fetches title + image for other sites from Microlink), "off".
+     ===================================================================== */
+  (function linkPreviews() {
+    var mode = (ds.linkPreviews || 'on').toLowerCase(); if (mode === 'off') return;
+    var canHover = window.matchMedia && window.matchMedia('(hover: hover)').matches; if (!canHover) return;
+    var card = null, showT = null, hideT = null, cur = null, token = 0;
+    var NO = '.cm-toc a,.cm-tags a,.cm-anchor,.cm-share a,.cm-btn,.cm-download,.cm-topics a,.cm-crumbs a,pre a,.cm-win a,.cm-series a,.cm-nextup,.cm-writer a';
+
+    function build() {
+      card = el('div', 'cm-lp'); card.hidden = true; card.setAttribute('role', 'tooltip'); d.body.appendChild(card);
+      card.addEventListener('mouseenter', function () { clearTimeout(hideT); });
+      card.addEventListener('mouseleave', hide);
+    }
+    function hide() {
+      clearTimeout(showT); clearTimeout(hideT);
+      hideT = setTimeout(function () { if (!card) return; card.classList.remove('on'); setTimeout(function () { if (!card.classList.contains('on')) card.hidden = true; }, 160); cur = null; }, 140);
+    }
+    function place(a) {
+      var r = a.getBoundingClientRect(), w = Math.min(350, innerWidth - 24), left = Math.max(12, Math.min(r.left, innerWidth - w - 12));
+      card.style.width = w + 'px'; card.style.left = left + 'px';
+      if (r.top > 210) { card.style.bottom = (innerHeight - r.top + 10) + 'px'; card.style.top = 'auto'; card.classList.remove('below'); }
+      else { card.style.top = (r.bottom + 10) + 'px'; card.style.bottom = 'auto'; card.classList.add('below'); }
+    }
+    function sameHost(h) { return h.replace(/^www\./, '') === location.host.replace(/^www\./, ''); }
+    function kind(a) {
+      var u; try { u = new URL(a.getAttribute('href'), location.href); } catch (e) { return null; }
+      if (!/^https?:$/.test(u.protocol)) return null;
+      if (u.hash && u.pathname === location.pathname && sameHost(u.host)) return null;
+      if (sameHost(u.host)) {
+        if (/^\/\d{4}\/\d{2}\/.+\.html$/.test(u.pathname)) return { t: 'post', u: u };
+        if (/^\/search\/label\//.test(u.pathname)) return { t: 'label', u: u };
+        if (/^\/p\/.+\.html$/.test(u.pathname)) return { t: 'page', u: u };
+        return { t: 'site', u: u };
+      }
+      if (u.host === 'github.com') { var p = u.pathname.split('/').filter(Boolean); if (p.length >= 2) return { t: 'gh', u: u, owner: p[0], repo: p[1].replace(/\.git$/, '') }; }
+      var ym = /(?:youtube\.com\/watch\?(?:.*&)?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([\w-]{6,})/.exec(u.href); if (ym) return { t: 'yt', u: u, id: ym[1] };
+      return { t: 'ext', u: u };
+    }
+    function favicon(host) { var i = el('img', 'cm-lp-fav'); i.src = 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host) + '&sz=64'; i.alt = ''; i.width = 16; i.height = 16; return i; }
+    function kicker(text, host) { var k = el('div', 'cm-lp-k'); if (host) k.appendChild(favicon(host)); k.appendChild(el('span', '', text)); return k; }
+    function skeleton() { var f = el('div', 'cm-lp-body'); f.appendChild(sk('', '40%', '10px')); f.appendChild(sk('', '90%', '14px')); f.lastChild.style.marginTop = '10px'; f.appendChild(sk('', '100%', '10px')); f.lastChild.style.marginTop = '10px'; f.appendChild(sk('', '70%', '10px')); f.lastChild.style.marginTop = '6px'; return f; }
+    function media(src) { var m = el('div', 'cm-lp-media'), i = el('img'); i.src = src; i.alt = ''; i.loading = 'lazy'; m.appendChild(i); return m; }
+    function fill(nodes) { card.textContent = ''; nodes.forEach(function (n) { if (n) card.appendChild(n); }); }
+    function body(k, title, desc, meta) { var b = el('div', 'cm-lp-body'); if (k) b.appendChild(k); if (title) b.appendChild(el('div', 'cm-lp-t', title)); if (desc) b.appendChild(el('div', 'cm-lp-d', desc)); if (meta) b.appendChild(el('div', 'cm-lp-m', meta)); return b; }
+
+    function render(a, kd, my) {
+      var u = kd.u, host = u.host.replace(/^www\./, '');
+      var basic = function () { fill([body(kicker(host, host), a.textContent.trim() || u.pathname, u.pathname.length > 1 ? u.pathname.replace(/\/$/, '') : '', 'External link · opens in a new tab')]); place(a); };
+      if (kd.t === 'post' || kd.t === 'page') {
+        getJSON('/feeds/' + (kd.t === 'post' ? 'posts' : 'pages') + '/default?alt=json&path=' + encodeURIComponent(u.pathname), function (j) {
+          if (my !== token) return; var e = j && j.feed && j.feed.entry && j.feed.entry[0];
+          if (!e) { fill([body(kicker('This blog', host), a.textContent.trim(), '', 'Internal link')]); place(a); return; }
+          var th = thumbOf(e), content = (e.content && e.content.$t) || '', lv = levelOf(e), lab = realLabels((e.category || []).map(function (c) { return c.term; }))[0];
+          var meta = [fmtDate(e.published.$t), readMin(content) + ' min read'].join(' · ');
+          var k = kicker(kd.t === 'post' ? (lab ? 'Post · ' + lab : 'Post') : 'Page', host);
+          if (lv) { var bd = el('span', 'cm-lvl-inline ' + lvlClass(lv), lv); k.appendChild(bd); }
+          fill([th ? media(bigImg(th, 700, 360)) : null, body(k, e.title.$t, leadText(content).slice(0, 130) + '…', meta)]); place(a);
+        });
+      } else if (kd.t === 'label') {
+        var name = decodeURIComponent(u.pathname.replace(/^\/search\/label\//, ''));
+        getJSON('/feeds/posts/default/-/' + encodeURIComponent(name) + '?alt=json&max-results=3', function (j) {
+          if (my !== token) return; var ents = (j && j.feed && j.feed.entry) || [], total = j && j.feed && j.feed.openSearch$totalResults ? j.feed.openSearch$totalResults.$t : ents.length;
+          var b = body(kicker(isSeries(name) ? 'Series' : 'Topic', host), name.replace(/^series\s*:\s*/i, ''), '', total + (+total === 1 ? ' post' : ' posts'));
+          if (ents.length) { var ul = el('ul', 'cm-lp-list'); ents.forEach(function (e) { ul.appendChild(el('li', '', e.title.$t)); }); b.insertBefore(ul, b.lastChild); }
+          fill([b]); place(a);
+        });
+      } else if (kd.t === 'gh') {
+        getJSON('https://api.github.com/repos/' + encodeURIComponent(kd.owner) + '/' + encodeURIComponent(kd.repo), function (r) {
+          if (my !== token) return; if (!r || !r.full_name) { basic(); return; }
+          var meta = ['★ ' + (r.stargazers_count || 0).toLocaleString(), r.language, r.forks_count != null ? '⑂ ' + r.forks_count : '', r.updated_at ? 'Updated ' + fmtDate(r.updated_at) : ''].filter(Boolean).join(' · ');
+          fill([body(kicker('GitHub repository', 'github.com'), r.full_name, r.description || 'No description provided.', meta)]); place(a);
+        });
+      } else if (kd.t === 'yt') {
+        fill([media('https://img.youtube.com/vi/' + encodeURIComponent(kd.id) + '/hqdefault.jpg'), body(kicker('YouTube video', 'youtube.com'), a.textContent.trim() || 'Watch on YouTube', '', 'Opens on youtube.com')]); place(a);
+      } else if (kd.t === 'ext' && mode === 'rich') {
+        getJSON('https://api.microlink.io/?url=' + encodeURIComponent(u.href), function (r) {
+          if (my !== token) return; var dt = r && r.status === 'success' && r.data; if (!dt) { basic(); return; }
+          fill([dt.image && dt.image.url ? media(dt.image.url) : null, body(kicker(dt.publisher || host, host), dt.title || a.textContent.trim(), dt.description ? String(dt.description).slice(0, 140) : '', 'External link · opens in a new tab')]); place(a);
+        });
+      } else basic();
+    }
+
+    function show(a) {
+      var kd = kind(a); if (!kd) return; if (!card) build();
+      clearTimeout(hideT); var my = ++token; cur = a;
+      fill([skeleton()]); card.hidden = false; place(a); setTimeout(function () { if (cur === a) card.classList.add('on'); }, 20);
+      render(a, kd, my);
+    }
+    function target(e) { var a = e.target.closest && e.target.closest('.cm-body a[href]'); if (!a || a.closest(NO) || (a.querySelector('img') && !a.textContent.trim())) return null; return a; }
+    d.addEventListener('mouseover', function (e) { var a = target(e); if (!a || a === cur) { if (a) clearTimeout(hideT); return; } clearTimeout(showT); showT = setTimeout(function () { show(a); }, 320); });
+    d.addEventListener('mouseout', function (e) { var a = target(e); if (a) hide(); });
+    d.addEventListener('focusin', function (e) { var a = target(e); if (a) { clearTimeout(showT); showT = setTimeout(function () { show(a); }, 150); } });
+    d.addEventListener('focusout', function (e) { if (target(e)) hide(); });
+    d.addEventListener('keydown', function (e) { if (e.key === 'Escape' && card && !card.hidden) { clearTimeout(showT); card.classList.remove('on'); card.hidden = true; cur = null; } });
+    window.addEventListener('scroll', function () { if (card && !card.hidden) { clearTimeout(showT); card.classList.remove('on'); card.hidden = true; cur = null; } }, { passive: true });
+  })();
 
   /* =====================================================================
      SIDEBAR + PAGES: every page is drawn from the public feed into a
@@ -3238,6 +3366,7 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     bx.appendChild(inp); bx.appendChild(rowb); cm.appendChild(bx);
     var list = el('div', 'cm-clist'); cm.appendChild(list);
     list.appendChild(sk('', '100%', '72px')); list.lastChild.style.borderRadius = '16px';
+    function load() {
     getJSON('/feeds/' + ids.post + '/comments/default?alt=json&max-results=50', function (j) {
       var items = (j && j.feed && j.feed.entry) || []; list.textContent = '';
       ht.textContent = 'Comments' + (items.length ? ' (' + items.length + ')' : '');
@@ -3249,7 +3378,12 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
         bd.appendChild(top); bd.appendChild(el('p', '', plain((c.content && c.content.$t) || '')));
         card.appendChild(av); card.appendChild(bd); list.appendChild(card);
       });
-    });
+    }, { fresh: true });
+    }
+    load();
+    var lastLoad = Date.now();
+    d.addEventListener('visibilitychange', function () { if (!d.hidden && Date.now() - lastLoad > 15000) { lastLoad = Date.now(); load(); } });
+    window.addEventListener('focus', function () { if (Date.now() - lastLoad > 15000) { lastLoad = Date.now(); load(); } });
   }
 
   /* ---------- footer: newsletter validation, back to top ---------- */

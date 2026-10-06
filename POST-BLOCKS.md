@@ -14,12 +14,12 @@ Any `<pre>` becomes a Mac window with red / yellow / green dots, a title, langua
 }</pre>
 ```
 
-- **Closed by default.** Click the title bar or the green dot to open, yellow for a preview, red to close. Blocks of 3 lines or fewer start open (one-liner commands).
+- **Open by default.** Click the title bar or the red dot to collapse, yellow for a preview, green to expand. Change the site default with the `codeDefault` variable.
 - Language: `class="language-bash"` (or `lang-js`, `data-lang="python"`). It is auto-detected when you leave it out (bash, JSON, YAML, Terraform, Dockerfile, SQL, Python, JS/TS, HTML, CSS, Go, Java).
 - Title: `data-title="filename.ext"`, or put `// file: app.js` / `# main.py` as the first line.
-- Start open: `data-state="open"`. Start as a preview: `data-state="preview"`. Start closed: `data-state="closed"`.
+- Per block: `data-state="open"`, `data-state="preview"` or `data-state="closed"`.
 - Terminal commands: lines starting with `$ ` are copied without the `$ `.
-- Site-wide default: Theme variable `codeDefault` (closed, preview or open) and `codeLines` (yes or no).
+- Site-wide default: Theme variable `codeDefault` (open, preview or closed; default open) and `codeLines` (yes or no).
 
 ## 2. Tabbed code (several languages in one window)
 ```html
