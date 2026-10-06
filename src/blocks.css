@@ -248,3 +248,59 @@ h2:hover>.cm-anchor,h3:hover>.cm-anchor,h4:hover>.cm-anchor{opacity:.8}
 .cm-cap a{color:var(--accent);font-weight:600;white-space:nowrap}
 .cm-writer.has-banner>.cm-fkick{margin:0 0 10px}
 @media(max-width:900px){.cm-feature{grid-template-columns:1fr}.cm-fmain{padding:16px 16px 4px}.cm-hlist{border-left:0;border-top:1px solid var(--line)}}
+
+/* 28. SEO: breadcrumbs, related, sitemap page ------------------------- */
+.cm-crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:.82rem;color:var(--muted);margin:0 0 14px}
+.cm-crumbs a{color:var(--muted)}.cm-crumbs a:hover{color:var(--accent)}
+.cm-crumbs .sep{opacity:.5}.cm-crumbs .cur{color:var(--text);opacity:.8}
+.cm-related{margin:34px 0}
+.cm-rel-h{font-size:1.15rem;margin:0 0 14px}
+.cm-sitemap h2{font-size:1.1rem;margin:26px 0 8px}
+.cm-sitemap ul{list-style:none;padding:0;margin:0}
+.cm-sitemap li{padding:6px 0;border-bottom:1px solid var(--line)}
+.cm-seo{display:none}
+
+/* 29. "Also new": compact numbered list that fills the panel height --- */
+.cm-hlist{padding:8px 20px 16px}
+.cm-nlist{flex:1;display:flex;flex-direction:column;counter-reset:nr;min-height:0}
+.cm-nrow{flex:1;display:flex;align-items:center;gap:12px;padding:12px 0 12px 30px;position:relative;border-top:1px solid var(--line);counter-increment:nr;min-width:0}
+.cm-nrow:first-child{border-top:0}
+.cm-nrow::before{content:counter(nr,decimal-leading-zero);position:absolute;left:0;top:50%;transform:translateY(-50%);font-size:.8rem;font-weight:700;color:var(--muted);opacity:.7;font-variant-numeric:tabular-nums}
+.cm-nrow-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.cm-nrow-k{display:flex;align-items:center;gap:8px;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
+.cm-nrow-k b{font-weight:700}
+.cm-nrow-k .cm-lv{font-style:normal;font-weight:600;letter-spacing:.04em;padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.cm-nrow-t{font-size:.95rem;font-weight:600;line-height:1.3;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cm-nrow-m{font-size:.76rem;color:var(--muted)}
+.cm-nrow-img{flex:none;width:56px;height:56px;border-radius:10px;overflow:hidden;background:color-mix(in srgb,var(--text) 6%,transparent)}
+.cm-nrow-img img{width:100%;height:100%;object-fit:cover;display:block}
+.cm-nrow:hover .cm-nrow-t{color:var(--accent)}
+.cm-nrow:hover::before{color:var(--accent);opacity:1}
+@media(max-width:900px){.cm-nrow{flex:none}}
+
+/* 30. Community / connect blocks -------------------------------------- */
+.cm-connect{display:flex;align-items:center;justify-content:space-between;gap:20px 28px;flex-wrap:wrap;margin:0 0 28px;padding:24px 26px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 12%,var(--panel)),var(--panel))}
+.cm-cn-tx{flex:1 1 280px;min-width:0}
+.cm-cn-k{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.cm-connect h2{font-size:1.25rem;margin:4px 0 4px}
+.cm-connect p{margin:0;color:var(--muted);font-size:.95rem}
+.cm-cn-row{display:flex;flex-wrap:wrap;gap:10px}
+.cm-cn-btn{--ch:var(--accent);display:inline-flex;align-items:center;gap:10px;padding:8px 14px 8px 8px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);transition:border-color .15s,transform .15s}
+.cm-cn-btn:hover{border-color:var(--ch);transform:translateY(-2px)}
+.cm-cn-ic{width:34px;height:34px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--ch) 18%,transparent);color:var(--ch)}
+.cm-cn-ic svg{width:19px;height:19px}
+.cm-cn-t{display:flex;flex-direction:column;line-height:1.25;font-size:.9rem}
+.cm-cn-t small{color:var(--muted);font-size:.74rem}
+.cm-connect-post{margin:30px 0 0;padding:18px 20px}
+.cm-connect-post h2{font-size:1.05rem}
+.cm-cn-foot{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:18px 0 4px;color:var(--muted);font-size:.88rem}
+.cm-cn-dot{--ch:var(--accent);width:36px;height:36px;border-radius:10px;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;color:var(--ch);transition:background .15s,transform .15s}
+.cm-cn-dot:hover{background:color-mix(in srgb,var(--ch) 16%,transparent);transform:translateY(-2px)}
+.cm-cn-dot svg{width:18px;height:18px}
+@media(max-width:600px){.cm-connect{padding:18px}.cm-cn-btn{flex:1 1 100%}}
+.cm-cn-ic .cm-i,.cm-cn-dot .cm-i{fill:currentColor;stroke:none}
+.cm-cn-ic .cm-i.ln,.cm-cn-dot .cm-i.ln{fill:none;stroke:currentColor}
+
+/* logo shape (setting: logoShape = round | square) */
+body[data-logo-shape=round] .cm-logo img,body[data-logo-shape=round] .cm-sb-tile img{border-radius:50%;object-fit:cover;aspect-ratio:1}
+body[data-logo-shape=square] .cm-logo img,body[data-logo-shape=square] .cm-sb-tile img{border-radius:8px}

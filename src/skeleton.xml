@@ -49,8 +49,15 @@
   </b:if>
 </head>
 
-<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-sb-default='data:skin.vars.sidebarDefault' expr:data-show-footer='data:skin.vars.showFooter' expr:data-show-lsb='data:skin.vars.showLeftSidebar' expr:data-show-rrail='data:skin.vars.showRightRail' expr:data-show-subnav='data:skin.vars.showHeaderCategories' expr:data-link-previews='data:skin.vars.linkPreviews' expr:data-hero-sub='data:skin.vars.heroSub' expr:data-hero-title='data:skin.vars.heroTitle' expr:data-news-action='data:skin.vars.newsletterAction' expr:data-news-text='data:skin.vars.newsletterText' expr:data-news-title='data:skin.vars.newsletterTitle' expr:data-show-hero='data:skin.vars.showHero' expr:data-show-news='data:skin.vars.showNewsletter' expr:data-author-banner='data:skin.vars.authorBanner' expr:data-author-banner-link='data:skin.vars.authorBannerLink' expr:data-show-banner-home='data:skin.vars.showBannerHome' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
+<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-sb-default='data:skin.vars.sidebarDefault' expr:data-show-footer='data:skin.vars.showFooter' expr:data-show-lsb='data:skin.vars.showLeftSidebar' expr:data-show-rrail='data:skin.vars.showRightRail' expr:data-show-subnav='data:skin.vars.showHeaderCategories' expr:data-link-previews='data:skin.vars.linkPreviews' expr:data-hero-sub='data:skin.vars.heroSub' expr:data-hero-title='data:skin.vars.heroTitle' expr:data-news-action='data:skin.vars.newsletterAction' expr:data-news-text='data:skin.vars.newsletterText' expr:data-news-title='data:skin.vars.newsletterTitle' expr:data-show-hero='data:skin.vars.showHero' expr:data-show-news='data:skin.vars.showNewsletter' expr:data-author-banner='data:skin.vars.authorBanner' expr:data-author-banner-link='data:skin.vars.authorBannerLink' expr:data-show-banner-home='data:skin.vars.showBannerHome' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-twitter='data:skin.vars.twitter' expr:data-author-same-as='data:skin.vars.authorSameAs' expr:data-locale='data:skin.vars.locale' expr:data-show-connect='data:skin.vars.showConnect' expr:data-connect-places='data:skin.vars.connectPlaces' expr:data-connect-title='data:skin.vars.connectTitle' expr:data-connect-text='data:skin.vars.connectText' expr:data-discord-url='data:skin.vars.discordUrl' expr:data-telegram-url='data:skin.vars.telegramUrl' expr:data-whatsapp-url='data:skin.vars.whatsappUrl' expr:data-slack-url='data:skin.vars.slackUrl' expr:data-reddit-url='data:skin.vars.redditUrl' expr:data-custom-channel-url='data:skin.vars.customChannelUrl' expr:data-custom-channel-label='data:skin.vars.customChannelLabel' expr:data-logo-shape='data:skin.vars.logoShape' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
   <a class='cm-skip' href='#cm-main'>Skip to content</a>
+  <noscript>
+    <div style='max-width:760px;margin:24px auto;padding:0 16px;font-family:sans-serif'>
+      <h1><data:view.title.escaped/></h1>
+      <b:if cond='data:blog.metaDescription != &quot;&quot;'><p><data:blog.metaDescription/></p></b:if>
+      <p>This site loads its articles with JavaScript. Browse them without it: <a expr:href='data:blog.homepageUrl + &quot;sitemap.xml&quot;'>sitemap</a> · <a expr:href='data:blog.homepageUrl + &quot;feeds/posts/default&quot;'>feed</a> · <a expr:href='data:blog.homepageUrl + &quot;p/sitemap.html&quot;'>all articles</a></p>
+    </div>
+  </noscript>
   <!-- THEME OPTIONS: paste or edit the JSON in the gadget below (Layout page). See README-CUSTOMISE.md for every key. -->
   <div class='cm-opts cm-lay'>
     <b:section class='cm-opts-s' id='theme-options' maxwidgets='1' name='Theme options - JSON settings gadget (sidebars, footer, favicon, logo, colors)' showaddelement='yes'>
@@ -87,13 +94,18 @@
       </button>
       <a class='cm-logo' expr:href='data:blog.homepageUrl'>
         <b:if cond='data:skin.vars.logoImage != &quot;&quot;'>
-          <img expr:alt='data:skin.vars.brandName' expr:src='data:skin.vars.logoImage' height='32'/>
+          <img expr:alt='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title' expr:src='data:skin.vars.logoImage' height='32'/>
         </b:if>
-        <span><data:skin.vars.brandName/></span>
+        <span><b:eval expr='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title'/></span>
       </a>
       <div class='cm-logo-sec cm-lay'>
         <b:section class='cm-logo-s' id='header-logo' maxwidgets='1' name='Header logo - image gadget, recommended height 34px' showaddelement='yes'/>
       </div>
+      <button aria-label='Search the blog' class='cm-hsearch' data-act='search' title='Search (Ctrl/Cmd + K)' type='button'>
+        <svg fill='none' height='16' stroke='currentColor' stroke-linecap='round' stroke-width='2' viewBox='0 0 24 24' width='16'><circle cx='11' cy='11' r='7'/><path d='m21 21-4.3-4.3'/></svg>
+        <span class='cm-hs-t'>Search guides, tags, commands…</span>
+        <kbd class='cm-hs-k'>Ctrl K</kbd>
+      </button>
       <div class='cm-actions'>
         <button aria-label='Search (Ctrl or Cmd + K)' class='cm-ib' data-act='search' id='cm-search-open' title='Search (Ctrl/Cmd + K)' type='button'>
           <svg fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-width='2' viewBox='0 0 24 24' width='19'><circle cx='11' cy='11' r='7'/><path d='m21 21-4.3-4.3'/></svg>
@@ -138,7 +150,7 @@
 
     <!-- Optional banner image (Theme Settings: bannerImage) -->
     <b:if cond='data:skin.vars.bannerImage != &quot;&quot; and data:view.isHomepage'>
-      <div class='cm-banner' role='img' expr:aria-label='data:skin.vars.brandName' expr:style='&quot;background-image:url(&quot; + data:skin.vars.bannerImage + &quot;);height:&quot; + data:skin.vars.bannerHeight'/>
+      <div class='cm-banner' role='img' expr:aria-label='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title' expr:style='&quot;background-image:url(&quot; + data:skin.vars.bannerImage + &quot;);height:&quot; + data:skin.vars.bannerHeight'/>
     </b:if>
 
     <!-- HOME ONLY: hero section + featured post gadgets -->
@@ -269,7 +281,7 @@
     <div class='cm-foot-in cm-lay'>
       <div class='cm-foot-top cm-lay'>
         <div class='cm-footbrand'>
-          <strong class='cm-footname'><data:skin.vars.brandName/></strong>
+          <strong class='cm-footname'><b:eval expr='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title'/></strong>
           <p><data:skin.vars.tagline/></p>
           <div class='cm-social' expr:data-links='data:skin.vars.socialLinks'>
             <ul class='cm-links'/>
@@ -343,7 +355,7 @@
       <div class='cm-foot-bottom cm-lay'>
         <div class='cm-copy cm-lay'>
           <b:section class='cm-copy-s' id='footer-copyright' maxwidgets='1' name='Footer copyright - custom credits (text gadget)' showaddelement='yes'/>
-          <div class='cm-copy-default'>&#169; <data:skin.vars.brandName/> &#183; <data:skin.vars.footerText/></div>
+          <div class='cm-copy-default'>&#169; <b:eval expr='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title'/> &#183; <data:skin.vars.footerText/></div>
         </div>
         <nav aria-label='Footer' class='cm-footnav cm-lay' expr:data-links='data:skin.vars.footerLinks'>
           <b:section class='cm-footmenu-s' id='footer-menu' maxwidgets='1' name='Footer menu - footer links (link list gadget)' showaddelement='yes'/>

@@ -71,6 +71,7 @@
     /* panes: [{pre, code, text, lang, title}] */
     var id = 'cmw' + (++codeId), first = panes[0], lines = first.text.split('\n').length;
     var win = el('div', 'cm-win'), state = openState(first.pre, lines), isTerm = /^(bash|powershell)$/.test(first.lang);
+    if (first.lang) win.setAttribute('data-lang', first.lang);
     win.setAttribute('data-state', state); if (isTerm) win.classList.add('is-term');
     var bar = el('div', 'cm-win-bar'), dots = el('div', 'cm-dots');
     function dot(c, label, st) { var b = el('button', 'd ' + c); b.type = 'button'; b.setAttribute('aria-label', label); b.title = label; b.addEventListener('click', function (e) { e.stopPropagation(); setState(st); }); dots.appendChild(b); }
@@ -332,6 +333,7 @@
 
   function enhanceBody(body) {
     if (!body || body.getAttribute('data-enhanced')) return; body.setAttribute('data-enhanced', '1');
+    $$('.cm-sitemap', body).forEach(function (n) { sitemapBlock(n); });
     $$('.cm-authorbanner', body).forEach(function (n) { var x = bannerEl('cm-banner-strip'); if (x) n.replaceWith(x); else n.remove(); });
     postInfo(body); changelogs(body); callouts(body); tables(body); embeds(body); sliders(body); figures(body);
     /* code groups (tabs) first, then single blocks */

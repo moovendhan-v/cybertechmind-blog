@@ -42,10 +42,11 @@
   <b:if cond='!data:view.isLayoutMode'>
   <b:skin version='1.0.0'><![CDATA[/*
 <Group description="Brand">
-<Variable name="brandName" description="Site name" type="string" default="CyberTechMind" value="CyberTechMind"/>
+<Variable name="brandName" description="Site name blank use the Blogger blog title automatically" type="string" default="" value=""/>
 <Variable name="tagline" description="Tagline brand panel" type="string" default="Practical guides on apps, Android, security and technology." value="Practical guides on apps, Android, security and technology."/>
-<Variable name="logoImage" description="Logo image URL blank text logo" type="string" default="" value=""/>
-<Variable name="faviconUrl" description="Favicon URL png or ico blank Blogger default" type="string" default="" value=""/>
+<Variable name="logoImage" description="Logo image URL blank text logo" type="string" default="https://profile.cybertechmind.com/_next/image?url=%2Fimages%2Fprofile-pic.jpg&amp;w=128&amp;q=75" value="https://profile.cybertechmind.com/_next/image?url=%2Fimages%2Fprofile-pic.jpg&amp;w=128&amp;q=75"/>
+<Variable name="logoShape" description="Logo shape round or square" type="string" default="round" value="round"/>
+<Variable name="faviconUrl" description="Favicon URL png or ico blank Blogger default" type="string" default="https://profile.cybertechmind.com/_next/image?url=%2Fimages%2Fprofile-pic.jpg&amp;w=64&amp;q=75" value="https://profile.cybertechmind.com/_next/image?url=%2Fimages%2Fprofile-pic.jpg&amp;w=64&amp;q=75"/>
 <Variable name="footerText" description="Footer text" type="string" default="All rights reserved." value="All rights reserved."/>
 <Variable name="contactUrl" description="Contact button URL" type="string" default="https://profile.cybertechmind.com" value="https://profile.cybertechmind.com"/>
 <Variable name="contactLabel" description="Contact button label" type="string" default="Contact us" value="Contact us"/>
@@ -112,6 +113,17 @@
 <Variable name="showBannerHome" description="Show the author banner on the home page yes or no" type="string" default="yes" value="yes"/>
 <Variable name="showSecurityNotice" description="Auto security notice on security posts yes or no" type="string" default="yes" value="yes"/>
 <Variable name="securityNotice" description="Security notice text" type="string" default="Authorised testing only. Try these techniques only on systems you own or have written permission to test." value="Authorised testing only. Try these techniques only on systems you own or have written permission to test."/>
+<Variable name="showConnect" description="Show community join blocks yes or no" type="string" default="yes" value="yes"/>
+<Variable name="connectPlaces" description="Where to show them home post footer comma separated" type="string" default="home,post,footer" value="home,post,footer"/>
+<Variable name="connectTitle" description="Community block title" type="string" default="Join the community" value="Join the community"/>
+<Variable name="connectText" description="Community block text" type="string" default="Get new guides first, ask questions and learn with other readers." value="Get new guides first, ask questions and learn with other readers."/>
+<Variable name="discordUrl" description="Discord invite link blank hidden" type="string" default="" value=""/>
+<Variable name="telegramUrl" description="Telegram channel or group link blank hidden" type="string" default="" value=""/>
+<Variable name="whatsappUrl" description="WhatsApp channel link blank hidden" type="string" default="" value=""/>
+<Variable name="slackUrl" description="Slack invite link blank hidden" type="string" default="" value=""/>
+<Variable name="redditUrl" description="Reddit community link blank hidden" type="string" default="" value=""/>
+<Variable name="customChannelUrl" description="Extra community link any site blank hidden" type="string" default="" value=""/>
+<Variable name="customChannelLabel" description="Extra community button label" type="string" default="Community" value="Community"/>
 <Variable name="communityUrl" description="Community link Discord or GitHub Discussions blank hidden" type="string" default="" value=""/>
 <Variable name="communityLabel" description="Community button label" type="string" default="Ask in the community" value="Ask in the community"/>
 </Group>
@@ -127,6 +139,9 @@
 <Group description="SEO analytics">
 <Variable name="shareImage" description="Default share image URL Open Graph" type="string" default="" value=""/>
 <Variable name="gaId" description="Google Analytics 4 ID G XXXXXXX" type="string" default="" value=""/>
+<Variable name="twitter" description="Twitter or X handle without the at sign blank none" type="string" default="" value=""/>
+<Variable name="authorSameAs" description="Author profile links for SEO comma separated GitHub LinkedIn X" type="string" default="" value=""/>
+<Variable name="locale" description="Open Graph locale like en US" type="string" default="en_US" value="en_US"/>
 <Variable name="googleVerify" description="Google Search Console verification code" type="string" default="" value=""/>
 <Variable name="bingVerify" description="Bing Webmaster verification code" type="string" default="" value=""/>
 </Group>
@@ -843,6 +858,21 @@ html.no-subnav{--hh:68px}
 @media (max-width:1240px){html.no-lsb .cm-rail-l{display:none!important}}
 html.no-subnav .cm-header{transform:none!important}
 
+/* brand: filled rounded pill in the header, filled rounded card in the sidebar */
+.cm-logo{padding:5px 16px 5px 5px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--text) 5%,transparent);transition:border-color .15s,background .15s}
+.cm-logo:hover{border-color:var(--accent);background:color-mix(in srgb,var(--text) 8%,transparent)}
+.cm-logo img{height:34px;width:34px;flex:none}
+.cm-logo span{font-size:1.05rem}
+.cm-logo:not(:has(img)){padding:7px 18px}
+.cm-sb-head{padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--text) 5%,transparent);margin:0 0 6px}
+.cm-sb-head:hover{border-color:var(--accent);background:color-mix(in srgb,var(--text) 8%,transparent)}
+.cm-sb-tile{border-radius:50%}
+.cm-sb-htx{min-width:0;flex:1}
+.cm-sb-htx b,.cm-sb-htx small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body[data-logo-shape=square] .cm-sb-tile{border-radius:10px}
+:root[data-sb="min"] .cm-sb-head{border-color:transparent;background:none}
+@media(max-width:900px){.cm-logo span{font-size:.98rem}}
+
 /* =====================================================================
    19. POST BLOCKS (code windows, mermaid, callouts, figures, slider, tables)
    ===================================================================== */
@@ -1093,6 +1123,62 @@ h2:hover>.cm-anchor,h3:hover>.cm-anchor,h4:hover>.cm-anchor{opacity:.8}
 .cm-writer.has-banner>.cm-fkick{margin:0 0 10px}
 @media(max-width:900px){.cm-feature{grid-template-columns:1fr}.cm-fmain{padding:16px 16px 4px}.cm-hlist{border-left:0;border-top:1px solid var(--line)}}
 
+/* 28. SEO: breadcrumbs, related, sitemap page ------------------------- */
+.cm-crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:.82rem;color:var(--muted);margin:0 0 14px}
+.cm-crumbs a{color:var(--muted)}.cm-crumbs a:hover{color:var(--accent)}
+.cm-crumbs .sep{opacity:.5}.cm-crumbs .cur{color:var(--text);opacity:.8}
+.cm-related{margin:34px 0}
+.cm-rel-h{font-size:1.15rem;margin:0 0 14px}
+.cm-sitemap h2{font-size:1.1rem;margin:26px 0 8px}
+.cm-sitemap ul{list-style:none;padding:0;margin:0}
+.cm-sitemap li{padding:6px 0;border-bottom:1px solid var(--line)}
+.cm-seo{display:none}
+
+/* 29. "Also new": compact numbered list that fills the panel height --- */
+.cm-hlist{padding:8px 20px 16px}
+.cm-nlist{flex:1;display:flex;flex-direction:column;counter-reset:nr;min-height:0}
+.cm-nrow{flex:1;display:flex;align-items:center;gap:12px;padding:12px 0 12px 30px;position:relative;border-top:1px solid var(--line);counter-increment:nr;min-width:0}
+.cm-nrow:first-child{border-top:0}
+.cm-nrow::before{content:counter(nr,decimal-leading-zero);position:absolute;left:0;top:50%;transform:translateY(-50%);font-size:.8rem;font-weight:700;color:var(--muted);opacity:.7;font-variant-numeric:tabular-nums}
+.cm-nrow-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.cm-nrow-k{display:flex;align-items:center;gap:8px;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
+.cm-nrow-k b{font-weight:700}
+.cm-nrow-k .cm-lv{font-style:normal;font-weight:600;letter-spacing:.04em;padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.cm-nrow-t{font-size:.95rem;font-weight:600;line-height:1.3;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cm-nrow-m{font-size:.76rem;color:var(--muted)}
+.cm-nrow-img{flex:none;width:56px;height:56px;border-radius:10px;overflow:hidden;background:color-mix(in srgb,var(--text) 6%,transparent)}
+.cm-nrow-img img{width:100%;height:100%;object-fit:cover;display:block}
+.cm-nrow:hover .cm-nrow-t{color:var(--accent)}
+.cm-nrow:hover::before{color:var(--accent);opacity:1}
+@media(max-width:900px){.cm-nrow{flex:none}}
+
+/* 30. Community / connect blocks -------------------------------------- */
+.cm-connect{display:flex;align-items:center;justify-content:space-between;gap:20px 28px;flex-wrap:wrap;margin:0 0 28px;padding:24px 26px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 12%,var(--panel)),var(--panel))}
+.cm-cn-tx{flex:1 1 280px;min-width:0}
+.cm-cn-k{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.cm-connect h2{font-size:1.25rem;margin:4px 0 4px}
+.cm-connect p{margin:0;color:var(--muted);font-size:.95rem}
+.cm-cn-row{display:flex;flex-wrap:wrap;gap:10px}
+.cm-cn-btn{--ch:var(--accent);display:inline-flex;align-items:center;gap:10px;padding:8px 14px 8px 8px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);transition:border-color .15s,transform .15s}
+.cm-cn-btn:hover{border-color:var(--ch);transform:translateY(-2px)}
+.cm-cn-ic{width:34px;height:34px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--ch) 18%,transparent);color:var(--ch)}
+.cm-cn-ic svg{width:19px;height:19px}
+.cm-cn-t{display:flex;flex-direction:column;line-height:1.25;font-size:.9rem}
+.cm-cn-t small{color:var(--muted);font-size:.74rem}
+.cm-connect-post{margin:30px 0 0;padding:18px 20px}
+.cm-connect-post h2{font-size:1.05rem}
+.cm-cn-foot{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:18px 0 4px;color:var(--muted);font-size:.88rem}
+.cm-cn-dot{--ch:var(--accent);width:36px;height:36px;border-radius:10px;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;color:var(--ch);transition:background .15s,transform .15s}
+.cm-cn-dot:hover{background:color-mix(in srgb,var(--ch) 16%,transparent);transform:translateY(-2px)}
+.cm-cn-dot svg{width:18px;height:18px}
+@media(max-width:600px){.cm-connect{padding:18px}.cm-cn-btn{flex:1 1 100%}}
+.cm-cn-ic .cm-i,.cm-cn-dot .cm-i{fill:currentColor;stroke:none}
+.cm-cn-ic .cm-i.ln,.cm-cn-dot .cm-i.ln{fill:none;stroke:currentColor}
+
+/* logo shape (setting: logoShape = round | square) */
+body[data-logo-shape=round] .cm-logo img,body[data-logo-shape=round] .cm-sb-tile img{border-radius:50%;object-fit:cover;aspect-ratio:1}
+body[data-logo-shape=square] .cm-logo img,body[data-logo-shape=square] .cm-sb-tile img{border-radius:8px}
+
 /* =====================================================================
    20. SEARCH MODAL + SCROLL-AWARE HEADER + FULL-HEIGHT SIDEBAR
    ===================================================================== */
@@ -1341,6 +1427,19 @@ body.find-open{overflow:hidden}
 .cm-lvl-inline.lv-beginner{background:#16a34a}.cm-lvl-inline.lv-intermediate{background:#d97706}.cm-lvl-inline.lv-advanced{background:#dc2626}
 @media (hover:none){.cm-lp{display:none!important}}
 
+/* header saved button + count badge (top right) */
+.cm-saved-btn{position:relative}
+.cm-saved-btn .cm-sb-badge{position:absolute;top:3px;right:2px;margin:0;min-width:15px;height:15px;padding:0 4px;font-size:.6rem;line-height:1;box-shadow:0 0 0 2px var(--bg)}
+.cm-sb-badge[hidden]{display:none!important}
+
+/* header search pill: fills the empty middle of the top bar */
+.cm-hsearch{flex:1 1 auto;max-width:460px;margin:0 auto;display:flex;align-items:center;gap:10px;height:40px;padding:0 10px 0 14px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--text) 4%,transparent);color:var(--muted);font:inherit;font-size:.9rem;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
+.cm-hsearch:hover,.cm-hsearch:focus-visible{border-color:var(--accent);color:var(--text);background:color-mix(in srgb,var(--text) 7%,transparent)}
+.cm-hs-t{flex:1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cm-hs-k{font:600 .7rem/1 inherit;padding:4px 7px;border-radius:6px;border:1px solid var(--line);color:var(--muted);background:var(--bg)}
+@media(max-width:900px){.cm-hsearch{display:none}}
+@media(min-width:901px){#cm-search-open{display:none}}
+
 ]]></b:skin>
   </b:if>
   <b:if cond='data:view.isLayoutMode'>
@@ -1374,8 +1473,15 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
   </b:if>
 </head>
 
-<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-sb-default='data:skin.vars.sidebarDefault' expr:data-show-footer='data:skin.vars.showFooter' expr:data-show-lsb='data:skin.vars.showLeftSidebar' expr:data-show-rrail='data:skin.vars.showRightRail' expr:data-show-subnav='data:skin.vars.showHeaderCategories' expr:data-link-previews='data:skin.vars.linkPreviews' expr:data-hero-sub='data:skin.vars.heroSub' expr:data-hero-title='data:skin.vars.heroTitle' expr:data-news-action='data:skin.vars.newsletterAction' expr:data-news-text='data:skin.vars.newsletterText' expr:data-news-title='data:skin.vars.newsletterTitle' expr:data-show-hero='data:skin.vars.showHero' expr:data-show-news='data:skin.vars.showNewsletter' expr:data-author-banner='data:skin.vars.authorBanner' expr:data-author-banner-link='data:skin.vars.authorBannerLink' expr:data-show-banner-home='data:skin.vars.showBannerHome' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
+<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-sb-default='data:skin.vars.sidebarDefault' expr:data-show-footer='data:skin.vars.showFooter' expr:data-show-lsb='data:skin.vars.showLeftSidebar' expr:data-show-rrail='data:skin.vars.showRightRail' expr:data-show-subnav='data:skin.vars.showHeaderCategories' expr:data-link-previews='data:skin.vars.linkPreviews' expr:data-hero-sub='data:skin.vars.heroSub' expr:data-hero-title='data:skin.vars.heroTitle' expr:data-news-action='data:skin.vars.newsletterAction' expr:data-news-text='data:skin.vars.newsletterText' expr:data-news-title='data:skin.vars.newsletterTitle' expr:data-show-hero='data:skin.vars.showHero' expr:data-show-news='data:skin.vars.showNewsletter' expr:data-author-banner='data:skin.vars.authorBanner' expr:data-author-banner-link='data:skin.vars.authorBannerLink' expr:data-show-banner-home='data:skin.vars.showBannerHome' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-twitter='data:skin.vars.twitter' expr:data-author-same-as='data:skin.vars.authorSameAs' expr:data-locale='data:skin.vars.locale' expr:data-show-connect='data:skin.vars.showConnect' expr:data-connect-places='data:skin.vars.connectPlaces' expr:data-connect-title='data:skin.vars.connectTitle' expr:data-connect-text='data:skin.vars.connectText' expr:data-discord-url='data:skin.vars.discordUrl' expr:data-telegram-url='data:skin.vars.telegramUrl' expr:data-whatsapp-url='data:skin.vars.whatsappUrl' expr:data-slack-url='data:skin.vars.slackUrl' expr:data-reddit-url='data:skin.vars.redditUrl' expr:data-custom-channel-url='data:skin.vars.customChannelUrl' expr:data-custom-channel-label='data:skin.vars.customChannelLabel' expr:data-logo-shape='data:skin.vars.logoShape' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
   <a class='cm-skip' href='#cm-main'>Skip to content</a>
+  <noscript>
+    <div style='max-width:760px;margin:24px auto;padding:0 16px;font-family:sans-serif'>
+      <h1><data:view.title.escaped/></h1>
+      <b:if cond='data:blog.metaDescription != &quot;&quot;'><p><data:blog.metaDescription/></p></b:if>
+      <p>This site loads its articles with JavaScript. Browse them without it: <a expr:href='data:blog.homepageUrl + &quot;sitemap.xml&quot;'>sitemap</a> · <a expr:href='data:blog.homepageUrl + &quot;feeds/posts/default&quot;'>feed</a> · <a expr:href='data:blog.homepageUrl + &quot;p/sitemap.html&quot;'>all articles</a></p>
+    </div>
+  </noscript>
   <!-- THEME OPTIONS: paste or edit the JSON in the gadget below (Layout page). See README-CUSTOMISE.md for every key. -->
   <div class='cm-opts cm-lay'>
     <b:section class='cm-opts-s' id='theme-options' maxwidgets='1' name='Theme options - JSON settings gadget (sidebars, footer, favicon, logo, colors)' showaddelement='yes'>
@@ -1412,13 +1518,18 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
       </button>
       <a class='cm-logo' expr:href='data:blog.homepageUrl'>
         <b:if cond='data:skin.vars.logoImage != &quot;&quot;'>
-          <img expr:alt='data:skin.vars.brandName' expr:src='data:skin.vars.logoImage' height='32'/>
+          <img expr:alt='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title' expr:src='data:skin.vars.logoImage' height='32'/>
         </b:if>
-        <span><data:skin.vars.brandName/></span>
+        <span><b:eval expr='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title'/></span>
       </a>
       <div class='cm-logo-sec cm-lay'>
         <b:section class='cm-logo-s' id='header-logo' maxwidgets='1' name='Header logo - image gadget, recommended height 34px' showaddelement='yes'/>
       </div>
+      <button aria-label='Search the blog' class='cm-hsearch' data-act='search' title='Search (Ctrl/Cmd + K)' type='button'>
+        <svg fill='none' height='16' stroke='currentColor' stroke-linecap='round' stroke-width='2' viewBox='0 0 24 24' width='16'><circle cx='11' cy='11' r='7'/><path d='m21 21-4.3-4.3'/></svg>
+        <span class='cm-hs-t'>Search guides, tags, commands…</span>
+        <kbd class='cm-hs-k'>Ctrl K</kbd>
+      </button>
       <div class='cm-actions'>
         <button aria-label='Search (Ctrl or Cmd + K)' class='cm-ib' data-act='search' id='cm-search-open' title='Search (Ctrl/Cmd + K)' type='button'>
           <svg fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-width='2' viewBox='0 0 24 24' width='19'><circle cx='11' cy='11' r='7'/><path d='m21 21-4.3-4.3'/></svg>
@@ -1463,7 +1574,7 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
 
     <!-- Optional banner image (Theme Settings: bannerImage) -->
     <b:if cond='data:skin.vars.bannerImage != &quot;&quot; and data:view.isHomepage'>
-      <div class='cm-banner' role='img' expr:aria-label='data:skin.vars.brandName' expr:style='&quot;background-image:url(&quot; + data:skin.vars.bannerImage + &quot;);height:&quot; + data:skin.vars.bannerHeight'/>
+      <div class='cm-banner' role='img' expr:aria-label='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title' expr:style='&quot;background-image:url(&quot; + data:skin.vars.bannerImage + &quot;);height:&quot; + data:skin.vars.bannerHeight'/>
     </b:if>
 
     <!-- HOME ONLY: hero section + featured post gadgets -->
@@ -1594,7 +1705,7 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     <div class='cm-foot-in cm-lay'>
       <div class='cm-foot-top cm-lay'>
         <div class='cm-footbrand'>
-          <strong class='cm-footname'><data:skin.vars.brandName/></strong>
+          <strong class='cm-footname'><b:eval expr='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title'/></strong>
           <p><data:skin.vars.tagline/></p>
           <div class='cm-social' expr:data-links='data:skin.vars.socialLinks'>
             <ul class='cm-links'/>
@@ -1668,7 +1779,7 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
       <div class='cm-foot-bottom cm-lay'>
         <div class='cm-copy cm-lay'>
           <b:section class='cm-copy-s' id='footer-copyright' maxwidgets='1' name='Footer copyright - custom credits (text gadget)' showaddelement='yes'/>
-          <div class='cm-copy-default'>&#169; <data:skin.vars.brandName/> &#183; <data:skin.vars.footerText/></div>
+          <div class='cm-copy-default'>&#169; <b:eval expr='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title'/> &#183; <data:skin.vars.footerText/></div>
         </div>
         <nav aria-label='Footer' class='cm-footnav cm-lay' expr:data-links='data:skin.vars.footerLinks'>
           <b:section class='cm-footmenu-s' id='footer-menu' maxwidgets='1' name='Footer menu - footer links (link list gadget)' showaddelement='yes'/>
@@ -2154,6 +2265,7 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     /* panes: [{pre, code, text, lang, title}] */
     var id = 'cmw' + (++codeId), first = panes[0], lines = first.text.split('\n').length;
     var win = el('div', 'cm-win'), state = openState(first.pre, lines), isTerm = /^(bash|powershell)$/.test(first.lang);
+    if (first.lang) win.setAttribute('data-lang', first.lang);
     win.setAttribute('data-state', state); if (isTerm) win.classList.add('is-term');
     var bar = el('div', 'cm-win-bar'), dots = el('div', 'cm-dots');
     function dot(c, label, st) { var b = el('button', 'd ' + c); b.type = 'button'; b.setAttribute('aria-label', label); b.title = label; b.addEventListener('click', function (e) { e.stopPropagation(); setState(st); }); dots.appendChild(b); }
@@ -2415,6 +2527,7 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
 
   function enhanceBody(body) {
     if (!body || body.getAttribute('data-enhanced')) return; body.setAttribute('data-enhanced', '1');
+    $$('.cm-sitemap', body).forEach(function (n) { sitemapBlock(n); });
     $$('.cm-authorbanner', body).forEach(function (n) { var x = bannerEl('cm-banner-strip'); if (x) n.replaceWith(x); else n.remove(); });
     postInfo(body); changelogs(body); callouts(body); tables(body); embeds(body); sliders(body); figures(body);
     /* code groups (tabs) first, then single blocks */
@@ -2665,6 +2778,17 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     $$('.cm-win-copy').forEach(function (b) { b.addEventListener('click', function () { track('code_copy', {}); }); });
   }
   window.cmRead = { markRead: markRead, posMap: posMap, readSet: readSet };
+
+  /* saved posts: bell-style button with a count badge in the header (top right) */
+  function savedHeaderBtn() {
+    var acts = $('.cm-actions'); if (!acts || $('#cm-saved-open')) return;
+    var b = el('button', 'cm-ib cm-saved-btn'); b.type = 'button'; b.id = 'cm-saved-open'; b.title = 'Saved posts'; b.setAttribute('aria-label', 'Saved posts');
+    b.appendChild(sico(SI2.bookmark)); var bd = el('span', 'cm-sb-badge'); bd.hidden = true; b.appendChild(bd);
+    b.addEventListener('click', openSaved); acts.insertBefore(b, acts.firstChild); updateSavedBadge();
+  }
+  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', savedHeaderBtn); else savedHeaderBtn();
+
+  (function () { var k = $('.cm-hs-k'); if (k && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)) k.textContent = '\u2318 K'; })();
 
   /* =====================================================================
      LINK PREVIEWS: hover (or keyboard focus) a link inside a post to see a
@@ -2942,7 +3066,7 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
   }
   function leftRail() {
     var left = el('aside', 'cm-rail cm-rail-l'), sb = el('nav', 'cm-sb'); sb.id = 'cm-sb'; sb.setAttribute('aria-label', 'Sidebar');
-    var bn = $('.cm-footname'), bt = $('.cm-footbrand p'), name = bn ? bn.textContent : 'Blog';
+    var bn = $('.cm-footname'), bt = $('.cm-footbrand p'), name = (bn && bn.textContent.trim()) || ds.brand || d.title.split(/[|\u2013\u2014-]/).pop().trim() || location.hostname.replace(/^www\./, '').split('.')[0];
     /* brand header */
     var hd = el('a', 'cm-sb-head'); hd.href = '/'; hd.title = name;
     var tile = el('span', 'cm-sb-tile'); if (ds.logo) { var li = el('img'); li.src = ds.logo; li.alt = ''; tile.appendChild(li); } else tile.textContent = name.charAt(0).toUpperCase();
@@ -2955,7 +3079,6 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     ul.appendChild(sbItem('All articles', SI.article, '/search').li);
     if (isItem) { var tc = sbSub('On this page', SI.list, 'cm-toc'); tc.li.id = 'cm-toc-item'; tc.li.hidden = true; ul.appendChild(tc.li); }
     var cs = sbSub('Categories', SI.tag, 'cm-cat-sub'); ul.appendChild(cs.li); cs.sub.appendChild(sk('', '70%', '12px')); cs.sub.appendChild(sk('', '55%', '12px')); cs.sub.appendChild(sk('', '65%', '12px'));
-    ul.appendChild(savedItem());
     var seen = { home: 1, articles: 1, 'all articles': 1, categories: 1 };
     ($('#cm-nav') ? $('#cm-nav').getAttribute('data-links') || '' : '').split(';').forEach(function (p) {
       var i = p.indexOf('|'); if (i < 1) return; var n = p.slice(0, i).trim(), u = p.slice(i + 1).trim();
@@ -3182,6 +3305,19 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     if (opts.length > 2) opts.forEach(function (o) { var b = el('button', 'cm-chip2', o); b.type = 'button'; b.addEventListener('click', function () { cur = o; draw(); track('home_filter', { value: o }); }); chips.appendChild(b); }); else chips.hidden = true;
     p.appendChild(chips); p.appendChild(grid); draw(); return p;
   }
+  function portraitCard(e) {
+    var a = el('a', 'cm-nrow'); a.href = entryUrl(e);
+    var content = (e.content && e.content.$t) || '', cats = realLabels((e.category || []).map(function (c) { return c.term; })), lv = levelOf(e);
+    var tx = el('span', 'cm-nrow-tx'), top = el('span', 'cm-nrow-k');
+    if (cats[0]) top.appendChild(el('b', '', cats[0]));
+    if (lv) top.appendChild(el('i', 'cm-lv ' + lvlClass(lv), lv));
+    if (top.childNodes.length) tx.appendChild(top);
+    tx.appendChild(el('span', 'cm-nrow-t', e.title.$t));
+    tx.appendChild(el('span', 'cm-nrow-m', fmtDate(e.published.$t) + ' · ' + readMin(content) + ' min read'));
+    a.appendChild(tx);
+    var th = thumbOf(e), im = el('span', 'cm-nrow-img'); if (th) { var i = el('img'); i.src = bigImg(th, 160, 160); i.alt = ''; i.loading = 'lazy'; i.width = 64; i.height = 64; im.appendChild(i); }
+    a.appendChild(im); return a;
+  }
   function authorStrip() {
     var bn = bannerEl('cm-banner-strip'); if (!bn) return null;
     var s = el('section', 'cm-aboutauthor'), h = el('div', 'cm-fkick', 'About the author');
@@ -3200,13 +3336,14 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     var fk = el('div', 'cm-fkick'); fk.appendChild(el('span', 'cm-live')); fk.appendChild(document.createTextNode('Latest post')); main.appendChild(fk);
     main.appendChild(bigFromEntry(ents[0]));
     side.appendChild(el('div', 'cm-fkick', 'Also new'));
-    ents.slice(1, 5).forEach(function (e) { side.appendChild(rowFromEntry(e)); });
+    var pg = el('div', 'cm-nlist'); ents.slice(1, 5).forEach(function (e) { pg.appendChild(portraitCard(e)); }); side.appendChild(pg);
     feat.appendChild(main); feat.appendChild(side); wrap.appendChild(feat);
     var hero = heroBlock(ents, feedData.cats); if (hero) wrap.appendChild(hero);
     var cont = continueBlock(); if (cont) wrap.appendChild(cont);
     var anchor = el('div'); wrap.appendChild(anchor); startHereBlock(wrap, anchor);
     var adh = $('.cm-ad-home'); if (adh) wrap.appendChild(adh);
     if (ds.showBannerHome !== 'no') { var ab = authorStrip(); if (ab) wrap.appendChild(ab); }
+    var cb = connectBlock('home'); if (cb) wrap.appendChild(cb);
     var ns = newsStrip(); if (ns) wrap.appendChild(ns);
     var sAnchor = el('div'); wrap.appendChild(sAnchor); seriesBlock(wrap, sAnchor);
     if (ents.length > 5) wrap.appendChild(latestBlock(ents));
@@ -3215,7 +3352,173 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     setContent(wrap); randomCats(host, feedData.cats);
   }
 
-  function renderHome() { homeWanted = true; ensureShell(); if (feedData) buildHome(); }
+  /* =====================================================================
+     CONNECT / COMMUNITY: Discord, Telegram, WhatsApp channel, Slack, Reddit,
+     any custom link. Shown on the home page, after each post and in the footer.
+     Everything comes from settings (Theme > Customize or the JSON gadget).
+     ===================================================================== */
+  /* brand logos: Simple Icons paths (CC0), 24x24, filled */
+  var CH_ICON = {
+    discord: 'M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z',
+    whatsapp: 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z',
+    slack: 'M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z',
+    reddit: 'M12 0C5.373 0 0 5.373 0 12c0 3.314 1.343 6.314 3.515 8.485l-2.286 2.286C.775 23.225 1.097 24 1.738 24H12c6.627 0 12-5.373 12-12S18.627 0 12 0Zm4.388 3.199c1.104 0 1.999.895 1.999 1.999 0 1.105-.895 2-1.999 2-.946 0-1.739-.657-1.947-1.539v.002c-1.147.162-2.032 1.15-2.032 2.341v.007c1.776.067 3.4.567 4.686 1.363.473-.363 1.064-.58 1.707-.58 1.547 0 2.802 1.254 2.802 2.802 0 1.117-.655 2.081-1.601 2.531-.088 3.256-3.637 5.876-7.997 5.876-4.361 0-7.905-2.617-7.998-5.87-.954-.447-1.614-1.415-1.614-2.538 0-1.548 1.255-2.802 2.803-2.802.645 0 1.239.218 1.712.585 1.275-.79 2.881-1.291 4.64-1.365v-.01c0-1.663 1.263-3.034 2.88-3.207.188-.911.993-1.595 1.959-1.595Zm-8.085 8.376c-.784 0-1.459.78-1.506 1.797-.047 1.016.64 1.429 1.426 1.429.786 0 1.371-.369 1.418-1.385.047-1.017-.553-1.841-1.338-1.841Zm7.406 0c-.786 0-1.385.824-1.338 1.841.047 1.017.634 1.385 1.418 1.385.785 0 1.473-.413 1.426-1.429-.046-1.017-.721-1.797-1.506-1.797Zm-3.703 4.013c-.974 0-1.907.048-2.77.135-.147.015-.241.168-.183.305.483 1.154 1.622 1.964 2.953 1.964 1.33 0 2.47-.81 2.953-1.964.057-.137-.037-.29-.184-.305-.863-.087-1.795-.135-2.769-.135Z',
+    link: 'M10 14a4 4 0 0 0 5.600 0l3-3a4 4 0 0 0-5.600-5.600l-1 1M14 10a4 4 0 0 0-5.600 0l-3 3a4 4 0 0 0 5.600 5.600l1-1'
+  };
+  var CH = [
+    { k: 'discord', n: 'Discord', u: 'discordUrl', c: '#5865f2', t: 'Join our Discord', sub: 'Chat and ask questions' },
+    { k: 'telegram', n: 'Telegram', u: 'telegramUrl', c: '#27a7e7', t: 'Join on Telegram', sub: 'Channel with new posts' },
+    { k: 'whatsapp', n: 'WhatsApp', u: 'whatsappUrl', c: '#25d366', t: 'Join the WhatsApp channel', sub: 'Updates on your phone' },
+    { k: 'slack', n: 'Slack', u: 'slackUrl', c: '#e01e5a', t: 'Join our Slack', sub: 'Workspace for learners' },
+    { k: 'reddit', n: 'Reddit', u: 'redditUrl', c: '#ff4500', t: 'Join r/ community', sub: 'Discuss and share' },
+    { k: 'link', n: ds.customChannelLabel || 'Community', u: 'customChannelUrl', c: '', t: ds.customChannelLabel || 'Join the community', sub: '' }
+  ];
+  function channels() {
+    var list = CH.filter(function (c) { return /^https?:\/\//.test(ds[c.u] || ''); });
+    if (!list.length && /^https?:\/\//.test(ds.communityUrl || '')) list = [{ k: 'link', n: 'Community', u: 'communityUrl', c: '', t: ds.communityLabel || 'Join the community', sub: '' }];
+    return list;
+  }
+  function connectPlace(where) { return ds.showConnect !== 'no' && (ds.connectPlaces || 'home,post,footer').toLowerCase().split(/[\s,]+/).indexOf(where) >= 0; }
+  function chIcon(k) {
+    var sv = sico(k === 'telegram' ? ICONS.telegram : (CH_ICON[k] || CH_ICON.link));
+    if (k === 'link') { sv.setAttribute('class', 'cm-i ln'); sv.setAttribute('fill', 'none'); sv.setAttribute('stroke', 'currentColor'); sv.setAttribute('stroke-width', '2'); sv.setAttribute('stroke-linecap', 'round'); sv.setAttribute('stroke-linejoin', 'round'); }
+    else { sv.setAttribute('fill', 'currentColor'); sv.setAttribute('stroke', 'none'); }
+    return sv;
+  }
+  function connectBlock(where) {
+    if (!connectPlace(where)) return null;
+    var list = channels(); if (!list.length) return null;
+    var s = el('section', 'cm-connect cm-connect-' + where), tx = el('div', 'cm-cn-tx');
+    tx.appendChild(el('span', 'cm-cn-k', 'Community')); tx.appendChild(el('h2', '', ds.connectTitle || 'Join the community'));
+    tx.appendChild(el('p', '', ds.connectText || 'Get new guides first, ask questions and learn with other readers.'));
+    var row = el('div', 'cm-cn-row');
+    list.forEach(function (c) {
+      var a = el('a', 'cm-cn-btn'); a.href = ds[c.u]; a.target = '_blank'; a.rel = 'noopener'; if (c.c) a.style.setProperty('--ch', c.c);
+      var ic = el('span', 'cm-cn-ic'); ic.appendChild(chIcon(c.k)); a.appendChild(ic);
+      var t = el('span', 'cm-cn-t'); t.appendChild(el('b', '', c.t)); if (c.sub && where !== 'post') t.appendChild(el('small', '', c.sub)); a.appendChild(t);
+      a.addEventListener('click', function () { track('join_channel', { channel: c.k, place: where }); }); row.appendChild(a);
+    });
+    s.appendChild(tx); s.appendChild(row); return s;
+  }
+  function connectFooter() {
+    if (!connectPlace('footer')) return; var list = channels(), f = $('.cm-foot-in'); if (!list.length || !f || $('.cm-cn-foot')) return;
+    var r = el('div', 'cm-cn-foot'); r.appendChild(el('span', '', ds.connectTitle || 'Join the community'));
+    list.forEach(function (c) { var a = el('a', 'cm-cn-dot'); a.href = ds[c.u]; a.target = '_blank'; a.rel = 'noopener'; a.title = c.n; a.setAttribute('aria-label', c.n); if (c.c) a.style.setProperty('--ch', c.c); a.appendChild(chIcon(c.k)); r.appendChild(a); });
+    var b = $('.cm-foot-bottom', f); if (b) f.insertBefore(r, b); else f.appendChild(r);
+  }
+  connectFooter();
+
+  /* =====================================================================
+     SEO: per-page title/description/robots/Open Graph/Twitter, JSON-LD
+     (WebSite, CollectionPage, Article extras), visible breadcrumbs,
+     related posts, LCP hints. Everything is client-side because posts are
+     rendered from the feeds, so keep values deterministic and short.
+     ===================================================================== */
+  function metaTag(attrName, key, val) {
+    if (val === undefined || val === null || val === '') return;
+    var m = d.head.querySelector('meta[' + attrName + '="' + key + '"]');
+    if (!m) { m = el('meta'); m.setAttribute(attrName, key); d.head.appendChild(m); }
+    m.setAttribute('content', val);
+  }
+  function clip(s, n) { s = (s || '').replace(/\s+/g, ' ').trim(); if (s.length <= n) return s; var c = s.slice(0, n - 1), i = c.lastIndexOf(' '); return (i > n * .6 ? c.slice(0, i) : c).replace(/[,;:.\-\s]+$/, '') + '…'; }
+  function siteName() { return ds.brand || location.hostname.replace(/^www\./, '').split('.')[0]; }
+  function siteDesc() { return ds.heroSub || (($('meta[name=description]') || {}).content) || ''; }
+  function setCanonical(href) {
+    var l = d.head.querySelector('link[rel=canonical]'); if (!l) { l = el('link'); l.rel = 'canonical'; d.head.appendChild(l); }
+    l.href = href;
+  }
+  function cleanUrl() { return location.origin + location.pathname.replace(/\/index\.html$/, '/'); }
+  function seoPage(o) {
+    var title = o.title ? clip(o.title, 70) + (o.noSuffix ? '' : ' | ' + siteName()) : d.title, desc = clip(o.desc || siteDesc(), 158);
+    if (o.title) d.title = title;
+    metaTag('name', 'description', desc);
+    metaTag('property', 'og:title', o.title ? clip(o.title, 90) : d.title); metaTag('property', 'og:description', desc);
+    metaTag('property', 'og:type', o.type || 'website'); metaTag('property', 'og:site_name', siteName()); metaTag('property', 'og:url', o.url || cleanUrl());
+    metaTag('property', 'og:locale', ds.locale || 'en_US');
+    var img = o.image || ds.shareImage; if (img) { metaTag('property', 'og:image', img); metaTag('name', 'twitter:image', img); metaTag('property', 'og:image:width', '1200'); metaTag('property', 'og:image:height', '630'); }
+    metaTag('name', 'twitter:card', 'summary_large_image'); metaTag('name', 'twitter:title', o.title ? clip(o.title, 70) : d.title); metaTag('name', 'twitter:description', desc);
+    if (ds.twitter) { var h = ds.twitter.replace(/^@?/, '@'); metaTag('name', 'twitter:site', h); metaTag('name', 'twitter:creator', h); }
+    metaTag('name', 'robots', o.noindex ? 'noindex,follow' : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1');
+    if (o.canonical !== false) setCanonical(o.canonical || cleanUrl());
+  }
+  function ldAdd(list) {
+    list = list.filter(Boolean); if (!list.length) return;
+    var old = d.head.querySelector('script[data-cm-ld]'); if (old) old.remove();
+    var s = el('script'); s.type = 'application/ld+json'; s.setAttribute('data-cm-ld', '1'); s.text = JSON.stringify(list); d.head.appendChild(s);
+  }
+  function sameAs() { return (ds.authorSameAs || '').split(/[,\s]+/).filter(function (u) { return /^https?:\/\//.test(u); }); }
+  function personLd() {
+    return { '@type': 'Person', name: ds.authorName || siteName(), url: ds.authorUrl || undefined, jobTitle: ds.authorRole || undefined, image: ds.authorImage || undefined, sameAs: sameAs().length ? sameAs() : (ds.authorUrl ? [ds.authorUrl] : undefined) };
+  }
+  function orgLd() {
+    return { '@type': 'Organization', name: siteName(), url: location.origin + '/', logo: ds.logo ? { '@type': 'ImageObject', url: ds.logo } : undefined, sameAs: sameAs().length ? sameAs() : undefined };
+  }
+  function seoHome() {
+    seoPage({ title: siteName() + ' - ' + (ds.heroTitle || 'Cybersecurity, AWS and full-stack guides'), noSuffix: true, desc: siteDesc() });
+    ldAdd([{ '@context': 'https://schema.org', '@type': 'WebSite', name: siteName(), url: location.origin + '/', description: siteDesc(), inLanguage: 'en', publisher: orgLd(),
+      potentialAction: { '@type': 'SearchAction', target: location.origin + '/search?q={search_term_string}', 'query-input': 'required name=search_term_string' } }, Object.assign({ '@context': 'https://schema.org' }, personLd())]);
+  }
+  function seoList(title, ents, page, isLabel) {
+    var q = qs('q'), arch = /^\/\d{4}\/\d{2}/.test(location.pathname);
+    var desc = isLabel ? clip(title + ' guides and tutorials on ' + siteName() + '. ' + ents.slice(0, 3).map(function (e) { return e.title.$t; }).join(' · '), 158) : siteDesc();
+    seoPage({ title: (isLabel ? title + ' tutorials and guides' : title) + (page > 1 ? ' - Page ' + page : ''), desc: desc, noindex: !!q || arch || page > 1, canonical: (q ? location.origin + location.pathname : cleanUrl()) });
+    if (isLabel && page === 1) ldAdd([{ '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, url: cleanUrl(), isPartOf: { '@type': 'WebSite', name: siteName(), url: location.origin + '/' },
+      mainEntity: { '@type': 'ItemList', itemListElement: ents.slice(0, 10).map(function (e, i) { return { '@type': 'ListItem', position: i + 1, url: entryUrl(e), name: e.title.$t }; }) } },
+      { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: location.origin + '/' }, { '@type': 'ListItem', position: 2, name: title }] }]);
+  }
+  function crumbs(cats, title) {
+    var nav = el('nav', 'cm-crumbs'); nav.setAttribute('aria-label', 'Breadcrumb');
+    var home = el('a', '', 'Home'); home.href = '/'; nav.appendChild(home);
+    if (cats[0]) { nav.appendChild(el('span', 'sep', '›')); var c = el('a', '', cats[0]); c.href = '/search/label/' + encodeURIComponent(cats[0]); nav.appendChild(c); }
+    nav.appendChild(el('span', 'sep', '›')); var cur = el('span', 'cur', clip(title, 60)); cur.setAttribute('aria-current', 'page'); nav.appendChild(cur);
+    return nav;
+  }
+  /* article: meta + extra schema; returns nothing, called from initArticle */
+  function seoArticle(e, o) {
+    var seoEl = $('.cm-seo', o.body), manual = seoEl ? seoEl.getAttribute('data-description') : '', mimg = seoEl ? seoEl.getAttribute('data-image') : '';
+    var desc = manual || ($('meta[name=description]') || {}).content || leadText(o.content) || plain(o.content);
+    var img = mimg || (o.th ? bigImg(o.th, 1200, 630) : ds.shareImage || '');
+    seoPage({ title: e.title.$t, desc: desc, type: 'article', image: img });
+    metaTag('property', 'article:published_time', e.published.$t); metaTag('property', 'article:modified_time', e.updated.$t);
+    metaTag('property', 'article:section', o.cats[0] || ''); metaTag('property', 'article:author', ds.authorUrl || '');
+    o.cats.slice(0, 5).forEach(function (c) { var m = el('meta'); m.setAttribute('property', 'article:tag'); m.setAttribute('content', c); d.head.appendChild(m); });
+    return { desc: clip(desc, 158), img: img };
+  }
+  function codeLd(body) {
+    var out = [];
+    $$('.cm-win', body).slice(0, 3).forEach(function (w) {
+      var lang = (w.getAttribute('data-lang') || (/language-([a-z0-9+#-]+)/i.exec((w.querySelector('code') || {}).className || '') || [])[1] || '').toLowerCase();
+      var code = w.querySelector('code'); if (!code || !lang || /^(text|plain|output)$/.test(lang)) return;
+      out.push({ '@type': 'SoftwareSourceCode', programmingLanguage: lang, codeSampleType: 'snippet', text: clip(code.textContent, 1200) });
+    });
+    return out;
+  }
+  function relatedBlock(art, e, cm) {
+    var mine = realLabels((e.category || []).map(function (c) { return c.term; })), url = entryUrl(e).replace(/^https?:/, '');
+    if (!mine.length) return;
+    getJSON('/feeds/posts/default/-/' + encodeURIComponent(mine[0]) + '?alt=json&max-results=7', function (j) {
+      var list = ((j && j.feed && j.feed.entry) || []).filter(function (p) { return entryUrl(p).replace(/^https?:/, '') !== url; }).slice(0, 3);
+      if (!list.length) return;
+      var s = el('section', 'cm-related'), g = el('div', 'cm-grid'); s.appendChild(el('h2', 'cm-rel-h', 'Related guides on ' + mine[0]));
+      list.forEach(function (p) { g.appendChild(cardFromEntry(p)); }); s.appendChild(g);
+      var host = $('.cm-nextup') || cm; host.parentNode.insertBefore(s, host);
+    });
+  }
+  function lcpHint(img) { if (!img) return; img.loading = 'eager'; img.setAttribute('fetchpriority', 'high'); img.decoding = 'async'; }
+  function sitemapBlock(host) {
+    host.textContent = ''; host.appendChild(el('p', 'cm-muted', 'Loading all articles…'));
+    getJSON('/feeds/posts/default?alt=json&max-results=500&orderby=published', function (j) {
+      var ents = (j && j.feed && j.feed.entry) || [], by = {}; host.textContent = '';
+      ents.forEach(function (p) { var ls = realLabels((p.category || []).map(function (c) { return c.term; })); (ls.length ? ls : ['General']).forEach(function (l) { (by[l] = by[l] || []).push(p); }); });
+      Object.keys(by).sort().forEach(function (l) {
+        var h = el('h2'), a = el('a', '', l); a.href = '/search/label/' + encodeURIComponent(l); h.appendChild(a); host.appendChild(h);
+        var ul = el('ul'); by[l].forEach(function (p) { var li = el('li'), x = el('a', '', p.title.$t); x.href = entryUrl(p); li.appendChild(x); li.appendChild(el('small', 'cm-muted', ' ' + fmtDate(p.published.$t))); ul.appendChild(li); }); host.appendChild(ul);
+      });
+      if (!ents.length) host.appendChild(el('p', 'cm-muted', 'No posts yet.'));
+    });
+  }
+
+  function renderHome() { homeWanted = true; ensureShell(); seoHome(); if (feedData) buildHome(); }
 
   /* ---------- LABEL / SEARCH / ARCHIVE ---------- */
   function qs(name) { var m = new RegExp('[?&]' + name + '=([^&]*)').exec(location.search); return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : ''; }
@@ -3234,8 +3537,9 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
       var ents = (j && j.feed && j.feed.entry) || [];
       var wrap = el('div', 'cm-content'), head = el('div', 'cm-listing-head'); head.appendChild(el('h1', '', title)); wrap.appendChild(head);
       var panel = el('section', 'cm-panel'), grid = el('div', 'cm-grid'); panel.appendChild(grid); wrap.appendChild(panel);
-      if (!ents.length) { var np = el('p', 'cm-muted', 'No posts found.'); np.style.padding = '40px'; grid.appendChild(np); setContent(wrap); fillCats(); return; }
+      if (!ents.length) { seoPage({ title: title, noindex: true }); var np = el('p', 'cm-muted', 'No posts found.'); np.style.padding = '40px'; grid.appendChild(np); setContent(wrap); fillCats(); return; }
       ents.forEach(function (e) { grid.appendChild(cardFromEntry(e)); });
+      seoList(title, ents, page, /^\/search\/label\//.test(path));
       var total = parseInt(j.feed.openSearch$totalResults.$t, 10) || 0, pager = el('nav', 'cm-pager'); pager.setAttribute('aria-label', 'Pagination');
       var base = location.pathname + location.search.replace(/[?&]page=\d+/, '').replace(/^&/, '?'), sep = base.indexOf('?') < 0 ? '?' : '&';
       if (page > 1) { var a = el('a', 'cm-btn ghost', '← Newer posts'); a.href = page === 2 ? base : base + sep + 'page=' + (page - 1); pager.appendChild(a); } else pager.appendChild(el('span'));
@@ -3250,7 +3554,9 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     getJSON('/feeds/pages/default?alt=json&path=' + encodeURIComponent(location.pathname), function (j) {
       var e = j && j.feed && j.feed.entry && j.feed.entry[0]; if (!e) return;
       var wrap = el('div', 'cm-content'), art = el('article', 'cm-article'), body = el('div', 'cm-body post-content');
+      art.insertBefore(crumbs(cats, e.title.$t), art.firstChild);
       art.appendChild(el('h1', 'cm-title', e.title.$t)); body.innerHTML = (e.content && e.content.$t) || ''; art.appendChild(body); wrap.appendChild(art);
+      var sd = $('.cm-seo', body); seoPage({ title: e.title.$t, desc: (sd && sd.getAttribute('data-description')) || plain(e.content ? e.content.$t : ''), type: 'website', image: sd && sd.getAttribute('data-image') });
       setContent(wrap); enhanceBody(body);
     });
   }
@@ -3286,6 +3592,7 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
       var ae = $('.cm-ad-end'); if (ae) art.appendChild(ae);
       if (cats.length) { var tg2 = el('div', 'cm-tags'); cats.forEach(function (c) { var a = el('a', '', c); a.href = '/search/label/' + encodeURIComponent(c); a.rel = 'tag'; tg2.appendChild(a); }); art.appendChild(tg2); }
       art.appendChild(authorBox(an));
+      var cnb = connectBlock('post'); if (cnb) art.appendChild(cnb);
       wrap.appendChild(art);
       var cm = el('section', 'cm-comments'); cm.id = 'comments'; wrap.appendChild(cm);
       var pfe = $('.cm-pfe'); if (pfe) wrap.appendChild(pfe);
@@ -3294,6 +3601,7 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
       initArticle(art, e);
       renderComments(cm, ids);
       if (series) buildSeries(series, art, cm);
+      relatedBlock(art, e, cm);
     });
   }
 
@@ -3395,25 +3703,30 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
       share.appendChild(cp);
     });
 
-    var title = $('.cm-title').textContent, img = (hero && hero.src) || ($('meta[property="og:image"]') || {}).content || ds.shareImage || '';
-    var site = ds.brand || 'CyberTechMind', origin = location.origin, ft = $('.cm-tags a');
+    var title = $('.cm-title').textContent, content0 = (e.content && e.content.$t) || '', cats0 = realLabels((e.category || []).map(function (c) { return c.term; }));
+    var sa = seoArticle(e, { body: body, content: content0, th: thumbOf(e), cats: cats0 }), img = sa.img || (hero && hero.src) || '';
+    lcpHint(hero);
+    var site = ds.brand || location.hostname.replace(/^www\./, '').split('.')[0], origin = location.origin, ft = $('.cm-tags a'), words = plain(content0).split(/\s+/).filter(Boolean).length;
     var data = [{
-      '@context': 'https://schema.org', '@type': 'BlogPosting', headline: title, description: ($('.cm-sub') || {}).textContent || '',
-      image: img ? [img] : undefined, datePublished: e.published.$t, dateModified: e.updated.$t,
-      author: { '@type': 'Person', name: ds.authorName || ($('.cm-author b') || {}).textContent.replace(/^by /, '') || site, url: ds.authorUrl || undefined, jobTitle: ds.authorRole || undefined },
-      publisher: { '@type': 'Organization', name: site, logo: ds.logo ? { '@type': 'ImageObject', url: ds.logo } : undefined },
-      mainEntityOfPage: { '@type': 'WebPage', '@id': ($('link[rel=canonical]') || {}).href || location.href }
+      '@context': 'https://schema.org', '@type': 'BlogPosting', headline: clip(title, 110), description: sa.desc,
+      image: img ? [img] : undefined, datePublished: e.published.$t, dateModified: e.updated.$t, inLanguage: 'en', wordCount: words,
+      articleSection: cats0[0] || undefined, keywords: cats0.length ? cats0.join(', ') : undefined,
+      author: Object.assign(personLd(), { name: ds.authorName || ($('.cm-author b') || {}).textContent.replace(/^by /, '') || site }),
+      publisher: orgLd(),
+      mainEntityOfPage: { '@type': 'WebPage', '@id': ($('link[rel=canonical]') || {}).href || cleanUrl() },
+      hasPart: codeLd(body)
     }, {
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',
       itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: origin + '/' }].concat(ft ? [{ '@type': 'ListItem', position: 2, name: ft.textContent, item: ft.href }, { '@type': 'ListItem', position: 3, name: title }] : [{ '@type': 'ListItem', position: 2, name: title }])
     }];
+    if (!data[0].hasPart.length) delete data[0].hasPart;
     var pc = $('.cm-pinfo-card'), tmTxt = pc ? pc.getAttribute('data-time') : '';
     var hm = /(\d+)\s*(?:h|hr|hrs|hour|hours)\b/i.exec(tmTxt || ''), mm = /(\d+)\s*(?:m|min|mins|minutes)\b/i.exec(tmTxt || '');
     var steps = $$('.cm-body ol.steps > li');
     if (steps.length >= 2) data.push({ '@context': 'https://schema.org', '@type': 'HowTo', name: title, totalTime: (hm || mm) ? 'PT' + (hm ? hm[1] + 'H' : '') + (mm ? mm[1] + 'M' : '') : undefined, step: steps.map(function (li, i) { return { '@type': 'HowToStep', position: i + 1, text: li.textContent.trim() }; }) });
     var faq = $$('.cm-body details');
     if (faq.length) data.push({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(function (dt) { var s = dt.querySelector('summary'); return { '@type': 'Question', name: s ? s.textContent.trim() : '', acceptedAnswer: { '@type': 'Answer', text: dt.textContent.replace(s ? s.textContent : '', '').trim() } }; }) });
-    var sj = el('script'); sj.type = 'application/ld+json'; sj.text = JSON.stringify(data); d.head.appendChild(sj);
+    ldAdd(data);
     readingInit(art, e, curSeries);
   }
 

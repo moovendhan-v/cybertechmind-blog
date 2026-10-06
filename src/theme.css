@@ -709,3 +709,18 @@ html.no-subnav .cm-subnav{display:none!important}
 html.no-subnav{--hh:68px}
 @media (max-width:1240px){html.no-lsb .cm-rail-l{display:none!important}}
 html.no-subnav .cm-header{transform:none!important}
+
+/* brand: filled rounded pill in the header, filled rounded card in the sidebar */
+.cm-logo{padding:5px 16px 5px 5px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--text) 5%,transparent);transition:border-color .15s,background .15s}
+.cm-logo:hover{border-color:var(--accent);background:color-mix(in srgb,var(--text) 8%,transparent)}
+.cm-logo img{height:34px;width:34px;flex:none}
+.cm-logo span{font-size:1.05rem}
+.cm-logo:not(:has(img)){padding:7px 18px}
+.cm-sb-head{padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--text) 5%,transparent);margin:0 0 6px}
+.cm-sb-head:hover{border-color:var(--accent);background:color-mix(in srgb,var(--text) 8%,transparent)}
+.cm-sb-tile{border-radius:50%}
+.cm-sb-htx{min-width:0;flex:1}
+.cm-sb-htx b,.cm-sb-htx small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body[data-logo-shape=square] .cm-sb-tile{border-radius:10px}
+:root[data-sb="min"] .cm-sb-head{border-color:transparent;background:none}
+@media(max-width:900px){.cm-logo span{font-size:.98rem}}

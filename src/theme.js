@@ -320,7 +320,7 @@
   }
   function leftRail() {
     var left = el('aside', 'cm-rail cm-rail-l'), sb = el('nav', 'cm-sb'); sb.id = 'cm-sb'; sb.setAttribute('aria-label', 'Sidebar');
-    var bn = $('.cm-footname'), bt = $('.cm-footbrand p'), name = bn ? bn.textContent : 'Blog';
+    var bn = $('.cm-footname'), bt = $('.cm-footbrand p'), name = (bn && bn.textContent.trim()) || ds.brand || d.title.split(/[|\u2013\u2014-]/).pop().trim() || location.hostname.replace(/^www\./, '').split('.')[0];
     /* brand header */
     var hd = el('a', 'cm-sb-head'); hd.href = '/'; hd.title = name;
     var tile = el('span', 'cm-sb-tile'); if (ds.logo) { var li = el('img'); li.src = ds.logo; li.alt = ''; tile.appendChild(li); } else tile.textContent = name.charAt(0).toUpperCase();
@@ -333,7 +333,6 @@
     ul.appendChild(sbItem('All articles', SI.article, '/search').li);
     if (isItem) { var tc = sbSub('On this page', SI.list, 'cm-toc'); tc.li.id = 'cm-toc-item'; tc.li.hidden = true; ul.appendChild(tc.li); }
     var cs = sbSub('Categories', SI.tag, 'cm-cat-sub'); ul.appendChild(cs.li); cs.sub.appendChild(sk('', '70%', '12px')); cs.sub.appendChild(sk('', '55%', '12px')); cs.sub.appendChild(sk('', '65%', '12px'));
-    ul.appendChild(savedItem());
     var seen = { home: 1, articles: 1, 'all articles': 1, categories: 1 };
     ($('#cm-nav') ? $('#cm-nav').getAttribute('data-links') || '' : '').split(';').forEach(function (p) {
       var i = p.indexOf('|'); if (i < 1) return; var n = p.slice(0, i).trim(), u = p.slice(i + 1).trim();
@@ -463,7 +462,8 @@
     });
   }
 /*@@HOME@@*/
-  function renderHome() { homeWanted = true; ensureShell(); if (feedData) buildHome(); }
+/*@@SEO@@*/
+  function renderHome() { homeWanted = true; ensureShell(); seoHome(); if (feedData) buildHome(); }
 
   /* ---------- LABEL / SEARCH / ARCHIVE ---------- */
   function qs(name) { var m = new RegExp('[?&]' + name + '=([^&]*)').exec(location.search); return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : ''; }
@@ -482,8 +482,9 @@
       var ents = (j && j.feed && j.feed.entry) || [];
       var wrap = el('div', 'cm-content'), head = el('div', 'cm-listing-head'); head.appendChild(el('h1', '', title)); wrap.appendChild(head);
       var panel = el('section', 'cm-panel'), grid = el('div', 'cm-grid'); panel.appendChild(grid); wrap.appendChild(panel);
-      if (!ents.length) { var np = el('p', 'cm-muted', 'No posts found.'); np.style.padding = '40px'; grid.appendChild(np); setContent(wrap); fillCats(); return; }
+      if (!ents.length) { seoPage({ title: title, noindex: true }); var np = el('p', 'cm-muted', 'No posts found.'); np.style.padding = '40px'; grid.appendChild(np); setContent(wrap); fillCats(); return; }
       ents.forEach(function (e) { grid.appendChild(cardFromEntry(e)); });
+      seoList(title, ents, page, /^\/search\/label\//.test(path));
       var total = parseInt(j.feed.openSearch$totalResults.$t, 10) || 0, pager = el('nav', 'cm-pager'); pager.setAttribute('aria-label', 'Pagination');
       var base = location.pathname + location.search.replace(/[?&]page=\d+/, '').replace(/^&/, '?'), sep = base.indexOf('?') < 0 ? '?' : '&';
       if (page > 1) { var a = el('a', 'cm-btn ghost', '← Newer posts'); a.href = page === 2 ? base : base + sep + 'page=' + (page - 1); pager.appendChild(a); } else pager.appendChild(el('span'));
@@ -498,7 +499,9 @@
     getJSON('/feeds/pages/default?alt=json&path=' + encodeURIComponent(location.pathname), function (j) {
       var e = j && j.feed && j.feed.entry && j.feed.entry[0]; if (!e) return;
       var wrap = el('div', 'cm-content'), art = el('article', 'cm-article'), body = el('div', 'cm-body post-content');
+      art.insertBefore(crumbs(cats, e.title.$t), art.firstChild);
       art.appendChild(el('h1', 'cm-title', e.title.$t)); body.innerHTML = (e.content && e.content.$t) || ''; art.appendChild(body); wrap.appendChild(art);
+      var sd = $('.cm-seo', body); seoPage({ title: e.title.$t, desc: (sd && sd.getAttribute('data-description')) || plain(e.content ? e.content.$t : ''), type: 'website', image: sd && sd.getAttribute('data-image') });
       setContent(wrap); enhanceBody(body);
     });
   }
@@ -534,6 +537,7 @@
       var ae = $('.cm-ad-end'); if (ae) art.appendChild(ae);
       if (cats.length) { var tg2 = el('div', 'cm-tags'); cats.forEach(function (c) { var a = el('a', '', c); a.href = '/search/label/' + encodeURIComponent(c); a.rel = 'tag'; tg2.appendChild(a); }); art.appendChild(tg2); }
       art.appendChild(authorBox(an));
+      var cnb = connectBlock('post'); if (cnb) art.appendChild(cnb);
       wrap.appendChild(art);
       var cm = el('section', 'cm-comments'); cm.id = 'comments'; wrap.appendChild(cm);
       var pfe = $('.cm-pfe'); if (pfe) wrap.appendChild(pfe);
@@ -542,6 +546,7 @@
       initArticle(art, e);
       renderComments(cm, ids);
       if (series) buildSeries(series, art, cm);
+      relatedBlock(art, e, cm);
     });
   }
 
@@ -643,25 +648,30 @@
       share.appendChild(cp);
     });
 
-    var title = $('.cm-title').textContent, img = (hero && hero.src) || ($('meta[property="og:image"]') || {}).content || ds.shareImage || '';
-    var site = ds.brand || 'CyberTechMind', origin = location.origin, ft = $('.cm-tags a');
+    var title = $('.cm-title').textContent, content0 = (e.content && e.content.$t) || '', cats0 = realLabels((e.category || []).map(function (c) { return c.term; }));
+    var sa = seoArticle(e, { body: body, content: content0, th: thumbOf(e), cats: cats0 }), img = sa.img || (hero && hero.src) || '';
+    lcpHint(hero);
+    var site = ds.brand || location.hostname.replace(/^www\./, '').split('.')[0], origin = location.origin, ft = $('.cm-tags a'), words = plain(content0).split(/\s+/).filter(Boolean).length;
     var data = [{
-      '@context': 'https://schema.org', '@type': 'BlogPosting', headline: title, description: ($('.cm-sub') || {}).textContent || '',
-      image: img ? [img] : undefined, datePublished: e.published.$t, dateModified: e.updated.$t,
-      author: { '@type': 'Person', name: ds.authorName || ($('.cm-author b') || {}).textContent.replace(/^by /, '') || site, url: ds.authorUrl || undefined, jobTitle: ds.authorRole || undefined },
-      publisher: { '@type': 'Organization', name: site, logo: ds.logo ? { '@type': 'ImageObject', url: ds.logo } : undefined },
-      mainEntityOfPage: { '@type': 'WebPage', '@id': ($('link[rel=canonical]') || {}).href || location.href }
+      '@context': 'https://schema.org', '@type': 'BlogPosting', headline: clip(title, 110), description: sa.desc,
+      image: img ? [img] : undefined, datePublished: e.published.$t, dateModified: e.updated.$t, inLanguage: 'en', wordCount: words,
+      articleSection: cats0[0] || undefined, keywords: cats0.length ? cats0.join(', ') : undefined,
+      author: Object.assign(personLd(), { name: ds.authorName || ($('.cm-author b') || {}).textContent.replace(/^by /, '') || site }),
+      publisher: orgLd(),
+      mainEntityOfPage: { '@type': 'WebPage', '@id': ($('link[rel=canonical]') || {}).href || cleanUrl() },
+      hasPart: codeLd(body)
     }, {
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',
       itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: origin + '/' }].concat(ft ? [{ '@type': 'ListItem', position: 2, name: ft.textContent, item: ft.href }, { '@type': 'ListItem', position: 3, name: title }] : [{ '@type': 'ListItem', position: 2, name: title }])
     }];
+    if (!data[0].hasPart.length) delete data[0].hasPart;
     var pc = $('.cm-pinfo-card'), tmTxt = pc ? pc.getAttribute('data-time') : '';
     var hm = /(\d+)\s*(?:h|hr|hrs|hour|hours)\b/i.exec(tmTxt || ''), mm = /(\d+)\s*(?:m|min|mins|minutes)\b/i.exec(tmTxt || '');
     var steps = $$('.cm-body ol.steps > li');
     if (steps.length >= 2) data.push({ '@context': 'https://schema.org', '@type': 'HowTo', name: title, totalTime: (hm || mm) ? 'PT' + (hm ? hm[1] + 'H' : '') + (mm ? mm[1] + 'M' : '') : undefined, step: steps.map(function (li, i) { return { '@type': 'HowToStep', position: i + 1, text: li.textContent.trim() }; }) });
     var faq = $$('.cm-body details');
     if (faq.length) data.push({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(function (dt) { var s = dt.querySelector('summary'); return { '@type': 'Question', name: s ? s.textContent.trim() : '', acceptedAnswer: { '@type': 'Answer', text: dt.textContent.replace(s ? s.textContent : '', '').trim() } }; }) });
-    var sj = el('script'); sj.type = 'application/ld+json'; sj.text = JSON.stringify(data); d.head.appendChild(sj);
+    ldAdd(data);
     readingInit(art, e, curSeries);
   }
 

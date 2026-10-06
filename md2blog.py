@@ -313,6 +313,8 @@ def container(name, args, body):
     if name == 'video':
         v = video_embed(args.strip()) or args.strip()
         return '<iframe width="560" height="315" src="%s" frameborder="0" allowfullscreen></iframe>' % attr(v)
+    if name == 'sitemap':
+        return '<div class="cm-sitemap"></div>'
     if name == 'authorbanner':
         return '<div class="cm-authorbanner"></div>'
     if name == 'download':
@@ -333,15 +335,18 @@ def info_box(meta):
     pre = [p.strip() for p in re.split(r'[;|]', meta.get('prerequisites', '')) if p.strip()]
     build = meta.get('build', '').strip()
     cl = meta.get('changelog', '').strip()
+    seo = ''
+    if meta.get('description') or meta.get('image'):
+        seo = '<span class="cm-seo" hidden data-description="%s" data-image="%s"></span>\n\n' % (attr(meta.get('description', '')), attr(meta.get('image', '')))
     clh = ('<div class="cm-changelog" data-items="%s"></div>\n\n' % attr(cl)) if cl else ''
     if not (attrs or pre or build):
-        return clh
+        return seo + clh
     h = '<div class="cm-pinfo"%s>' % attrs
     if pre:
         h += '\n  <ul class="cm-pi-pre">\n' + '\n'.join('    <li>%s</li>' % inline(p) for p in pre) + '\n  </ul>'
     if build:
         h += '\n  <p class="cm-pi-build">%s</p>' % inline(build)
-    return h + '\n</div>\n\n' + clh
+    return seo + h + '\n</div>\n\n' + clh
 
 
 SECRET_PATTERNS = [
@@ -380,6 +385,25 @@ def lint(md, meta, out_html):
         warn.append('security post: consider adding level / tested / stack front matter')
     if meta.get('tested') == '' and meta.get('level') and 'tested' not in meta:
         warn.append('add "tested: YYYY-MM-DD" so readers know the commands are current')
+    title = meta.get('title', '')
+    if title and len(title) > 60:
+        warn.append('SEO: title is %d chars (keep it under 60 so it is not cut in Google)' % len(title))
+    desc = meta.get('description', '')
+    if not desc:
+        warn.append('SEO: no "description:" front matter (aim for 120-158 chars; also paste it in Blogger > Search description)')
+    elif not 70 <= len(desc) <= 160:
+        warn.append('SEO: description is %d chars (aim for 70-160)' % len(desc))
+    if not meta.get('image'):
+        warn.append('SEO: no "image:" front matter (share image 1200x630; falls back to the first image)')
+    body = re.sub(r'^---\n.*?\n---\n', '', md, flags=re.S)
+    if not re.search(r'^##\s+\S', body, re.M):
+        warn.append('SEO: no ## sub-headings (add H2s so Google can build sitelinks and the table of contents)')
+    if re.search(r'^#\s+\S', body.split('\n', 3)[-1], re.M):
+        warn.append('SEO: more than one # heading (only the title should be H1)')
+    if not re.search(r'\]\((?:/|https?://(?:www\.)?cybertechmind\.com)', body):
+        warn.append('SEO: no internal links (link to 2-3 related posts on your own blog)')
+    for m in re.finditer(r'\[(?:click here|here|read more|link)\]\(', body, re.I):
+        warn.append('SEO: vague link text "%s" on line %d (use descriptive anchor text)' % (m.group(0)[1:].split(']')[0], body[:m.start()].count('\n') + 1))
     if shutil.which('shellcheck'):
         for i, blk in enumerate(re.findall(r'```(?:bash|sh|shell)[^\n]*\n(.*?)```', md, re.S)):
             code = '\n'.join(l[2:] if l.startswith('$ ') else l for l in blk.split('\n'))
@@ -426,6 +450,8 @@ def convert_file(path, copy=False):
         info.append('   title : ' + meta['title'])
     if labels:
         info.append('   labels: ' + ', '.join(labels))
+    if meta.get('slug'):
+        info.append('   permalink: set "%s" in Blogger > Post settings > Permalink BEFORE first publishing (cannot change later)' % meta['slug'])
     if meta.get('series'):
         info.append('   series: %s%s  (the "Series: ..." label above builds the series box; publish parts in order)' % (meta['series'], ' - part ' + meta['part'] if meta.get('part') else ''))
     print('\n'.join(info))

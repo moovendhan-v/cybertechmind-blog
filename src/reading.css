@@ -159,3 +159,16 @@
 .cm-lvl-inline{margin-left:auto;padding:2px 8px;border-radius:999px;font-size:.62rem;color:#fff;background:var(--accent)}
 .cm-lvl-inline.lv-beginner{background:#16a34a}.cm-lvl-inline.lv-intermediate{background:#d97706}.cm-lvl-inline.lv-advanced{background:#dc2626}
 @media (hover:none){.cm-lp{display:none!important}}
+
+/* header saved button + count badge (top right) */
+.cm-saved-btn{position:relative}
+.cm-saved-btn .cm-sb-badge{position:absolute;top:3px;right:2px;margin:0;min-width:15px;height:15px;padding:0 4px;font-size:.6rem;line-height:1;box-shadow:0 0 0 2px var(--bg)}
+.cm-sb-badge[hidden]{display:none!important}
+
+/* header search pill: fills the empty middle of the top bar */
+.cm-hsearch{flex:1 1 auto;max-width:460px;margin:0 auto;display:flex;align-items:center;gap:10px;height:40px;padding:0 10px 0 14px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--text) 4%,transparent);color:var(--muted);font:inherit;font-size:.9rem;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
+.cm-hsearch:hover,.cm-hsearch:focus-visible{border-color:var(--accent);color:var(--text);background:color-mix(in srgb,var(--text) 7%,transparent)}
+.cm-hs-t{flex:1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cm-hs-k{font:600 .7rem/1 inherit;padding:4px 7px;border-radius:6px;border:1px solid var(--line);color:var(--muted);background:var(--bg)}
+@media(max-width:900px){.cm-hsearch{display:none}}
+@media(min-width:901px){#cm-search-open{display:none}}

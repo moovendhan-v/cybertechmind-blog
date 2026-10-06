@@ -228,3 +228,14 @@
     $$('.cm-win-copy').forEach(function (b) { b.addEventListener('click', function () { track('code_copy', {}); }); });
   }
   window.cmRead = { markRead: markRead, posMap: posMap, readSet: readSet };
+
+  /* saved posts: bell-style button with a count badge in the header (top right) */
+  function savedHeaderBtn() {
+    var acts = $('.cm-actions'); if (!acts || $('#cm-saved-open')) return;
+    var b = el('button', 'cm-ib cm-saved-btn'); b.type = 'button'; b.id = 'cm-saved-open'; b.title = 'Saved posts'; b.setAttribute('aria-label', 'Saved posts');
+    b.appendChild(sico(SI2.bookmark)); var bd = el('span', 'cm-sb-badge'); bd.hidden = true; b.appendChild(bd);
+    b.addEventListener('click', openSaved); acts.insertBefore(b, acts.firstChild); updateSavedBadge();
+  }
+  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', savedHeaderBtn); else savedHeaderBtn();
+
+  (function () { var k = $('.cm-hs-k'); if (k && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)) k.textContent = '\u2318 K'; })();

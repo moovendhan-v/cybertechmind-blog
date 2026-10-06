@@ -161,3 +161,47 @@ A wide banner image about the author (best at 4:1, e.g. 1584 x 396). It appears 
 - anywhere in a Markdown page with `::: authorbanner` followed by `:::` (handy for the About page).
 
 Settings (Theme > Customize or the JSON gadget): `authorBanner` (image URL, currently set to the jsDelivr image of your GitHub repo), `authorBannerLink` (where a click goes; blank = `authorUrl`), `showBannerHome` (yes / no). Clear `authorBanner` to remove it everywhere.
+
+## SEO
+
+**First, check Google can see your posts.** Search Console > URL Inspection > your post > *View crawled page* > HTML. If the article body is in there, JavaScript rendering works for Google. If it is empty, tell me: that is the top SEO risk (posts are drawn from the feeds in the browser).
+
+What the theme now does by itself:
+- Unique title, meta description, canonical, Open Graph and Twitter tags per page type (home, label, post, page).
+- `noindex,follow` for search results, archives and paging beyond page 1; `max-image-preview:large` everywhere else.
+- JSON-LD: WebSite + SearchAction and Person (home), CollectionPage + ItemList (labels), BlogPosting with wordCount, keywords, author `sameAs`, publisher logo and code samples, plus BreadcrumbList, HowTo and FAQPage where the post has steps or details blocks.
+- Visible breadcrumbs, a "Related guides" block, high-priority hero image (LCP), a `<noscript>` fallback with sitemap links.
+
+Settings (Theme > Customize or the JSON gadget): `twitter`, `authorSameAs` (comma-separated GitHub, LinkedIn, X links), `locale`, `shareImage` (default 1200x630), `googleVerify`, `bingVerify`.
+
+In Markdown front matter: `description:` (70-160 chars), `image:` (1200x630 URL), `slug:` (reminder to set the permalink before first publish). `md2blog.py` now warns about long titles, missing description or image, no H2s, no internal links and vague link text.
+
+HTML sitemap: publish `posts/templates/sitemap-page.md` as a Blogger page with permalink `/p/sitemap.html`.
+
+Off-page: submit `sitemap.xml` in Search Console and Bing Webmaster, turn on Blogger's custom robots.txt (`Disallow: /search`), and make sure `instantapplications.blogspot.com` redirects to the www domain.
+
+## Community channels (Discord, Telegram, WhatsApp, Slack, Reddit)
+
+Paste an invite link into any of these settings (Theme > Customize, or the JSON gadget in Layout). A blank link hides that button; no links at all hides the whole block.
+
+| Setting | Example |
+|---|---|
+| `discordUrl` | `https://discord.gg/yourcode` |
+| `telegramUrl` | `https://t.me/yourchannel` |
+| `whatsappUrl` | `https://whatsapp.com/channel/...` |
+| `slackUrl`, `redditUrl` | invite / community link |
+| `customChannelUrl` + `customChannelLabel` | any extra link, e.g. a forum |
+| `connectTitle`, `connectText` | heading and blurb |
+| `connectPlaces` | `home,post,footer` (remove any to hide it there) |
+| `showConnect` | `no` turns everything off |
+
+The block shows on the home page (before the newsletter), at the end of every post, and as a row of icons in the footer. Social profile icons (X, GitHub, YouTube...) stay in `socialLinks`.
+
+## Logo and favicon
+
+Three ways, strongest first:
+1. **Layout page:** drop an Image gadget into *Header logo* (replaces the default).
+2. **Theme settings / JSON gadget:** `logoImage` (URL), `logoShape` (`round` or `square`), `faviconUrl`.
+3. Leave `logoImage` empty for a text logo.
+
+Defaults point at your profile photo through the Next.js image endpoint at `w=128` (about 15 KB). Do not use the `w=3840` link for a logo: it is a 2.7 MB download. Use `w=128` for the header and `w=64` for the favicon.

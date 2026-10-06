@@ -7,10 +7,11 @@ rd = lambda p: open(os.path.join(here, p), encoding='utf-8').read()
 # (name, description, type, default)
 VARS = [
  ("Brand", [
-  ("brandName","Site name","string","CyberTechMind"),
+  ("brandName","Site name (blank = use the Blogger blog title automatically)","string",""),
   ("tagline","Tagline (brand panel)","string","Practical guides on apps, Android, security and technology."),
-  ("logoImage","Logo image URL (blank = text logo)","string",""),
-  ("faviconUrl","Favicon URL png or ico (blank = Blogger default)","string",""),
+  ("logoImage","Logo image URL (blank = text logo)","string","https://profile.cybertechmind.com/_next/image?url=%2Fimages%2Fprofile-pic.jpg&w=128&q=75"),
+  ("logoShape","Logo shape round or square","string","round"),
+  ("faviconUrl","Favicon URL png or ico (blank = Blogger default)","string","https://profile.cybertechmind.com/_next/image?url=%2Fimages%2Fprofile-pic.jpg&w=64&q=75"),
   ("footerText","Footer text","string","All rights reserved."),
   ("contactUrl","Contact button URL","string","https://profile.cybertechmind.com"),
   ("contactLabel","Contact button label","string","Contact us"),
@@ -77,6 +78,17 @@ VARS = [
   ("showBannerHome","Show the author banner on the home page yes or no","string","yes"),
   ("showSecurityNotice","Auto security notice on security posts yes or no","string","yes"),
   ("securityNotice","Security notice text","string","Authorised testing only. Try these techniques only on systems you own or have written permission to test."),
+  ("showConnect","Show community join blocks yes or no","string","yes"),
+  ("connectPlaces","Where to show them home post footer comma separated","string","home,post,footer"),
+  ("connectTitle","Community block title","string","Join the community"),
+  ("connectText","Community block text","string","Get new guides first, ask questions and learn with other readers."),
+  ("discordUrl","Discord invite link (blank = hidden)","string",""),
+  ("telegramUrl","Telegram channel or group link (blank = hidden)","string",""),
+  ("whatsappUrl","WhatsApp channel link (blank = hidden)","string",""),
+  ("slackUrl","Slack invite link (blank = hidden)","string",""),
+  ("redditUrl","Reddit community link (blank = hidden)","string",""),
+  ("customChannelUrl","Extra community link any site (blank = hidden)","string",""),
+  ("customChannelLabel","Extra community button label","string","Community"),
   ("communityUrl","Community link Discord or GitHub Discussions (blank = hidden)","string",""),
   ("communityLabel","Community button label","string","Ask in the community"),
  ]),
@@ -92,6 +104,9 @@ VARS = [
  ("SEO & analytics", [
   ("shareImage","Default share image URL (Open Graph)","string",""),
   ("gaId","Google Analytics 4 ID (G-XXXXXXX)","string",""),
+  ("twitter","Twitter or X handle without the at sign (blank = none)","string",""),
+  ("authorSameAs","Author profile links for SEO comma separated GitHub LinkedIn X","string",""),
+  ("locale","Open Graph locale like en_US","string","en_US"),
   ("googleVerify","Google Search Console verification code","string",""),
   ("bingVerify","Bing Webmaster verification code","string",""),
  ]),
@@ -108,7 +123,7 @@ for g, items in VARS:
 out.append("*/")
 s = rd('skeleton.xml')
 s = s.replace('/*@@VARS@@*/', ''.join(out)).replace('/*@@CSS@@*/', rd('theme.css') + rd('blocks.css') + rd('search.css') + rd('reading.css'))
-s = s.replace('/*@@JS@@*/', rd('theme.js').replace('/*@@BLOCKS@@*/', rd('blocks.js')).replace('/*@@SEARCH@@*/', rd('search.js')).replace('/*@@READING@@*/', rd('reading.js')).replace('/*@@LINKS@@*/', rd('links.js')).replace('/*@@HOME@@*/', rd('home.js'))).replace('/*@@LAYOUTCSS@@*/', rd('layout-mode.css'))
+s = s.replace('/*@@JS@@*/', rd('theme.js').replace('/*@@BLOCKS@@*/', rd('blocks.js')).replace('/*@@SEARCH@@*/', rd('search.js')).replace('/*@@READING@@*/', rd('reading.js')).replace('/*@@LINKS@@*/', rd('links.js')).replace('/*@@HOME@@*/', rd('home.js')).replace('/*@@SEO@@*/', rd('seo.js'))).replace('/*@@LAYOUTCSS@@*/', rd('layout-mode.css'))
 inc = open(os.path.join(here, 'blog-includables.xml'), encoding='utf-8').read()
 w = rd('blog-widget.tpl.xml').replace('<!--@@INCLUDABLES@@-->', inc)
 open(os.path.join(here, 'blog-widget.optional.xml'), 'w', encoding='utf-8').write(w)
