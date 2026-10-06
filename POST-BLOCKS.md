@@ -1,3 +1,5 @@
+> Prefer Markdown? See MARKDOWN-GUIDE.md. `python3 md2blog.py posts/ --watch` turns your .md files into the HTML below automatically.
+
 # Writing posts for CyberTechMind: blocks cheat sheet
 
 In the Blogger post editor, switch to **HTML view** and paste these. Everything is styled automatically.

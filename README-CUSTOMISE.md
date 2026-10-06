@@ -68,7 +68,7 @@ Three columns on wide screens (1240px and up), one column below:
 - **Centre:** the content. Posts: topic chips, title, byline with share icons, hero image, body, tags, comments, follow-by-email. Home: featured post with a recent list, random category panels (3 cards per row), latest articles.
 - **Right rail (sticky):** Recent posts, Recommended posts (same topic on posts), your ad slot, then any Sidebar gadgets.
 - Ads in the middle: *Post ads 1* (before the body), *inside content* (after paragraph N), *Post ads 2* (after the body), *Home ads* (below the featured post).
-- **Header (two rows, with mega menu):** row 1 has the sidebar toggle, logo, search, theme toggle and a Subscribe button (jumps to the footer form, or the RSS feed if no newsletter URL is set). Row 2 lists your six busiest topics plus "More"; hover or click one to open a panel with the latest posts in that topic, other topics to explore and a featured post card. Your menu links (`menuLinks`) sit at the right of row 2. Below 1240px wide the second row hides and the sidebar drawer does the navigation.
+- **Header (two rows, with mega menu):** row 1 has the sidebar toggle, logo, search, theme toggle and a **Contact us** button (URL and label are the `contactUrl` and `contactLabel` variables; default `https://profile.cybertechmind.com`). On desktop, scrolling down tucks row 1 away; the sidebar toggle and search then appear in the category row, which stays pinned. Row 2 lists your six busiest topics plus "More"; hover or click one to open a panel with the latest posts in that topic, other topics to explore and a featured post card. Your menu links (`menuLinks`) sit at the right of row 2. Below 1240px wide the second row hides and the sidebar drawer does the navigation.
 - **Footer:** brand + social + newsletter form, three gadget columns, then copyright, legal links, sitemap, RSS and Back to top.
 - **Themes:** dark by default (`defaultTheme`); the toggle remembers the visitor's choice. Light mode is a clean white layout.
 
@@ -81,9 +81,18 @@ While the feed loads, every page shows grey shimmer placeholders in the exact la
 - No horizontal scrolling at 375px, 768px or desktop widths. Wide tables and code blocks scroll inside the post instead of the page.
 
 ## Post blocks for tech writing
-Code windows (macOS style, closed by default), tabbed code, Mermaid diagrams, callouts, captioned images with a zoom viewer, sliders, sortable / filterable tables, FAQ accordions, numbered steps, responsive video and heading anchors are all built in. Copy-paste snippets for each are in **POST-BLOCKS.md**.
+Code windows (macOS style, closed by default), tabbed code, Mermaid diagrams, callouts, captioned images with a zoom viewer, sliders, sortable / filterable tables, FAQ accordions, numbered steps, responsive video and heading anchors are all built in. Easiest: write the post in Markdown and let `md2blog.py` produce the HTML (see **MARKDOWN-GUIDE.md**). Hand-written HTML snippets for each block are in **POST-BLOCKS.md**.
 
 Settings: `codeDefault` (closed, preview or open) and `codeLines` (yes or no). Syntax highlighting (highlight.js from cdnjs) and Mermaid (from jsDelivr) are loaded only on pages that contain code or diagrams.
 
 ## Sidebar default
 The sidebar starts collapsed (icon rail). A visitor's choice (panel icon or **B**) is remembered.
+
+## Search (Ctrl/Cmd + K, or `/`)
+A command-palette search opens from any search icon. It loads your posts from the feed and filters instantly: text, **categories** (toggle chips), **author**, **search in** (everything, titles, content, categories), **year** and **sort** (best match, newest, oldest, A to Z). Matches are highlighted, arrow keys + Enter open a result, recent searches are remembered, and "See all results" falls back to Blogger's own search.
+
+## Sidebar and ads
+The sidebar now spans the full height under the header, with the "Stay updated" block pinned to the bottom. The **Sidebar ads** gadget area (Layout) sits inside it on every page and is centred in the free space. Use responsive or narrow units (e.g. AdSense responsive, 250x250, 200x200, 160x600): the open sidebar is about 236px wide inside, so 300px-wide units do not fit. It is hidden when the sidebar is collapsed.
+
+## Tech-blog features
+Author box, security notice, series navigation, post info card, HowTo / FAQ schema and the community button are described in **MARKDOWN-GUIDE.md**. New theme variables (Theme > Customize): `authorName`, `authorRole`, `authorBio`, `authorUrl`, `authorImage`, `showSecurityNotice`, `securityNotice`, `communityUrl`, `communityLabel`.

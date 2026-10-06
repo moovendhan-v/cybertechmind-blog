@@ -296,9 +296,31 @@
     });
   }
 
+  /* ---------- post info card (level, time, last tested, stack, prerequisites) ---------- */
+  function postInfo(body) {
+    $$('.cm-pinfo', body).forEach(function (box) {
+      var g = function (k) { return box.getAttribute('data-' + k) || ''; }, card = el('aside', 'cm-pinfo-card'), row = el('div', 'cm-pi-badges');
+      ['level', 'time', 'tested', 'region', 'stack'].forEach(function (k) { if (g(k)) card.setAttribute('data-' + k, g(k)); });
+      function pill(cls, path, text) { var p = el('span', 'cm-pi-pill ' + cls); if (path) p.appendChild(bi(path)); p.appendChild(el('span', '', text)); row.appendChild(p); return p; }
+      if (g('level')) pill('lv lv-' + g('level').toLowerCase().replace(/[^a-z]/g, ''), '', g('level'));
+      if (g('time')) pill('', 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2', g('time'));
+      if (g('tested')) {
+        var dt = new Date(g('tested')), old = !isNaN(dt) && (Date.now() - dt.getTime()) > 548 * 864e5, nice = isNaN(dt) ? g('tested') : dt.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        pill(old ? 'stale' : 'ok', old ? ICO.warn : ICO.check, (old ? 'Tested ' : 'Last tested ') + nice + (old ? ' (may be outdated)' : ''));
+      }
+      if (g('region')) pill('', 'M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11zM12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z', g('region'));
+      if (row.children.length) card.appendChild(row);
+      if (g('stack')) { var st = el('div', 'cm-pi-stack'); st.appendChild(el('span', 'cm-pi-l', 'Stack')); g('stack').split(',').forEach(function (s) { s = s.trim(); if (s) st.appendChild(el('code', '', s)); }); card.appendChild(st); }
+      var pre = box.querySelector('.cm-pi-pre'), bld = box.querySelector('.cm-pi-build');
+      if (pre) { var s1 = el('div', 'cm-pi-sec'); s1.appendChild(el('h4', '', 'Prerequisites')); s1.appendChild(pre); card.appendChild(s1); }
+      if (bld) { var s2 = el('div', 'cm-pi-sec'); s2.appendChild(el('h4', '', 'What you will build')); s2.appendChild(bld); card.appendChild(s2); }
+      box.replaceWith(card);
+    });
+  }
+
   function enhanceBody(body) {
     if (!body || body.getAttribute('data-enhanced')) return; body.setAttribute('data-enhanced', '1');
-    callouts(body); tables(body); embeds(body); sliders(body); figures(body);
+    postInfo(body); callouts(body); tables(body); embeds(body); sliders(body); figures(body);
     /* code groups (tabs) first, then single blocks */
     $$('.code-tabs,[data-code-tabs]', body).forEach(function (g) {
       var pres = $$('pre', g); if (!pres.length) return; var panes = pres.map(codeParts);

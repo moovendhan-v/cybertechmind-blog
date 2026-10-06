@@ -11,6 +11,8 @@ VARS = [
   ("tagline","Tagline (brand panel)","string","Practical guides on apps, Android, security and technology."),
   ("logoImage","Logo image URL (blank = text logo)","string",""),
   ("footerText","Footer text","string","All rights reserved."),
+  ("contactUrl","Contact button URL","string","https://profile.cybertechmind.com"),
+  ("contactLabel","Contact button label","string","Contact us"),
  ]),
  ("Colors & type", [
   ("accentColor","Accent color","color","#6728FF"),
@@ -52,6 +54,17 @@ VARS = [
   ("codeDefault","Code windows start closed or preview or open","string","closed"),
   ("codeLines","Show line numbers in code windows yes or no","string","yes"),
  ]),
+ ("Author and trust", [
+  ("authorName","Author name (blank = use the Blogger author)","string",""),
+  ("authorRole","Author role or credentials","string",""),
+  ("authorBio","Author bio (one or two sentences)","string",""),
+  ("authorUrl","Author profile link","string","https://profile.cybertechmind.com"),
+  ("authorImage","Author photo URL","string",""),
+  ("showSecurityNotice","Auto security notice on security posts yes or no","string","yes"),
+  ("securityNotice","Security notice text","string","Authorised testing only. Try these techniques only on systems you own or have written permission to test."),
+  ("communityUrl","Community link Discord or GitHub Discussions (blank = hidden)","string",""),
+  ("communityLabel","Community button label","string","Ask in the community"),
+ ]),
  ("Newsletter", [
   ("showNewsletter","Show newsletter panel (yes / no)","string","yes"),
   ("newsletterAction","Form action URL (Mailchimp / Brevo / etc; blank = hidden)","string",""),
@@ -79,13 +92,14 @@ for g, items in VARS:
     out.append('</Group>\n')
 out.append("*/")
 s = rd('skeleton.xml')
-s = s.replace('/*@@VARS@@*/', ''.join(out)).replace('/*@@CSS@@*/', rd('theme.css') + rd('blocks.css'))
-s = s.replace('/*@@JS@@*/', rd('theme.js').replace('/*@@BLOCKS@@*/', rd('blocks.js'))).replace('/*@@LAYOUTCSS@@*/', rd('layout-mode.css'))
+s = s.replace('/*@@VARS@@*/', ''.join(out)).replace('/*@@CSS@@*/', rd('theme.css') + rd('blocks.css') + rd('search.css'))
+s = s.replace('/*@@JS@@*/', rd('theme.js').replace('/*@@BLOCKS@@*/', rd('blocks.js')).replace('/*@@SEARCH@@*/', rd('search.js'))).replace('/*@@LAYOUTCSS@@*/', rd('layout-mode.css'))
 inc = open(os.path.join(here, 'blog-includables.xml'), encoding='utf-8').read()
 w = rd('blog-widget.tpl.xml').replace('<!--@@INCLUDABLES@@-->', inc)
 open(os.path.join(here, 'blog-widget.optional.xml'), 'w', encoding='utf-8').write(w)
 m.parseString('<r xmlns:b="b" xmlns:data="d" xmlns:expr="e">' + w + '</r>')
 open(os.path.join(root, 'template.xml'), 'w', encoding='utf-8').write(s)
+
 try:
     m.parse(os.path.join(root, 'template.xml')); print('template.xml built, XML OK,', len(s)//1024, 'KB')
 except Exception as e:

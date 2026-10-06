@@ -45,7 +45,7 @@
   </b:if>
 </head>
 
-<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
+<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
   <a class='cm-skip' href='#cm-main'>Skip to content</a>
 
   <!-- Optional wallpaper (Theme Settings: wallpaperImage) -->
@@ -56,7 +56,7 @@
   <!-- ===== HEADER ===== -->
   <header class='cm-header' id='cm-header'>
     <div class='cm-header-in'>
-      <button aria-controls='cm-sb' aria-label='Toggle sidebar' class='cm-ib cm-sbtoggle' id='cm-sbtoggle' title='Toggle sidebar (B)' type='button'>
+      <button aria-controls='cm-sb' aria-label='Toggle sidebar' class='cm-ib cm-sbtoggle' data-act='sidebar' id='cm-sbtoggle' title='Toggle sidebar (B)' type='button'>
         <svg fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' width='19'><rect height='14' rx='2' width='18' x='3' y='5'/><path d='M9 5v14'/></svg>
       </button>
       <a class='cm-logo' expr:href='data:blog.homepageUrl'>
@@ -69,24 +69,30 @@
         <b:section class='cm-logo-s' id='header-logo' maxwidgets='1' name='Header logo - image gadget, recommended height 34px' showaddelement='yes'/>
       </div>
       <div class='cm-actions'>
-        <button aria-label='Search' class='cm-ib' id='cm-search-open' type='button'>
+        <button aria-label='Search (Ctrl or Cmd + K)' class='cm-ib' data-act='search' id='cm-search-open' title='Search (Ctrl/Cmd + K)' type='button'>
           <svg fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-width='2' viewBox='0 0 24 24' width='19'><circle cx='11' cy='11' r='7'/><path d='m21 21-4.3-4.3'/></svg>
         </button>
         <button aria-label='Toggle light / dark theme' class='cm-ib' id='cm-theme' type='button'>
           <svg class='cm-ic-moon' fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' width='19'><path d='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.800z'/></svg>
           <svg class='cm-ic-sun' fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-width='2' viewBox='0 0 24 24' width='19'><circle cx='12' cy='12' r='4'/><path d='M12 2v2M12 20v2M4.9 4.9l1.400 1.400M17.700 17.700l1.400 1.400M2 12h2M20 12h2M4.900 19.100l1.400-1.400M17.700 6.300l1.400-1.400'/></svg>
         </button>
-        <a class='cm-btn cm-cta' expr:href='data:skin.vars.newsletterAction != &quot;&quot; ? &quot;#cm-subscribe&quot; : &quot;/feeds/posts/default?alt=rss&quot;'>Subscribe</a>
+        <a class='cm-btn cm-cta' expr:href='data:skin.vars.contactUrl' rel='noopener' target='_blank'><data:skin.vars.contactLabel/></a>
       </div>
     </div>
     <!-- second row: category mega menu + main menu links -->
     <div class='cm-subnav' id='cm-subnav'>
       <div class='cm-subnav-in'>
+        <button aria-label='Toggle sidebar' class='cm-ib cm-sub-tool' data-act='sidebar' title='Toggle sidebar (B)' type='button'>
+          <svg fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' width='19'><rect height='14' rx='2' width='18' x='3' y='5'/><path d='M9 5v14'/></svg>
+        </button>
         <nav aria-label='Topics' class='cm-mega-nav' id='cm-mega-nav'/>
         <nav aria-label='Primary' class='cm-nav' id='cm-nav' expr:data-links='data:skin.vars.menuLinks'>
           <b:section class='cm-menu-s' id='main-menu' maxwidgets='1' name='Main menu - link list gadget' showaddelement='yes'/>
           <ul class='cm-links'/>
         </nav>
+        <button aria-label='Search (Ctrl or Cmd + K)' class='cm-ib cm-sub-tool' data-act='search' title='Search (Ctrl/Cmd + K)' type='button'>
+          <svg fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-width='2' viewBox='0 0 24 24' width='19'><circle cx='11' cy='11' r='7'/><path d='m21 21-4.3-4.3'/></svg>
+        </button>
       </div>
       <div class='cm-mega-wrap'>
         <div aria-label='Browse topics' class='cm-mega' hidden='hidden' id='cm-mega' role='region'/>
@@ -94,12 +100,7 @@
     </div>
   </header>
 
-  <div aria-label='Search' class='cm-search' id='cm-search' role='dialog'>
-    <form expr:action='data:blog.searchUrl' method='get'>
-      <input aria-label='Search' autocomplete='off' id='cm-search-input' name='q' placeholder='Search articles…' type='search'/>
-      <button class='cm-btn' type='submit'>Search</button>
-    </form>
-  </div>
+
 
   <!-- AD SLOT: header leaderboard -->
   <div class='cm-ad cm-wrap'>
@@ -158,8 +159,8 @@
     </div>
 
     <!-- AD SLOTS: post page side rails (moved into the left / right rails by JS) -->
-    <div class='cm-ad cm-ad-post cm-ad-sl'>
-      <b:section class='cm-adsec' id='ad-side-left' maxwidgets='2' name='Post page left rail - ads' showaddelement='yes'/>
+    <div class='cm-ad cm-ad-sl'>
+      <b:section class='cm-adsec' id='ad-side-left' maxwidgets='2' name='Sidebar ads - inside the left sidebar, all pages' showaddelement='yes'/>
     </div>
     <div class='cm-ad cm-ad-post cm-ad-sr'>
       <b:section class='cm-adsec' id='ad-side-right' maxwidgets='2' name='Post page right rail - ads' showaddelement='yes'/>

@@ -13,3 +13,6 @@
 - Two-row navbar with category mega menu (latest in topic, explore topics, featured post card), built from the feed; header height variable keeps sticky rails aligned.
 - Mobile / tablet pass: single-column shell, off-canvas sidebar drawer, compact header, stacked byline and share icons, full-width buttons, touch-size targets, safe-area padding, no horizontal overflow.
 - Sidebar closed by default. Post blocks: macOS code windows (closed by default, preview / open, tabs, copy, line numbers, syntax highlighting), Mermaid, callouts, figures + lightbox, slider, sortable/filterable tables, accordions, steps, embeds, heading anchors. Added POST-BLOCKS.md.
+- Markdown workflow: md2blog.py converts posts/*.md to Blogger-ready HTML (watch mode, --copy), with posts/sample.md and MARKDOWN-GUIDE.md.
+- Search command palette (categories, author, scope, year, sort, highlights, keyboard), Contact us button replaces Subscribe, header row hides on scroll with sidebar toggle + search moving to the category row, full-height sidebar with an ad area inside.
+- Tech-blog features: post info card (level, time, last tested, stack, prerequisites), series navigation, auto security notice, author box, HowTo/FAQ schema, community button, download card, ads kept away from code, md2blog lint (secrets, alt text, languages, shellcheck), 7 starter templates.
