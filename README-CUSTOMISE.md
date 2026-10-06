@@ -96,3 +96,54 @@ The sidebar now spans the full height under the header, with the "Stay updated" 
 
 ## Tech-blog features
 Author box, security notice, series navigation, post info card, HowTo / FAQ schema and the community button are described in **MARKDOWN-GUIDE.md**. New theme variables (Theme > Customize): `authorName`, `authorRole`, `authorBio`, `authorUrl`, `authorImage`, `showSecurityNotice`, `securityNotice`, `communityUrl`, `communityLabel`.
+
+## Reading mode and engagement (all stored in the visitor's browser)
+- **Tools bar under every post's byline:** *Reading* (text size 85-140%, width narrow / normal / wide, sans or serif, theme dark / light / **sepia**), *Focus* (hides sidebars, header, footer and ads; press **F**; Esc or the "Exit focus" pill leaves it), *Save* (bookmark; a **Saved** item with a count appears in the sidebar) and *Expand / Collapse code* when a post has two or more code windows. Each code window also has a **Wrap** button.
+- **Progress:** the sidebar contents shows "~N min left" and ticks sections you have passed. Your position is remembered, and returning offers *Continue where you left off*. The home page shows a **Continue reading** row with progress bars.
+- **Was this helpful?** Yes / No at the end of every post. **Up next** card: the next part of a series, or the best related post.
+- **Keyboard:** `?` help, `/` or Ctrl/Cmd + K search, `B` sidebar, `F` focus, `J` / `K` older / newer post.
+- **Custom 404 page** with search and popular posts.
+- **Analytics (GA4 events, if `gaId` is set):** `focus_mode`, `save_post`, `read_complete`, `helpful_vote`, `code_toggle_all`, `code_copy`, `home_filter`, `newsletter_submit`, `page_not_found`.
+
+## Home page
+Hero (variables `showHero`, `heroTitle`, `heroSub`) with four topic tiles, **Continue reading**, **Start here** (appears when you create a label named exactly `Start here` and give it your best 3 posts), the featured post, a newsletter strip (when `newsletterAction` is set), **Learning paths** (series cards with read progress), filterable **Latest articles** (All, Beginner / Intermediate / Advanced when posts have `level:`, and your top topics), then topic panels. Cards show a level badge and the primary topic.
+
+## Everything is customisable from Layout
+**Layout page.** The areas are arranged in rows like a commercial theme: Theme options, header logo + main menu, header ads, hero, featured post, home ads, blog posts + sidebar, post ads (before / after content, inside content, follow by email), sidebar ads + right-rail ads, footer 1 / 2 / 3, footer ads, footer copyright + footer menu. Drag gadgets between them.
+
+**Theme options gadget** (top of Layout, pre-filled with an HTML gadget called *Theme settings (JSON)*). Edit the JSON inside it; any key you add overrides the matching Theme > Customize variable. If the gadget is missing, add an **HTML/JavaScript** gadget to *Theme options* and paste:
+
+```html
+<script type="application/json" id="cm-config">
+{
+  "showLeftSidebar": true,
+  "showRightRail": true,
+  "showHeaderCategories": true,
+  "showFooter": true,
+  "sidebarDefault": "collapsed"
+}
+</script>
+```
+
+| Key | Values | What it does |
+|---|---|---|
+| `showLeftSidebar` | true / false | Left sidebar and its toggle buttons |
+| `showRightRail` | true / false | Right column (recent, recommended, ads) |
+| `showHeaderCategories` | true / false | Category row (mega menu) in the header |
+| `showFooter` | true / false | Whole footer |
+| `sidebarDefault` | "collapsed" / "expanded" | How the sidebar starts for new visitors |
+| `brandName`, `tagline`, `footerText` | text | Site name, footer blurb, copyright line |
+| `logoImage`, `faviconUrl` | image URL | Logo (header, sidebar) and browser-tab icon |
+| `accentColor` | `"#e11d48"` | Brand colour for buttons, links, highlights |
+| `defaultTheme` | "dark" / "light" / "sepia" / "auto" | First-visit theme |
+| `contentWidth` | `1200` or `"1440px"` | Maximum page width |
+| `contactUrl`, `contactLabel` | text | Header button |
+| `menuLinks`, `socialLinks`, `footerLinks` | `"Label\|URL;Label\|URL"` | Header menu, footer social icons, footer links |
+| `showHero`, `heroTitle`, `heroSub` | | Home hero |
+| `showNewsletter`, `newsletterAction`, `newsletterTitle`, `newsletterText` | | Newsletter strip and footer form |
+| `authorName`, `authorRole`, `authorBio`, `authorUrl`, `authorImage` | | Author box |
+| `showSecurityNotice`, `securityNotice` | | Notice on security posts |
+| `communityUrl`, `communityLabel` | | Community button under comments |
+| `gaId` | `"G-XXXXXXX"` | Google Analytics 4 |
+
+The same toggles also exist as Theme > Customize variables (`showLeftSidebar`, `showRightRail`, `showHeaderCategories`, `showFooter`, `sidebarDefault`, `faviconUrl`). Use either; the JSON gadget wins when both are set.

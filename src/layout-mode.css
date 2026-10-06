@@ -1,12 +1,26 @@
-html,body#layout{background:#f7f7f7}
-body#layout{position:relative;width:auto;max-width:980px;margin:0 auto;padding:16px;font-family:Arial,sans-serif}
-body#layout div.section{display:block;background:#efefef!important;border:1px solid #dcdcdc;border-radius:4px;margin:0 0 12px!important;padding:12px 14px!important}
+html,body#layout #outer-wrapper,body#layout .row{width:auto;padding:0}
+body#layout{position:relative;width:910px;margin:0 auto;background:#f9f9f9;padding:95px 5px 0;font-family:Roboto,Arial,Helvetica,sans-serif}
+body#layout:before{content:'CyberTechMind theme \2014 drag gadgets between the areas';position:absolute;top:0;left:5px;right:5px;height:95px;font-size:21px;font-weight:700;line-height:95px;color:#1f2024;text-align:center}
+body#layout:after{content:'';display:block;clear:both!important;height:24px}
+/* flatten wrappers so every area becomes a direct child of the page */
+body#layout .cm-lay{display:contents}
+body#layout .cm-lay>*:not(.cm-lay):not(.section){display:none!important}
+body#layout script,body#layout style{display:none}
+/* each area is a floated box; rows are made with widths and clear */
+body#layout div.section{display:block!important;float:left!important;box-sizing:border-box!important;width:calc(100% - 10px)!important;margin:0 5px 10px!important;padding:16px 16px 18px!important;background:#f1f1f1!important;border:1px solid #e5e5e5;border-radius:6px}
 body#layout .no-items.section{display:block}
-body#layout .section h4{font-size:13px;text-transform:uppercase;color:#222;margin:0 0 8px}
-body#layout .add_widget a{color:#1a73e8!important}
-body#layout .widget-content{max-width:none;width:auto}
-body#layout .cm-home-only,body#layout .cm-pitem,body#layout .cm-ad,body#layout .cm-sidebar,body#layout .cm-hide{display:block!important}
-body#layout .cm-foot-cols{display:grid!important;grid-template-columns:repeat(3,1fr);gap:10px}
-body#layout .cm-header-in,body#layout .cm-foot-bottom{display:block;height:auto;padding:0}
-body#layout .cm-search,body#layout .cm-actions,body#layout .cm-logo,body#layout .cm-links{display:none!important}
-body#layout .cm-wall{display:none}
+body#layout .section h4{margin:0 0 10px;font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#1f2024}
+body#layout .add_widget a{color:#3c97ef!important}
+body#layout .widget-content{width:auto;max-width:none;max-height:none}
+body#layout .widget{margin:6px 0}
+body#layout #theme-options{clear:both!important;background:#edf4ff!important;border-color:#cdd4ef}
+body#layout #header-logo{clear:both!important;width:calc(50% - 10px)!important}
+body#layout #main-menu{width:calc(50% - 10px)!important}
+body#layout #ad-header,body#layout #hero-section,body#layout #featured-post,body#layout #ad-home,body#layout #ad-footer{clear:both!important}
+body#layout #main{clear:both!important;width:calc(66% - 10px)!important;min-height:170px}
+body#layout #sidebar{width:calc(34% - 10px)!important}
+body#layout #post-ads-1,body#layout #ad-in-article,body#layout #ad-side-left,body#layout #footer-copyright{clear:both!important;width:calc(50% - 10px)!important}
+body#layout #ad-end-post,body#layout #post-follow-email,body#layout #ad-side-right,body#layout #footer-menu{width:calc(50% - 10px)!important}
+body#layout #footer-1{clear:both!important}
+body#layout #footer-1,body#layout #footer-2,body#layout #footer-3{width:calc(33.333% - 10px)!important}
+body#layout .cm-wall,body#layout .cm-skip{display:none}

@@ -27,6 +27,7 @@ stack: Terraform 1.9, AWS CLI 2.17
 region: us-east-1
 prerequisites: An AWS account; AWS CLI installed
 build: A private, encrypted S3 bucket with logging.
+changelog: 2026-10-01: Added the CVE note | 2026-09-12: Initial publish
 ---
 ```
 

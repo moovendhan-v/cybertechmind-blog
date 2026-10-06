@@ -11,6 +11,10 @@
        meta description (set it in Settings > Search preferences / per-post Search description). -->
   <b:include data='blog' name='all-head-content'/>
   <meta content='summary_large_image' name='twitter:card'/>
+  <b:if cond='data:skin.vars.faviconUrl != &quot;&quot;'>
+    <link expr:href='data:skin.vars.faviconUrl' rel='icon'/>
+    <link expr:href='data:skin.vars.faviconUrl' rel='apple-touch-icon'/>
+  </b:if>
   <meta content='#14171c' name='theme-color'/>
   <b:if cond='data:view.isArchive or data:view.search.query'>
     <meta content='noindex,follow' name='robots'/>
@@ -31,7 +35,7 @@
     //<![CDATA[
     (function(){var h=document.documentElement,d=h.getAttribute('data-theme')||'dark',t=null;try{t=localStorage.getItem('cmTheme')}catch(e){}
     if(!t){t=d==='auto'?(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):d}
-    h.setAttribute('data-theme',t==='light'?'light':'dark');try{h.setAttribute('data-sb',localStorage.getItem('cmSb')==='full'?'full':'min')}catch(e){h.setAttribute('data-sb','min')}})();
+    h.setAttribute('data-theme',t==='light'||t==='sepia'?t:'dark');try{h.setAttribute('data-sb',localStorage.getItem('cmSb')==='full'?'full':'min')}catch(e){h.setAttribute('data-sb','min')}})();
     //]]>
   </script>
 
@@ -45,8 +49,30 @@
   </b:if>
 </head>
 
-<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
+<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-sb-default='data:skin.vars.sidebarDefault' expr:data-show-footer='data:skin.vars.showFooter' expr:data-show-lsb='data:skin.vars.showLeftSidebar' expr:data-show-rrail='data:skin.vars.showRightRail' expr:data-show-subnav='data:skin.vars.showHeaderCategories' expr:data-hero-sub='data:skin.vars.heroSub' expr:data-hero-title='data:skin.vars.heroTitle' expr:data-news-action='data:skin.vars.newsletterAction' expr:data-news-text='data:skin.vars.newsletterText' expr:data-news-title='data:skin.vars.newsletterTitle' expr:data-show-hero='data:skin.vars.showHero' expr:data-show-news='data:skin.vars.showNewsletter' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
   <a class='cm-skip' href='#cm-main'>Skip to content</a>
+  <!-- THEME OPTIONS: paste or edit the JSON in the gadget below (Layout page). See README-CUSTOMISE.md for every key. -->
+  <div class='cm-opts cm-lay'>
+    <b:section class='cm-opts-s' id='theme-options' maxwidgets='1' name='Theme options - JSON settings gadget (sidebars, footer, favicon, logo, colors)' showaddelement='yes'>
+      <b:widget id='HTML151' locked='false' title='Theme settings (JSON)' type='HTML' visible='true'>
+        <b:widget-settings>
+          <b:widget-setting name='content'><![CDATA[<script type="application/json" id="cm-config">
+{
+  "showLeftSidebar": true,
+  "showRightRail": true,
+  "showHeaderCategories": true,
+  "showFooter": true,
+  "sidebarDefault": "collapsed"
+}
+</script>]]></b:widget-setting>
+        </b:widget-settings>
+        <b:includable id='main'>
+          <data:content/>
+        </b:includable>
+      </b:widget>
+    </b:section>
+  </div>
+
 
   <!-- Optional wallpaper (Theme Settings: wallpaperImage) -->
   <b:if cond='data:skin.vars.wallpaperImage != &quot;&quot;'>
@@ -54,8 +80,8 @@
   </b:if>
 
   <!-- ===== HEADER ===== -->
-  <header class='cm-header' id='cm-header'>
-    <div class='cm-header-in'>
+  <header class='cm-header cm-lay' id='cm-header'>
+    <div class='cm-header-in cm-lay'>
       <button aria-controls='cm-sb' aria-label='Toggle sidebar' class='cm-ib cm-sbtoggle' data-act='sidebar' id='cm-sbtoggle' title='Toggle sidebar (B)' type='button'>
         <svg fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' width='19'><rect height='14' rx='2' width='18' x='3' y='5'/><path d='M9 5v14'/></svg>
       </button>
@@ -65,7 +91,7 @@
         </b:if>
         <span><data:skin.vars.brandName/></span>
       </a>
-      <div class='cm-logo-sec'>
+      <div class='cm-logo-sec cm-lay'>
         <b:section class='cm-logo-s' id='header-logo' maxwidgets='1' name='Header logo - image gadget, recommended height 34px' showaddelement='yes'/>
       </div>
       <div class='cm-actions'>
@@ -80,13 +106,13 @@
       </div>
     </div>
     <!-- second row: category mega menu + main menu links -->
-    <div class='cm-subnav' id='cm-subnav'>
-      <div class='cm-subnav-in'>
+    <div class='cm-subnav cm-lay' id='cm-subnav'>
+      <div class='cm-subnav-in cm-lay'>
         <button aria-label='Toggle sidebar' class='cm-ib cm-sub-tool' data-act='sidebar' title='Toggle sidebar (B)' type='button'>
           <svg fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' width='19'><rect height='14' rx='2' width='18' x='3' y='5'/><path d='M9 5v14'/></svg>
         </button>
         <nav aria-label='Topics' class='cm-mega-nav' id='cm-mega-nav'/>
-        <nav aria-label='Primary' class='cm-nav' id='cm-nav' expr:data-links='data:skin.vars.menuLinks'>
+        <nav aria-label='Primary' class='cm-nav cm-lay' id='cm-nav' expr:data-links='data:skin.vars.menuLinks'>
           <b:section class='cm-menu-s' id='main-menu' maxwidgets='1' name='Main menu - link list gadget' showaddelement='yes'/>
           <ul class='cm-links'/>
         </nav>
@@ -103,12 +129,12 @@
 
 
   <!-- AD SLOT: header leaderboard -->
-  <div class='cm-ad cm-wrap'>
+  <div class='cm-ad cm-wrap cm-lay'>
     <b:section class='cm-adsec' id='ad-header' maxwidgets='2' name='Header ads - leaderboard' showaddelement='yes'/>
   </div>
 
   <!-- ===== MAIN ===== -->
-  <main class='cm-wrap' id='cm-main'>
+  <main class='cm-wrap cm-lay' id='cm-main'>
 
     <!-- Optional banner image (Theme Settings: bannerImage) -->
     <b:if cond='data:skin.vars.bannerImage != &quot;&quot; and data:view.isHomepage'>
@@ -116,8 +142,8 @@
     </b:if>
 
     <!-- HOME ONLY: hero section + featured post gadgets -->
-    <div class='cm-home-only'>
-      <div class='cm-hero-sec'>
+    <div class='cm-home-only cm-lay'>
+      <div class='cm-hero-sec cm-lay'>
         <b:section class='cm-hero-s' id='hero-section' maxwidgets='3' name='Hero section - image, text, search box' showaddelement='yes'>
         <b:widget id='Text151' locked='false' title='Practical guides on apps, Android and security' type='Text' visible='true'>
           <b:widget-settings>
@@ -140,39 +166,19 @@
         </b:widget>
       </b:section>
       </div>
-      <div class='cm-feat-sec'>
+      <div class='cm-feat-sec cm-lay'>
         <b:section class='cm-feat-s' id='featured-post' maxwidgets='1' name='Featured post - featured post gadget' showaddelement='yes'/>
       </div>
     </div>
 
-    <b:section class='main' id='main' maxwidgets='1' name='Blog posts - filled automatically (do not add)' showaddelement='no'/>
-
-
-
     <!-- AD SLOT: below feature strip (homepage; moved by JS) -->
-    <div class='cm-ad cm-ad-home'>
+    <div class='cm-ad cm-ad-home cm-lay'>
       <b:section class='cm-adsec' id='ad-home' maxwidgets='2' name='Home ads - below featured posts' showaddelement='yes'/>
     </div>
-    <!-- AD SLOT: inside article (moved after paragraph N by JS) -->
-    <div class='cm-ad cm-ad-post cm-ad-in'>
-      <b:section class='cm-adsec' id='ad-in-article' maxwidgets='2' name='Post ads - inside content, after paragraph N' showaddelement='yes'/>
-    </div>
 
-    <!-- AD SLOTS: post page side rails (moved into the left / right rails by JS) -->
-    <div class='cm-ad cm-ad-sl'>
-      <b:section class='cm-adsec' id='ad-side-left' maxwidgets='2' name='Sidebar ads - inside the left sidebar, all pages' showaddelement='yes'/>
-    </div>
-    <div class='cm-ad cm-ad-post cm-ad-sr'>
-      <b:section class='cm-adsec' id='ad-side-right' maxwidgets='2' name='Post page right rail - ads' showaddelement='yes'/>
-    </div>
-    <!-- POST PAGE: ads before content / follow by email / sidebar -->
-    <div class='cm-ad cm-ad-post cm-ad-pa1'>
-      <b:section class='cm-adsec' id='post-ads-1' maxwidgets='2' name='Post ads 1 - before post content' showaddelement='yes'/>
-    </div>
-    <div class='cm-pitem cm-pfe'>
-      <b:section class='cm-pfe-s' id='post-follow-email' maxwidgets='1' name='Post follow by email - after related posts' showaddelement='yes'/>
-    </div>
-    <aside class='cm-sidebar' id='cm-sidebar'>
+    <b:section class='main' id='main' maxwidgets='1' name='Blog posts - filled automatically (do not add)' showaddelement='no'/>
+
+    <aside class='cm-sidebar cm-lay' id='cm-sidebar'>
       <b:section class='cm-sidebar-s' id='sidebar' maxwidgets='20' name='Sidebar - beside posts on every page' showaddelement='yes'>
         <b:widget id='PopularPosts151' locked='false' title='Popular posts' type='PopularPosts' version='2' visible='true'>
           <b:widget-settings>
@@ -218,24 +224,50 @@
       </b:section>
     </aside>
 
+    <!-- POST PAGE: ads before content / follow by email / sidebar -->
+    <div class='cm-ad cm-ad-post cm-ad-pa1 cm-lay'>
+      <b:section class='cm-adsec' id='post-ads-1' maxwidgets='2' name='Post ads 1 - before post content' showaddelement='yes'/>
+    </div>
     <!-- AD SLOT: end of post (moved above the tags by JS) -->
-    <div class='cm-ad cm-ad-post cm-ad-end'>
+    <div class='cm-ad cm-ad-post cm-ad-end cm-lay'>
       <b:section class='cm-adsec' id='ad-end-post' maxwidgets='2' name='Post ads 2 - after post content' showaddelement='yes'/>
     </div>
+
+    <!-- AD SLOT: inside article (moved after paragraph N by JS) -->
+    <div class='cm-ad cm-ad-post cm-ad-in cm-lay'>
+      <b:section class='cm-adsec' id='ad-in-article' maxwidgets='2' name='Post ads - inside content, after paragraph N' showaddelement='yes'/>
+    </div>
+    <div class='cm-pitem cm-pfe cm-lay'>
+      <b:section class='cm-pfe-s' id='post-follow-email' maxwidgets='1' name='Post follow by email - after related posts' showaddelement='yes'/>
+    </div>
+
+    <!-- AD SLOTS: post page side rails (moved into the left / right rails by JS) -->
+    <div class='cm-ad cm-ad-sl cm-lay'>
+      <b:section class='cm-adsec' id='ad-side-left' maxwidgets='2' name='Sidebar ads - inside the left sidebar, all pages' showaddelement='yes'/>
+    </div>
+    <div class='cm-ad cm-ad-post cm-ad-sr cm-lay'>
+      <b:section class='cm-adsec' id='ad-side-right' maxwidgets='2' name='Post page right rail - ads' showaddelement='yes'/>
+    </div>
+
+
+
+
+
+
 
     <div id='cm-main-end'/>
   </main>
 
   <!-- AD SLOT: footer -->
-  <div class='cm-ad cm-wrap'>
+  <div class='cm-ad cm-wrap cm-lay'>
     <b:section class='cm-adsec' id='ad-footer' maxwidgets='2' name='Footer ads' showaddelement='yes'/>
   </div>
 
 
   <!-- ===== FOOTER ===== -->
-  <footer class='cm-footer' id='cm-footer'>
-    <div class='cm-foot-in'>
-      <div class='cm-foot-top'>
+  <footer class='cm-footer cm-lay' id='cm-footer'>
+    <div class='cm-foot-in cm-lay'>
+      <div class='cm-foot-top cm-lay'>
         <div class='cm-footbrand'>
           <strong class='cm-footname'><data:skin.vars.brandName/></strong>
           <p><data:skin.vars.tagline/></p>
@@ -252,7 +284,7 @@
             </form>
           </b:if>
         </div>
-        <div class='cm-foot-col'><b:section class='cm-foot-s' id='footer-1' maxwidgets='3' name='Footer 1 - max 3 gadgets' showaddelement='yes'>
+        <div class='cm-foot-col cm-lay'><b:section class='cm-foot-s' id='footer-1' maxwidgets='3' name='Footer 1 - max 3 gadgets' showaddelement='yes'>
           <b:widget id='LinkList151' locked='false' title='Quick links' type='LinkList' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='sorting'>NONE</b:widget-setting>
@@ -275,7 +307,7 @@
             </b:includable>
           </b:widget>
           </b:section></div>
-        <div class='cm-foot-col'><b:section class='cm-foot-s' id='footer-2' maxwidgets='3' name='Footer 2 - max 3 gadgets' showaddelement='yes'>
+        <div class='cm-foot-col cm-lay'><b:section class='cm-foot-s' id='footer-2' maxwidgets='3' name='Footer 2 - max 3 gadgets' showaddelement='yes'>
           <b:widget id='Label152' locked='false' title='Categories' type='Label' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='sorting'>ALPHA</b:widget-setting>
@@ -296,7 +328,7 @@
             </b:includable>
           </b:widget>
           </b:section></div>
-        <div class='cm-foot-col'><b:section class='cm-foot-s' id='footer-3' maxwidgets='3' name='Footer 3 - max 3 gadgets' showaddelement='yes'>
+        <div class='cm-foot-col cm-lay'><b:section class='cm-foot-s' id='footer-3' maxwidgets='3' name='Footer 3 - max 3 gadgets' showaddelement='yes'>
           <b:widget id='Text152' locked='false' title='Stay in touch' type='Text' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'><![CDATA[Questions, feedback or app requests? Visit the Contact page and we will get back to you.]]></b:widget-setting>
@@ -308,12 +340,12 @@
           </b:widget>
           </b:section></div>
       </div>
-      <div class='cm-foot-bottom'>
-        <div class='cm-copy'>
+      <div class='cm-foot-bottom cm-lay'>
+        <div class='cm-copy cm-lay'>
           <b:section class='cm-copy-s' id='footer-copyright' maxwidgets='1' name='Footer copyright - custom credits (text gadget)' showaddelement='yes'/>
           <div class='cm-copy-default'>&#169; <data:skin.vars.brandName/> &#183; <data:skin.vars.footerText/></div>
         </div>
-        <nav aria-label='Footer' class='cm-footnav' expr:data-links='data:skin.vars.footerLinks'>
+        <nav aria-label='Footer' class='cm-footnav cm-lay' expr:data-links='data:skin.vars.footerLinks'>
           <b:section class='cm-footmenu-s' id='footer-menu' maxwidgets='1' name='Footer menu - footer links (link list gadget)' showaddelement='yes'/>
           <ul class='cm-links'/>
         </nav>

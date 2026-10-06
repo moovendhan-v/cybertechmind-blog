@@ -330,14 +330,16 @@ def info_box(meta):
     attrs = ''.join(' %s="%s"' % (v, attr(meta[k])) for k, v in keys.items() if meta.get(k))
     pre = [p.strip() for p in re.split(r'[;|]', meta.get('prerequisites', '')) if p.strip()]
     build = meta.get('build', '').strip()
+    cl = meta.get('changelog', '').strip()
+    clh = ('<div class="cm-changelog" data-items="%s"></div>\n\n' % attr(cl)) if cl else ''
     if not (attrs or pre or build):
-        return ''
+        return clh
     h = '<div class="cm-pinfo"%s>' % attrs
     if pre:
         h += '\n  <ul class="cm-pi-pre">\n' + '\n'.join('    <li>%s</li>' % inline(p) for p in pre) + '\n  </ul>'
     if build:
         h += '\n  <p class="cm-pi-build">%s</p>' % inline(build)
-    return h + '\n</div>\n\n'
+    return h + '\n</div>\n\n' + clh
 
 
 SECRET_PATTERNS = [

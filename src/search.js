@@ -60,7 +60,7 @@
       chipsEl = el('div', 'cm-find-chips'); chipsEl.setAttribute('role', 'group'); chipsEl.setAttribute('aria-label', 'Filter by category'); panel.appendChild(chipsEl);
       listEl = el('div', 'cm-find-list'); listEl.setAttribute('role', 'listbox'); panel.appendChild(listEl);
 
-      var ft = el('div', 'cm-find-foot'); countEl = el('span', 'cm-find-count', '');
+      var ft = el('div', 'cm-find-foot'); countEl = el('span', 'cm-find-count', ''); countEl.setAttribute('aria-live', 'polite');
       var keys = el('span', 'cm-find-keys'); [['↑↓', 'navigate'], ['↵', 'open'], ['Esc', 'close']].forEach(function (k) { var s = el('span'); s.appendChild(el('kbd', '', k[0])); s.appendChild(document.createTextNode(' ' + k[1])); keys.appendChild(s); });
       ft.appendChild(countEl); ft.appendChild(keys); panel.appendChild(ft);
       root_.appendChild(panel); document.body.appendChild(root_);

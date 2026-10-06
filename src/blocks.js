@@ -90,7 +90,9 @@
     if (first.lang) meta.appendChild(lb); meta.appendChild(lc);
     var cp = el('button', 'cm-win-copy'); cp.type = 'button'; cp.title = 'Copy code'; cp.setAttribute('aria-label', 'Copy code'); cp.appendChild(bi(ICO.copy)); cp.appendChild(el('span', '', 'Copy'));
     var chev = bi(ICO.chev, 'cm-win-chev');
-    var right = el('div', 'cm-win-right'); right.appendChild(meta); right.appendChild(cp); right.appendChild(chev); bar.appendChild(right);
+    var wp = el('button', 'cm-win-copy cm-win-wrapbtn'); wp.type = 'button'; wp.title = 'Toggle line wrap'; wp.setAttribute('aria-label', 'Toggle line wrap'); wp.textContent = 'Wrap';
+    wp.addEventListener('click', function (e) { e.stopPropagation(); win.classList.toggle('wrap'); wp.classList.toggle('ok'); });
+    var right = el('div', 'cm-win-right'); right.appendChild(meta); right.appendChild(wp); right.appendChild(cp); right.appendChild(chev); bar.appendChild(right);
     bar.addEventListener('click', function (e) { if (e.target.closest('.d,.cm-win-copy,.cm-tab')) return; setState(win.getAttribute('data-state') === 'closed' ? (state0() ) : 'closed'); });
     function state0() { return state === 'closed' ? 'open' : state; }
     win.appendChild(bar);
@@ -318,9 +320,19 @@
     });
   }
 
+  /* ---------- changelog (front matter "changelog: 2026-10-01: text | ...") ---------- */
+  function changelogs(body) {
+    $$('.cm-changelog', body).forEach(function (n) {
+      var items = (n.getAttribute('data-items') || '').split('|').map(function (s) { return s.trim(); }).filter(Boolean); if (!items.length) return;
+      var det = el('details', 'cm-changelog-box'), sm = el('summary', '', 'Updates (' + items.length + ')'), ul = el('ul');
+      items.forEach(function (it) { var m = /^(\d{4}-\d{2}-\d{2})\s*[:\-]\s*(.*)$/.exec(it), li = el('li'); if (m) { li.appendChild(el('time', '', m[1])); li.appendChild(el('span', '', m[2])); } else li.appendChild(el('span', '', it)); ul.appendChild(li); });
+      det.appendChild(sm); det.appendChild(ul); n.replaceWith(det);
+    });
+  }
+
   function enhanceBody(body) {
     if (!body || body.getAttribute('data-enhanced')) return; body.setAttribute('data-enhanced', '1');
-    postInfo(body); callouts(body); tables(body); embeds(body); sliders(body); figures(body);
+    postInfo(body); changelogs(body); callouts(body); tables(body); embeds(body); sliders(body); figures(body);
     /* code groups (tabs) first, then single blocks */
     $$('.code-tabs,[data-code-tabs]', body).forEach(function (g) {
       var pres = $$('pre', g); if (!pres.length) return; var panes = pres.map(codeParts);

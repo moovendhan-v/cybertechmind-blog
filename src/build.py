@@ -10,6 +10,7 @@ VARS = [
   ("brandName","Site name","string","CyberTechMind"),
   ("tagline","Tagline (brand panel)","string","Practical guides on apps, Android, security and technology."),
   ("logoImage","Logo image URL (blank = text logo)","string",""),
+  ("faviconUrl","Favicon URL png or ico (blank = Blogger default)","string",""),
   ("footerText","Footer text","string","All rights reserved."),
   ("contactUrl","Contact button URL","string","https://profile.cybertechmind.com"),
   ("contactLabel","Contact button label","string","Contact us"),
@@ -31,6 +32,11 @@ VARS = [
  ]),
  ("Layout", [
   ("contentWidth","Content width","length","1440px"),
+  ("showLeftSidebar","Show the left sidebar yes or no","string","yes"),
+  ("showRightRail","Show the right column yes or no","string","yes"),
+  ("showHeaderCategories","Show the category row in the header yes or no","string","yes"),
+  ("showFooter","Show the footer yes or no","string","yes"),
+  ("sidebarDefault","Sidebar starts collapsed or expanded","string","collapsed"),
   ("cornerRadius","Corner radius","length","16px"),
   ("wallpaperImage","Wallpaper image URL (blank = none)","string",""),
   ("wallpaperOpacity","Wallpaper opacity (0 to 1)","string","0.18"),
@@ -53,6 +59,11 @@ VARS = [
  ("Post blocks", [
   ("codeDefault","Code windows start closed or preview or open","string","closed"),
   ("codeLines","Show line numbers in code windows yes or no","string","yes"),
+ ]),
+ ("Homepage hero", [
+  ("showHero","Show the homepage hero yes or no","string","yes"),
+  ("heroTitle","Hero headline","string","Learn cybersecurity, AWS and full-stack by doing"),
+  ("heroSub","Hero sub headline","string","Practical, tested tutorials with copy-paste code, diagrams and cheat sheets."),
  ]),
  ("Author and trust", [
   ("authorName","Author name (blank = use the Blogger author)","string",""),
@@ -92,8 +103,8 @@ for g, items in VARS:
     out.append('</Group>\n')
 out.append("*/")
 s = rd('skeleton.xml')
-s = s.replace('/*@@VARS@@*/', ''.join(out)).replace('/*@@CSS@@*/', rd('theme.css') + rd('blocks.css') + rd('search.css'))
-s = s.replace('/*@@JS@@*/', rd('theme.js').replace('/*@@BLOCKS@@*/', rd('blocks.js')).replace('/*@@SEARCH@@*/', rd('search.js'))).replace('/*@@LAYOUTCSS@@*/', rd('layout-mode.css'))
+s = s.replace('/*@@VARS@@*/', ''.join(out)).replace('/*@@CSS@@*/', rd('theme.css') + rd('blocks.css') + rd('search.css') + rd('reading.css'))
+s = s.replace('/*@@JS@@*/', rd('theme.js').replace('/*@@BLOCKS@@*/', rd('blocks.js')).replace('/*@@SEARCH@@*/', rd('search.js')).replace('/*@@READING@@*/', rd('reading.js')).replace('/*@@HOME@@*/', rd('home.js'))).replace('/*@@LAYOUTCSS@@*/', rd('layout-mode.css'))
 inc = open(os.path.join(here, 'blog-includables.xml'), encoding='utf-8').read()
 w = rd('blog-widget.tpl.xml').replace('<!--@@INCLUDABLES@@-->', inc)
 open(os.path.join(here, 'blog-widget.optional.xml'), 'w', encoding='utf-8').write(w)

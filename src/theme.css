@@ -692,3 +692,20 @@ img,video,iframe,table{max-width:100%}
   body.sb-open .cm-rail-l,body.sb-open .cm-rail-l:not(:has(.cm-toc:not([hidden]))){visibility:visible;transition:transform .25s ease}
   .cm-rail-l .cm-catnav,.cm-rail-l .cm-about{display:block}
 }
+
+/* =====================================================================
+   24. LAYOUT TOGGLES (Theme variables or the JSON settings gadget)
+   ===================================================================== */
+.cm-opts{display:none}
+@media (min-width:1241px){
+  html.no-lsb .cm-shell{grid-template-columns:minmax(0,1fr) 300px}
+  html.no-rrail .cm-shell{grid-template-columns:var(--sbw) minmax(0,1fr)}
+  html.no-lsb.no-rrail .cm-shell{grid-template-columns:minmax(0,1fr)}
+}
+html.no-lsb .cm-rail-l,html.no-lsb [data-act="sidebar"]{display:none!important}
+html.no-rrail .cm-rail-r{display:none!important}
+html.no-footer .cm-footer{display:none!important}
+html.no-subnav .cm-subnav{display:none!important}
+html.no-subnav{--hh:68px}
+@media (max-width:1240px){html.no-lsb .cm-rail-l{display:none!important}}
+html.no-subnav .cm-header{transform:none!important}

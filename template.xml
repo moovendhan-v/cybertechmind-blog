@@ -11,6 +11,10 @@
        meta description (set it in Settings > Search preferences / per-post Search description). -->
   <b:include data='blog' name='all-head-content'/>
   <meta content='summary_large_image' name='twitter:card'/>
+  <b:if cond='data:skin.vars.faviconUrl != &quot;&quot;'>
+    <link expr:href='data:skin.vars.faviconUrl' rel='icon'/>
+    <link expr:href='data:skin.vars.faviconUrl' rel='apple-touch-icon'/>
+  </b:if>
   <meta content='#14171c' name='theme-color'/>
   <b:if cond='data:view.isArchive or data:view.search.query'>
     <meta content='noindex,follow' name='robots'/>
@@ -31,7 +35,7 @@
     //<![CDATA[
     (function(){var h=document.documentElement,d=h.getAttribute('data-theme')||'dark',t=null;try{t=localStorage.getItem('cmTheme')}catch(e){}
     if(!t){t=d==='auto'?(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):d}
-    h.setAttribute('data-theme',t==='light'?'light':'dark');try{h.setAttribute('data-sb',localStorage.getItem('cmSb')==='full'?'full':'min')}catch(e){h.setAttribute('data-sb','min')}})();
+    h.setAttribute('data-theme',t==='light'||t==='sepia'?t:'dark');try{h.setAttribute('data-sb',localStorage.getItem('cmSb')==='full'?'full':'min')}catch(e){h.setAttribute('data-sb','min')}})();
     //]]>
   </script>
 
@@ -41,6 +45,7 @@
 <Variable name="brandName" description="Site name" type="string" default="CyberTechMind" value="CyberTechMind"/>
 <Variable name="tagline" description="Tagline brand panel" type="string" default="Practical guides on apps, Android, security and technology." value="Practical guides on apps, Android, security and technology."/>
 <Variable name="logoImage" description="Logo image URL blank text logo" type="string" default="" value=""/>
+<Variable name="faviconUrl" description="Favicon URL png or ico blank Blogger default" type="string" default="" value=""/>
 <Variable name="footerText" description="Footer text" type="string" default="All rights reserved." value="All rights reserved."/>
 <Variable name="contactUrl" description="Contact button URL" type="string" default="https://profile.cybertechmind.com" value="https://profile.cybertechmind.com"/>
 <Variable name="contactLabel" description="Contact button label" type="string" default="Contact us" value="Contact us"/>
@@ -62,6 +67,11 @@
 </Group>
 <Group description="Layout">
 <Variable name="contentWidth" description="Content width" type="length" default="1440px" value="1440px"/>
+<Variable name="showLeftSidebar" description="Show the left sidebar yes or no" type="string" default="yes" value="yes"/>
+<Variable name="showRightRail" description="Show the right column yes or no" type="string" default="yes" value="yes"/>
+<Variable name="showHeaderCategories" description="Show the category row in the header yes or no" type="string" default="yes" value="yes"/>
+<Variable name="showFooter" description="Show the footer yes or no" type="string" default="yes" value="yes"/>
+<Variable name="sidebarDefault" description="Sidebar starts collapsed or expanded" type="string" default="collapsed" value="collapsed"/>
 <Variable name="cornerRadius" description="Corner radius" type="length" default="16px" value="16px"/>
 <Variable name="wallpaperImage" description="Wallpaper image URL blank none" type="string" default="" value=""/>
 <Variable name="wallpaperOpacity" description="Wallpaper opacity 0 to 1" type="string" default="0.18" value="0.18"/>
@@ -84,6 +94,11 @@
 <Group description="Post blocks">
 <Variable name="codeDefault" description="Code windows start closed or preview or open" type="string" default="closed" value="closed"/>
 <Variable name="codeLines" description="Show line numbers in code windows yes or no" type="string" default="yes" value="yes"/>
+</Group>
+<Group description="Homepage hero">
+<Variable name="showHero" description="Show the homepage hero yes or no" type="string" default="yes" value="yes"/>
+<Variable name="heroTitle" description="Hero headline" type="string" default="Learn cybersecurity, AWS and full-stack by doing" value="Learn cybersecurity, AWS and full-stack by doing"/>
+<Variable name="heroSub" description="Hero sub headline" type="string" default="Practical, tested tutorials with copy-paste code, diagrams and cheat sheets." value="Practical, tested tutorials with copy-paste code, diagrams and cheat sheets."/>
 </Group>
 <Group description="Author and trust">
 <Variable name="authorName" description="Author name blank use the Blogger author" type="string" default="" value=""/>
@@ -808,6 +823,23 @@ img,video,iframe,table{max-width:100%}
 }
 
 /* =====================================================================
+   24. LAYOUT TOGGLES (Theme variables or the JSON settings gadget)
+   ===================================================================== */
+.cm-opts{display:none}
+@media (min-width:1241px){
+  html.no-lsb .cm-shell{grid-template-columns:minmax(0,1fr) 300px}
+  html.no-rrail .cm-shell{grid-template-columns:var(--sbw) minmax(0,1fr)}
+  html.no-lsb.no-rrail .cm-shell{grid-template-columns:minmax(0,1fr)}
+}
+html.no-lsb .cm-rail-l,html.no-lsb [data-act="sidebar"]{display:none!important}
+html.no-rrail .cm-rail-r{display:none!important}
+html.no-footer .cm-footer{display:none!important}
+html.no-subnav .cm-subnav{display:none!important}
+html.no-subnav{--hh:68px}
+@media (max-width:1240px){html.no-lsb .cm-rail-l{display:none!important}}
+html.no-subnav .cm-header{transform:none!important}
+
+/* =====================================================================
    19. POST BLOCKS (code windows, mermaid, callouts, figures, slider, tables)
    ===================================================================== */
 :root{
@@ -1113,27 +1145,203 @@ body.find-open{overflow:hidden}
 .cm-chip2.more{border-style:dashed;color:var(--accent);font-weight:600}
 .cm-chip2.more:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
 
+/* =====================================================================
+   22. READING MODE: sepia, focus, reading controls, progress, engagement
+   ===================================================================== */
+:root[data-theme="sepia"]{--bg:#f4ecd8;--panel:#fbf5e6;--text:#3b2f1e;--muted:#66563f;--line:#e2d6bb;
+  --code-bg:#f8f1de;--code-bar:#eee3c8;--code-fg:#3b2f1e;--code-line:#e2d6bb;--code-muted:#6f5f46;
+  --t-kw:#b4372b;--t-str:#2a5e86;--t-num:#8a4b0f;--t-fn:#6b3fa0;--t-attr:#2f6b2f;--t-type:#8a4b0f;--t-com:#8a7a60}
+:root[data-theme="sepia"] .cm-header{background:color-mix(in srgb,var(--bg) 92%,transparent)}
+:root[data-theme="sepia"] .cm-find-panel,:root[data-theme="sepia"] .cm-mega{box-shadow:0 30px 70px rgba(70,50,20,.25)}
+/* reader preferences */
+.cm-body{font-size:calc(1.06rem * var(--rd-scale,1))}
+.cm-article{max-width:none}
+:root[data-rwidth="narrow"] .cm-article{max-width:640px;margin-left:auto;margin-right:auto}
+:root[data-rwidth="wide"] .cm-article{max-width:none}
+:root[data-rwidth="normal"] .cm-article{max-width:780px;margin-left:auto;margin-right:auto}
+:root[data-rfont="serif"] .cm-body{font-family:Charter,'Bitstream Charter','Sitka Text',Cambria,Georgia,serif;line-height:1.85}
+@media (max-width:720px){.cm-body{font-size:calc(1.02rem * var(--rd-scale,1))}}
+/* tools bar */
+.cm-tools{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 26px}
+.cm-tool{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--muted);font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;transition:color .15s,border-color .15s,background .15s}
+.cm-tool .cm-i{width:15px;height:15px}
+.cm-tool:hover{color:var(--text);border-color:var(--muted)}
+.cm-tool.on{color:var(--accent);border-color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,transparent)}
+.cm-tool-save.on .cm-i{fill:currentColor}
+.cm-rd-wrap{position:absolute;left:0;top:calc(100% + 6px);z-index:30}
+.cm-rd-pop{width:320px;max-width:calc(100vw - 32px);padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:0 20px 50px rgba(0,0,0,.35);display:grid;gap:12px}
+.cm-rd-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.cm-rd-l{font-size:.78rem;font-weight:600;color:var(--muted)}
+.cm-seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--bg)}
+.cm-seg button{border:0;background:none;padding:6px 12px;font:inherit;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer}
+.cm-seg button.on{background:var(--accent);color:#fff}
+.cm-seg button:hover:not(.on){color:var(--text)}
+.cm-rd-val{display:inline-flex;align-items:center;padding:0 10px;font-size:.8rem;font-weight:700;color:var(--text);min-width:52px;justify-content:center}
+/* focus mode */
+:root.focus .cm-header,:root.focus .cm-rail,:root.focus .cm-ad,:root.focus .cm-footer,:root.focus .cm-series-top,:root.focus .cm-nextup,:root.focus .cm-pfe{display:none!important}
+:root.focus{--hh:0px}
+:root.focus .cm-shell{grid-template-columns:minmax(0,1fr)}
+:root.focus .cm-article{max-width:740px}
+:root.focus[data-rwidth="narrow"] .cm-article{max-width:620px}
+:root.focus[data-rwidth="wide"] .cm-article{max-width:920px}
+:root.focus #cm-main{padding-top:30px}
+:root.focus .cm-comments,:root.focus .cm-series{max-width:740px;margin-left:auto;margin-right:auto}
+.cm-focus-exit{position:fixed;top:14px;right:16px;z-index:90;display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--muted);font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;opacity:.55;transition:opacity .2s}
+.cm-focus-exit:hover{opacity:1;color:var(--text)}
+.cm-focus-exit .cm-i{width:15px;height:15px}
+:root:not(.focus) .cm-focus-exit{display:none}
+/* progress helpers in the sidebar contents */
+.cm-toc-meta{list-style:none;margin:2px 0 6px!important;padding:2px 10px;font-size:.74rem;font-weight:700;color:var(--accent);letter-spacing:.02em}
+.cm-sb-sub a.done::after{content:"\2713";margin-left:6px;color:#22c55e;font-weight:700;font-size:.8em}
+.cm-sb-badge{margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--accent);color:#fff;font-size:.7rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+/* toast */
+.cm-toast{position:fixed;left:50%;bottom:22px;z-index:120;display:flex;align-items:center;gap:12px;padding:10px 14px 10px 18px;border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:0 20px 50px rgba(0,0,0,.4);transform:translate(-50%,20px);opacity:0;transition:.25s;font-size:.9rem;max-width:calc(100vw - 24px)}
+.cm-toast.on{transform:translate(-50%,0);opacity:1}
+.cm-toast .cm-btn{padding:7px 14px;font-size:.82rem}
+.cm-toast-x{border:0;background:none;color:var(--muted);font:inherit;font-size:.82rem;cursor:pointer;padding:6px}
+/* modals reuse the search panel */
+.cm-sv-h{flex:1;font-size:1.05rem}
+.cm-sv-rm{align-self:center;border:1px solid var(--line);background:none;color:var(--muted);border-radius:8px;padding:5px 10px;font:inherit;font-size:.78rem;cursor:pointer}
+.cm-sv-rm:hover{color:#ef4444;border-color:#ef4444}
+.cm-find-panel.cm-help{width:min(520px,100%)}
+.cm-help-grid{padding:10px 16px 18px;display:grid;gap:2px}
+.cm-help-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.cm-help-row:last-child{border-bottom:0}
+.cm-help-k{display:inline-flex;align-items:center;gap:4px;color:var(--muted)}
+/* helpful */
+.cm-helpful{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:30px 0 0;padding:14px 18px;border:1px solid var(--line);border-radius:14px;background:var(--panel);font-weight:600}
+.cm-vote{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--text);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;transition:border-color .15s,color .15s}
+.cm-vote .cm-i{width:15px;height:15px}
+.cm-vote:hover{border-color:var(--accent);color:var(--accent)}
+.cm-thanks{color:var(--muted);font-weight:500}
+/* up next */
+.cm-nextup{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:20px;align-items:center;margin:34px 0 0;padding:16px;border:1px solid var(--line);border-radius:18px;background:var(--panel);transition:border-color .15s,transform .15s}
+.cm-nextup:hover{border-color:var(--accent);transform:translateY(-2px)}
+.cm-nu-img{display:block;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:color-mix(in srgb,var(--text) 7%,transparent)}
+.cm-nu-img img{width:100%;height:100%;object-fit:cover}
+.cm-nu-tx{display:flex;flex-direction:column;gap:8px;align-items:flex-start;min-width:0}
+.cm-nu-k{font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.cm-nu-tx strong{font-size:1.2rem;line-height:1.3}
+.cm-nu-s{color:var(--muted);font-size:.9rem;line-height:1.5}
+@media (max-width:720px){.cm-nextup{grid-template-columns:1fr}}
+/* 404 */
+.cm-404{text-align:center;padding:60px 24px;display:grid;justify-items:center;gap:10px}
+.cm-404-n{font-size:clamp(4rem,12vw,7rem);font-weight:900;letter-spacing:-.05em;line-height:1;background:linear-gradient(135deg,var(--accent),#e722ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cm-404 h1{font-size:1.5rem}
+/* changelog + code wrap */
+.cm-changelog-box{margin:0 0 1.4em;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-size:.9rem}
+.cm-body .cm-changelog-box summary{font-size:.85rem;color:var(--muted)}
+.cm-changelog-box ul{margin:0;padding:6px 16px 12px;list-style:none}
+.cm-changelog-box li{display:flex;gap:14px;padding:5px 0}
+.cm-changelog-box time{flex:none;color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums}
+.cm-win.wrap .cm-pre{white-space:pre-wrap;word-break:break-word}
+.cm-win-wrapbtn{padding:4px 9px}
+.cm-upd{color:var(--accent)}
+
+/* =====================================================================
+   23. HOME: hero, tiles, continue reading, series cards, filters, news strip
+   ===================================================================== */
+.cm-hero2{margin:0 0 24px;padding:34px 34px 28px;border:1px solid var(--line);border-radius:22px;background:radial-gradient(900px 300px at 0% 0%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 60%),var(--panel);display:grid;gap:14px}
+.cm-hero2-k{font-size:.74rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.cm-hero2 h1{font-size:clamp(1.9rem,4vw,3rem);line-height:1.1;letter-spacing:-.03em;max-width:720px}
+.cm-hero2 p{margin:0;color:var(--muted);font-size:1.1rem;max-width:620px;line-height:1.55}
+.cm-hero2-act{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.cm-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:10px}
+.cm-tile{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);transition:border-color .15s,transform .15s}
+.cm-tile:hover{border-color:var(--accent);transform:translateY(-2px)}
+.cm-tile-i{flex:none;width:38px;height:38px;border-radius:11px;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent);display:flex;align-items:center;justify-content:center}
+.cm-tile-i .cm-i{width:20px;height:20px}
+.cm-tile-t{display:flex;flex-direction:column;min-width:0;flex:1}
+.cm-tile-t b{font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cm-tile-t small{color:var(--muted);font-size:.78rem}
+.cm-tile-go{width:16px;height:16px;color:var(--muted)}
+.cm-cont{gap:8px}
+.cm-prog{display:block;height:6px;border-radius:99px;background:color-mix(in srgb,var(--text) 10%,transparent);overflow:hidden}
+.cm-prog i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.cm-series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;padding:16px 22px 22px}
+.cm-scard{display:flex;flex-direction:column;gap:9px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
+.cm-scard h3{font-size:1.02rem;line-height:1.3}
+.cm-scard .cm-btn{align-self:flex-start;margin-top:4px;padding:8px 14px;font-size:.82rem}
+.cm-fchips{display:flex;flex-wrap:wrap;gap:7px;padding:12px 22px 0}
+.cm-newsstrip{display:grid;grid-template-columns:1fr minmax(0,380px);gap:20px;align-items:center;margin:0 0 28px;padding:22px 26px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(120deg,color-mix(in srgb,var(--accent) 14%,var(--panel)),var(--panel))}
+.cm-newsstrip h2{font-size:1.15rem;margin-bottom:4px}
+.cm-newsstrip p{margin:0;color:var(--muted);font-size:.9rem}
+.cm-newsstrip form{display:flex;gap:8px}
+.cm-newsstrip input{flex:1;min-width:0;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit}
+@media (max-width:820px){.cm-newsstrip{grid-template-columns:1fr}}
+@media (max-width:720px){.cm-hero2{padding:22px 18px}.cm-newsstrip form{flex-direction:column}}
+.cm-img{position:relative}
+.cm-lvl{position:absolute;left:10px;top:10px;padding:3px 9px;border-radius:999px;font-size:.66rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#fff;background:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.cm-lvl.lv-beginner{background:#16a34a}.cm-lvl.lv-intermediate{background:#d97706}.cm-lvl.lv-advanced{background:#dc2626}
+.cm-topic{font-size:.7rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--accent)}
+
+@media (max-width:720px){
+  .cm-tools{gap:6px}
+  .cm-tool{padding:6px 11px;font-size:.78rem}
+  .cm-rd-wrap{left:0;right:0}
+  .cm-rd-pop{width:auto}
+  .cm-toast{flex-wrap:wrap;justify-content:center;bottom:14px}
+  .cm-focus-exit span{display:none}
+  .cm-focus-exit{padding:10px}
+}
+
 ]]></b:skin>
   </b:if>
   <b:if cond='data:view.isLayoutMode'>
-  <b:template-skin><![CDATA[html,body#layout{background:#f7f7f7}
-body#layout{position:relative;width:auto;max-width:980px;margin:0 auto;padding:16px;font-family:Arial,sans-serif}
-body#layout div.section{display:block;background:#efefef!important;border:1px solid #dcdcdc;border-radius:4px;margin:0 0 12px!important;padding:12px 14px!important}
+  <b:template-skin><![CDATA[html,body#layout #outer-wrapper,body#layout .row{width:auto;padding:0}
+body#layout{position:relative;width:910px;margin:0 auto;background:#f9f9f9;padding:95px 5px 0;font-family:Roboto,Arial,Helvetica,sans-serif}
+body#layout:before{content:'CyberTechMind theme \2014 drag gadgets between the areas';position:absolute;top:0;left:5px;right:5px;height:95px;font-size:21px;font-weight:700;line-height:95px;color:#1f2024;text-align:center}
+body#layout:after{content:'';display:block;clear:both!important;height:24px}
+/* flatten wrappers so every area becomes a direct child of the page */
+body#layout .cm-lay{display:contents}
+body#layout .cm-lay>*:not(.cm-lay):not(.section){display:none!important}
+body#layout script,body#layout style{display:none}
+/* each area is a floated box; rows are made with widths and clear */
+body#layout div.section{display:block!important;float:left!important;box-sizing:border-box!important;width:calc(100% - 10px)!important;margin:0 5px 10px!important;padding:16px 16px 18px!important;background:#f1f1f1!important;border:1px solid #e5e5e5;border-radius:6px}
 body#layout .no-items.section{display:block}
-body#layout .section h4{font-size:13px;text-transform:uppercase;color:#222;margin:0 0 8px}
-body#layout .add_widget a{color:#1a73e8!important}
-body#layout .widget-content{max-width:none;width:auto}
-body#layout .cm-home-only,body#layout .cm-pitem,body#layout .cm-ad,body#layout .cm-sidebar,body#layout .cm-hide{display:block!important}
-body#layout .cm-foot-cols{display:grid!important;grid-template-columns:repeat(3,1fr);gap:10px}
-body#layout .cm-header-in,body#layout .cm-foot-bottom{display:block;height:auto;padding:0}
-body#layout .cm-search,body#layout .cm-actions,body#layout .cm-logo,body#layout .cm-links{display:none!important}
-body#layout .cm-wall{display:none}
+body#layout .section h4{margin:0 0 10px;font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#1f2024}
+body#layout .add_widget a{color:#3c97ef!important}
+body#layout .widget-content{width:auto;max-width:none;max-height:none}
+body#layout .widget{margin:6px 0}
+body#layout #theme-options{clear:both!important;background:#edf4ff!important;border-color:#cdd4ef}
+body#layout #header-logo{clear:both!important;width:calc(50% - 10px)!important}
+body#layout #main-menu{width:calc(50% - 10px)!important}
+body#layout #ad-header,body#layout #hero-section,body#layout #featured-post,body#layout #ad-home,body#layout #ad-footer{clear:both!important}
+body#layout #main{clear:both!important;width:calc(66% - 10px)!important;min-height:170px}
+body#layout #sidebar{width:calc(34% - 10px)!important}
+body#layout #post-ads-1,body#layout #ad-in-article,body#layout #ad-side-left,body#layout #footer-copyright{clear:both!important;width:calc(50% - 10px)!important}
+body#layout #ad-end-post,body#layout #post-follow-email,body#layout #ad-side-right,body#layout #footer-menu{width:calc(50% - 10px)!important}
+body#layout #footer-1{clear:both!important}
+body#layout #footer-1,body#layout #footer-2,body#layout #footer-3{width:calc(33.333% - 10px)!important}
+body#layout .cm-wall,body#layout .cm-skip{display:none}
 ]]></b:template-skin>
   </b:if>
 </head>
 
-<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
+<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-sb-default='data:skin.vars.sidebarDefault' expr:data-show-footer='data:skin.vars.showFooter' expr:data-show-lsb='data:skin.vars.showLeftSidebar' expr:data-show-rrail='data:skin.vars.showRightRail' expr:data-show-subnav='data:skin.vars.showHeaderCategories' expr:data-hero-sub='data:skin.vars.heroSub' expr:data-hero-title='data:skin.vars.heroTitle' expr:data-news-action='data:skin.vars.newsletterAction' expr:data-news-text='data:skin.vars.newsletterText' expr:data-news-title='data:skin.vars.newsletterTitle' expr:data-show-hero='data:skin.vars.showHero' expr:data-show-news='data:skin.vars.showNewsletter' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
   <a class='cm-skip' href='#cm-main'>Skip to content</a>
+  <!-- THEME OPTIONS: paste or edit the JSON in the gadget below (Layout page). See README-CUSTOMISE.md for every key. -->
+  <div class='cm-opts cm-lay'>
+    <b:section class='cm-opts-s' id='theme-options' maxwidgets='1' name='Theme options - JSON settings gadget (sidebars, footer, favicon, logo, colors)' showaddelement='yes'>
+      <b:widget id='HTML151' locked='false' title='Theme settings (JSON)' type='HTML' visible='true'>
+        <b:widget-settings>
+          <b:widget-setting name='content'><![CDATA[<script type="application/json" id="cm-config">
+{
+  "showLeftSidebar": true,
+  "showRightRail": true,
+  "showHeaderCategories": true,
+  "showFooter": true,
+  "sidebarDefault": "collapsed"
+}
+</script>]]></b:widget-setting>
+        </b:widget-settings>
+        <b:includable id='main'>
+          <data:content/>
+        </b:includable>
+      </b:widget>
+    </b:section>
+  </div>
+
 
   <!-- Optional wallpaper (Theme Settings: wallpaperImage) -->
   <b:if cond='data:skin.vars.wallpaperImage != &quot;&quot;'>
@@ -1141,8 +1349,8 @@ body#layout .cm-wall{display:none}
   </b:if>
 
   <!-- ===== HEADER ===== -->
-  <header class='cm-header' id='cm-header'>
-    <div class='cm-header-in'>
+  <header class='cm-header cm-lay' id='cm-header'>
+    <div class='cm-header-in cm-lay'>
       <button aria-controls='cm-sb' aria-label='Toggle sidebar' class='cm-ib cm-sbtoggle' data-act='sidebar' id='cm-sbtoggle' title='Toggle sidebar (B)' type='button'>
         <svg fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' width='19'><rect height='14' rx='2' width='18' x='3' y='5'/><path d='M9 5v14'/></svg>
       </button>
@@ -1152,7 +1360,7 @@ body#layout .cm-wall{display:none}
         </b:if>
         <span><data:skin.vars.brandName/></span>
       </a>
-      <div class='cm-logo-sec'>
+      <div class='cm-logo-sec cm-lay'>
         <b:section class='cm-logo-s' id='header-logo' maxwidgets='1' name='Header logo - image gadget, recommended height 34px' showaddelement='yes'/>
       </div>
       <div class='cm-actions'>
@@ -1167,13 +1375,13 @@ body#layout .cm-wall{display:none}
       </div>
     </div>
     <!-- second row: category mega menu + main menu links -->
-    <div class='cm-subnav' id='cm-subnav'>
-      <div class='cm-subnav-in'>
+    <div class='cm-subnav cm-lay' id='cm-subnav'>
+      <div class='cm-subnav-in cm-lay'>
         <button aria-label='Toggle sidebar' class='cm-ib cm-sub-tool' data-act='sidebar' title='Toggle sidebar (B)' type='button'>
           <svg fill='none' height='19' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' width='19'><rect height='14' rx='2' width='18' x='3' y='5'/><path d='M9 5v14'/></svg>
         </button>
         <nav aria-label='Topics' class='cm-mega-nav' id='cm-mega-nav'/>
-        <nav aria-label='Primary' class='cm-nav' id='cm-nav' expr:data-links='data:skin.vars.menuLinks'>
+        <nav aria-label='Primary' class='cm-nav cm-lay' id='cm-nav' expr:data-links='data:skin.vars.menuLinks'>
           <b:section class='cm-menu-s' id='main-menu' maxwidgets='1' name='Main menu - link list gadget' showaddelement='yes'/>
           <ul class='cm-links'/>
         </nav>
@@ -1190,12 +1398,12 @@ body#layout .cm-wall{display:none}
 
 
   <!-- AD SLOT: header leaderboard -->
-  <div class='cm-ad cm-wrap'>
+  <div class='cm-ad cm-wrap cm-lay'>
     <b:section class='cm-adsec' id='ad-header' maxwidgets='2' name='Header ads - leaderboard' showaddelement='yes'/>
   </div>
 
   <!-- ===== MAIN ===== -->
-  <main class='cm-wrap' id='cm-main'>
+  <main class='cm-wrap cm-lay' id='cm-main'>
 
     <!-- Optional banner image (Theme Settings: bannerImage) -->
     <b:if cond='data:skin.vars.bannerImage != &quot;&quot; and data:view.isHomepage'>
@@ -1203,8 +1411,8 @@ body#layout .cm-wall{display:none}
     </b:if>
 
     <!-- HOME ONLY: hero section + featured post gadgets -->
-    <div class='cm-home-only'>
-      <div class='cm-hero-sec'>
+    <div class='cm-home-only cm-lay'>
+      <div class='cm-hero-sec cm-lay'>
         <b:section class='cm-hero-s' id='hero-section' maxwidgets='3' name='Hero section - image, text, search box' showaddelement='yes'>
         <b:widget id='Text151' locked='false' title='Practical guides on apps, Android and security' type='Text' visible='true'>
           <b:widget-settings>
@@ -1227,39 +1435,19 @@ body#layout .cm-wall{display:none}
         </b:widget>
       </b:section>
       </div>
-      <div class='cm-feat-sec'>
+      <div class='cm-feat-sec cm-lay'>
         <b:section class='cm-feat-s' id='featured-post' maxwidgets='1' name='Featured post - featured post gadget' showaddelement='yes'/>
       </div>
     </div>
 
-    <b:section class='main' id='main' maxwidgets='1' name='Blog posts - filled automatically (do not add)' showaddelement='no'/>
-
-
-
     <!-- AD SLOT: below feature strip (homepage; moved by JS) -->
-    <div class='cm-ad cm-ad-home'>
+    <div class='cm-ad cm-ad-home cm-lay'>
       <b:section class='cm-adsec' id='ad-home' maxwidgets='2' name='Home ads - below featured posts' showaddelement='yes'/>
     </div>
-    <!-- AD SLOT: inside article (moved after paragraph N by JS) -->
-    <div class='cm-ad cm-ad-post cm-ad-in'>
-      <b:section class='cm-adsec' id='ad-in-article' maxwidgets='2' name='Post ads - inside content, after paragraph N' showaddelement='yes'/>
-    </div>
 
-    <!-- AD SLOTS: post page side rails (moved into the left / right rails by JS) -->
-    <div class='cm-ad cm-ad-sl'>
-      <b:section class='cm-adsec' id='ad-side-left' maxwidgets='2' name='Sidebar ads - inside the left sidebar, all pages' showaddelement='yes'/>
-    </div>
-    <div class='cm-ad cm-ad-post cm-ad-sr'>
-      <b:section class='cm-adsec' id='ad-side-right' maxwidgets='2' name='Post page right rail - ads' showaddelement='yes'/>
-    </div>
-    <!-- POST PAGE: ads before content / follow by email / sidebar -->
-    <div class='cm-ad cm-ad-post cm-ad-pa1'>
-      <b:section class='cm-adsec' id='post-ads-1' maxwidgets='2' name='Post ads 1 - before post content' showaddelement='yes'/>
-    </div>
-    <div class='cm-pitem cm-pfe'>
-      <b:section class='cm-pfe-s' id='post-follow-email' maxwidgets='1' name='Post follow by email - after related posts' showaddelement='yes'/>
-    </div>
-    <aside class='cm-sidebar' id='cm-sidebar'>
+    <b:section class='main' id='main' maxwidgets='1' name='Blog posts - filled automatically (do not add)' showaddelement='no'/>
+
+    <aside class='cm-sidebar cm-lay' id='cm-sidebar'>
       <b:section class='cm-sidebar-s' id='sidebar' maxwidgets='20' name='Sidebar - beside posts on every page' showaddelement='yes'>
         <b:widget id='PopularPosts151' locked='false' title='Popular posts' type='PopularPosts' version='2' visible='true'>
           <b:widget-settings>
@@ -1305,24 +1493,50 @@ body#layout .cm-wall{display:none}
       </b:section>
     </aside>
 
+    <!-- POST PAGE: ads before content / follow by email / sidebar -->
+    <div class='cm-ad cm-ad-post cm-ad-pa1 cm-lay'>
+      <b:section class='cm-adsec' id='post-ads-1' maxwidgets='2' name='Post ads 1 - before post content' showaddelement='yes'/>
+    </div>
     <!-- AD SLOT: end of post (moved above the tags by JS) -->
-    <div class='cm-ad cm-ad-post cm-ad-end'>
+    <div class='cm-ad cm-ad-post cm-ad-end cm-lay'>
       <b:section class='cm-adsec' id='ad-end-post' maxwidgets='2' name='Post ads 2 - after post content' showaddelement='yes'/>
     </div>
+
+    <!-- AD SLOT: inside article (moved after paragraph N by JS) -->
+    <div class='cm-ad cm-ad-post cm-ad-in cm-lay'>
+      <b:section class='cm-adsec' id='ad-in-article' maxwidgets='2' name='Post ads - inside content, after paragraph N' showaddelement='yes'/>
+    </div>
+    <div class='cm-pitem cm-pfe cm-lay'>
+      <b:section class='cm-pfe-s' id='post-follow-email' maxwidgets='1' name='Post follow by email - after related posts' showaddelement='yes'/>
+    </div>
+
+    <!-- AD SLOTS: post page side rails (moved into the left / right rails by JS) -->
+    <div class='cm-ad cm-ad-sl cm-lay'>
+      <b:section class='cm-adsec' id='ad-side-left' maxwidgets='2' name='Sidebar ads - inside the left sidebar, all pages' showaddelement='yes'/>
+    </div>
+    <div class='cm-ad cm-ad-post cm-ad-sr cm-lay'>
+      <b:section class='cm-adsec' id='ad-side-right' maxwidgets='2' name='Post page right rail - ads' showaddelement='yes'/>
+    </div>
+
+
+
+
+
+
 
     <div id='cm-main-end'/>
   </main>
 
   <!-- AD SLOT: footer -->
-  <div class='cm-ad cm-wrap'>
+  <div class='cm-ad cm-wrap cm-lay'>
     <b:section class='cm-adsec' id='ad-footer' maxwidgets='2' name='Footer ads' showaddelement='yes'/>
   </div>
 
 
   <!-- ===== FOOTER ===== -->
-  <footer class='cm-footer' id='cm-footer'>
-    <div class='cm-foot-in'>
-      <div class='cm-foot-top'>
+  <footer class='cm-footer cm-lay' id='cm-footer'>
+    <div class='cm-foot-in cm-lay'>
+      <div class='cm-foot-top cm-lay'>
         <div class='cm-footbrand'>
           <strong class='cm-footname'><data:skin.vars.brandName/></strong>
           <p><data:skin.vars.tagline/></p>
@@ -1339,7 +1553,7 @@ body#layout .cm-wall{display:none}
             </form>
           </b:if>
         </div>
-        <div class='cm-foot-col'><b:section class='cm-foot-s' id='footer-1' maxwidgets='3' name='Footer 1 - max 3 gadgets' showaddelement='yes'>
+        <div class='cm-foot-col cm-lay'><b:section class='cm-foot-s' id='footer-1' maxwidgets='3' name='Footer 1 - max 3 gadgets' showaddelement='yes'>
           <b:widget id='LinkList151' locked='false' title='Quick links' type='LinkList' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='sorting'>NONE</b:widget-setting>
@@ -1362,7 +1576,7 @@ body#layout .cm-wall{display:none}
             </b:includable>
           </b:widget>
           </b:section></div>
-        <div class='cm-foot-col'><b:section class='cm-foot-s' id='footer-2' maxwidgets='3' name='Footer 2 - max 3 gadgets' showaddelement='yes'>
+        <div class='cm-foot-col cm-lay'><b:section class='cm-foot-s' id='footer-2' maxwidgets='3' name='Footer 2 - max 3 gadgets' showaddelement='yes'>
           <b:widget id='Label152' locked='false' title='Categories' type='Label' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='sorting'>ALPHA</b:widget-setting>
@@ -1383,7 +1597,7 @@ body#layout .cm-wall{display:none}
             </b:includable>
           </b:widget>
           </b:section></div>
-        <div class='cm-foot-col'><b:section class='cm-foot-s' id='footer-3' maxwidgets='3' name='Footer 3 - max 3 gadgets' showaddelement='yes'>
+        <div class='cm-foot-col cm-lay'><b:section class='cm-foot-s' id='footer-3' maxwidgets='3' name='Footer 3 - max 3 gadgets' showaddelement='yes'>
           <b:widget id='Text152' locked='false' title='Stay in touch' type='Text' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'><![CDATA[Questions, feedback or app requests? Visit the Contact page and we will get back to you.]]></b:widget-setting>
@@ -1395,12 +1609,12 @@ body#layout .cm-wall{display:none}
           </b:widget>
           </b:section></div>
       </div>
-      <div class='cm-foot-bottom'>
-        <div class='cm-copy'>
+      <div class='cm-foot-bottom cm-lay'>
+        <div class='cm-copy cm-lay'>
           <b:section class='cm-copy-s' id='footer-copyright' maxwidgets='1' name='Footer copyright - custom credits (text gadget)' showaddelement='yes'/>
           <div class='cm-copy-default'>&#169; <data:skin.vars.brandName/> &#183; <data:skin.vars.footerText/></div>
         </div>
-        <nav aria-label='Footer' class='cm-footnav' expr:data-links='data:skin.vars.footerLinks'>
+        <nav aria-label='Footer' class='cm-footnav cm-lay' expr:data-links='data:skin.vars.footerLinks'>
           <b:section class='cm-footmenu-s' id='footer-menu' maxwidgets='1' name='Footer menu - footer links (link list gadget)' showaddelement='yes'/>
           <ul class='cm-links'/>
         </nav>
@@ -1426,6 +1640,28 @@ body#layout .cm-wall{display:none}
     set: function (k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
   };
   function el(tag, cls, text) { var n = d.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+
+  /* ---------- JSON settings gadget (Layout > Theme options) override the Theme variables ---------- */
+  var CFG = {};
+  try { var cfgNode = $('#cm-config'); if (cfgNode) CFG = JSON.parse(cfgNode.textContent) || {}; } catch (e) { CFG = {}; }
+  (function applyConfig() {
+    var R = d.documentElement, alias = { securityNotice: 'secNotice', showSecurityNotice: 'showSec', newsletterAction: 'newsAction', newsletterTitle: 'newsTitle', newsletterText: 'newsText', showNewsletter: 'showNews', gaId: 'ga', brandName: 'brand', logoImage: 'logo', showLeftSidebar: 'showLsb', showRightRail: 'showRrail', showHeaderCategories: 'showSubnav', sidebarDefault: 'sbDefault' };
+    Object.keys(CFG).forEach(function (k) { var v = CFG[k]; if (v === true) v = 'yes'; else if (v === false) v = 'no'; ds[alias[k] || k] = String(v); });
+    var off = function (v) { return v === 'no' || v === 'false' || v === '0'; };
+    R.classList.toggle('no-lsb', off(ds.showLsb)); R.classList.toggle('no-rrail', off(ds.showRrail)); R.classList.toggle('no-footer', off(ds.showFooter)); R.classList.toggle('no-subnav', off(ds.showSubnav));
+    var setText = function (sel, t) { $$(sel).forEach(function (n) { n.textContent = t; }); };
+    if (CFG.brandName) { setText('.cm-logo span', CFG.brandName); setText('.cm-footname', CFG.brandName); }
+    if (CFG.tagline) setText('.cm-footbrand p', CFG.tagline);
+    if (CFG.footerText || CFG.brandName) { var cd = $('.cm-copy-default'); if (cd) cd.textContent = '\u00a9 ' + (CFG.brandName || ds.brand || '') + ' \u00b7 ' + (CFG.footerText || ''); }
+    if (CFG.logoImage) { var lg = $('.cm-logo'); if (lg) { var im = lg.querySelector('img') || lg.insertBefore(el('img'), lg.firstChild); im.src = CFG.logoImage; im.alt = CFG.brandName || ''; im.height = 32; } }
+    if (CFG.faviconUrl) { $$('link[rel="icon"],link[rel="shortcut icon"],link[rel="apple-touch-icon"]').forEach(function (l) { l.remove(); }); [['icon', ''], ['apple-touch-icon', '']].forEach(function (r) { var l = el('link'); l.rel = r[0]; l.href = CFG.faviconUrl; d.head.appendChild(l); }); }
+    if (CFG.accentColor) R.style.setProperty('--accent', CFG.accentColor);
+    if (CFG.contentWidth) R.style.setProperty('--width', /^\d+$/.test(String(CFG.contentWidth)) ? CFG.contentWidth + 'px' : CFG.contentWidth);
+    if (CFG.contactUrl || CFG.contactLabel) { var cta = $('.cm-cta'); if (cta) { if (CFG.contactUrl) cta.href = CFG.contactUrl; if (CFG.contactLabel) cta.textContent = CFG.contactLabel; } }
+    [['menuLinks', '#cm-nav'], ['socialLinks', '.cm-social'], ['footerLinks', '.cm-footnav']].forEach(function (m) { if (CFG[m[0]]) { var n = $(m[1]); if (n) n.setAttribute('data-links', CFG[m[0]]); } });
+    var stored = null; try { stored = localStorage.getItem('cmTheme'); } catch (e) {}
+    if (!stored && CFG.defaultTheme) { var t = CFG.defaultTheme === 'auto' ? (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : CFG.defaultTheme; if (/^(dark|light|sepia)$/.test(t)) R.setAttribute('data-theme', t); }
+  })();
   function words(html) { return (html || '').replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length; }
   function plain(html) { var t = new DOMParser().parseFromString(html || '', 'text/html'); return (t.body.textContent || '').replace(/\s+/g, ' ').trim(); }
   function thumbOf(e) {
@@ -1470,14 +1706,14 @@ body#layout .cm-wall{display:none}
   var wide = window.matchMedia('(min-width: 1241px)'), condensed = false;
   function onScroll() {
     var y = window.scrollY; header.classList.toggle('is-scrolled', y > 8);
-    var c = wide.matches && (condensed ? y > 50 : y > 130);
+    var c = wide.matches && !root.classList.contains('no-subnav') && (condensed ? y > 50 : y > 130);
     if (c !== condensed) { condensed = c; header.classList.toggle('is-condensed', c); root.classList.toggle('is-condensed', c); }
   }
   if (wide.addEventListener) wide.addEventListener('change', onScroll);
   onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
 
   $('#cm-theme').addEventListener('click', function () {
-    var t = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    var t = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', t);
     try { localStorage.setItem('cmTheme', t); } catch (e) {}
   });
@@ -1595,7 +1831,7 @@ body#layout .cm-wall{display:none}
       chipsEl = el('div', 'cm-find-chips'); chipsEl.setAttribute('role', 'group'); chipsEl.setAttribute('aria-label', 'Filter by category'); panel.appendChild(chipsEl);
       listEl = el('div', 'cm-find-list'); listEl.setAttribute('role', 'listbox'); panel.appendChild(listEl);
 
-      var ft = el('div', 'cm-find-foot'); countEl = el('span', 'cm-find-count', '');
+      var ft = el('div', 'cm-find-foot'); countEl = el('span', 'cm-find-count', ''); countEl.setAttribute('aria-live', 'polite');
       var keys = el('span', 'cm-find-keys'); [['↑↓', 'navigate'], ['↵', 'open'], ['Esc', 'close']].forEach(function (k) { var s = el('span'); s.appendChild(el('kbd', '', k[0])); s.appendChild(document.createTextNode(' ' + k[1])); keys.appendChild(s); });
       ft.appendChild(countEl); ft.appendChild(keys); panel.appendChild(ft);
       root_.appendChild(panel); document.body.appendChild(root_);
@@ -1877,7 +2113,9 @@ body#layout .cm-wall{display:none}
     if (first.lang) meta.appendChild(lb); meta.appendChild(lc);
     var cp = el('button', 'cm-win-copy'); cp.type = 'button'; cp.title = 'Copy code'; cp.setAttribute('aria-label', 'Copy code'); cp.appendChild(bi(ICO.copy)); cp.appendChild(el('span', '', 'Copy'));
     var chev = bi(ICO.chev, 'cm-win-chev');
-    var right = el('div', 'cm-win-right'); right.appendChild(meta); right.appendChild(cp); right.appendChild(chev); bar.appendChild(right);
+    var wp = el('button', 'cm-win-copy cm-win-wrapbtn'); wp.type = 'button'; wp.title = 'Toggle line wrap'; wp.setAttribute('aria-label', 'Toggle line wrap'); wp.textContent = 'Wrap';
+    wp.addEventListener('click', function (e) { e.stopPropagation(); win.classList.toggle('wrap'); wp.classList.toggle('ok'); });
+    var right = el('div', 'cm-win-right'); right.appendChild(meta); right.appendChild(wp); right.appendChild(cp); right.appendChild(chev); bar.appendChild(right);
     bar.addEventListener('click', function (e) { if (e.target.closest('.d,.cm-win-copy,.cm-tab')) return; setState(win.getAttribute('data-state') === 'closed' ? (state0() ) : 'closed'); });
     function state0() { return state === 'closed' ? 'open' : state; }
     win.appendChild(bar);
@@ -2105,9 +2343,19 @@ body#layout .cm-wall{display:none}
     });
   }
 
+  /* ---------- changelog (front matter "changelog: 2026-10-01: text | ...") ---------- */
+  function changelogs(body) {
+    $$('.cm-changelog', body).forEach(function (n) {
+      var items = (n.getAttribute('data-items') || '').split('|').map(function (s) { return s.trim(); }).filter(Boolean); if (!items.length) return;
+      var det = el('details', 'cm-changelog-box'), sm = el('summary', '', 'Updates (' + items.length + ')'), ul = el('ul');
+      items.forEach(function (it) { var m = /^(\d{4}-\d{2}-\d{2})\s*[:\-]\s*(.*)$/.exec(it), li = el('li'); if (m) { li.appendChild(el('time', '', m[1])); li.appendChild(el('span', '', m[2])); } else li.appendChild(el('span', '', it)); ul.appendChild(li); });
+      det.appendChild(sm); det.appendChild(ul); n.replaceWith(det);
+    });
+  }
+
   function enhanceBody(body) {
     if (!body || body.getAttribute('data-enhanced')) return; body.setAttribute('data-enhanced', '1');
-    postInfo(body); callouts(body); tables(body); embeds(body); sliders(body); figures(body);
+    postInfo(body); changelogs(body); callouts(body); tables(body); embeds(body); sliders(body); figures(body);
     /* code groups (tabs) first, then single blocks */
     $$('.code-tabs,[data-code-tabs]', body).forEach(function (g) {
       var pres = $$('pre', g); if (!pres.length) return; var panes = pres.map(codeParts);
@@ -2127,13 +2375,244 @@ body#layout .cm-wall{display:none}
   window.cmEnhance = enhanceBody;
 
   /* =====================================================================
+     READING + ENGAGEMENT: focus mode, reading controls (size / width / font /
+     sepia), resume reading, save for later, up-next card, "was this helpful",
+     keyboard shortcuts help, J/K navigation, 404 page, analytics events.
+     Everything is stored in the visitor's browser (no account, no backend).
+     ===================================================================== */
+  function track(name, params) { try { if (window.gtag) window.gtag('event', name, params || {}); } catch (e) {} }
+  var LS = {
+    get: function (k, dflt) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : dflt; } catch (e) { return dflt; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  var SI2 = { bookmark: 'M6 4h12v17l-6-4-6 4z', focus: 'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5', aa: 'M3 19 9 5l6 14M5 14h8M16 19l3-8 3 8M17 17h4', code: 'M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14', check: 'M5 13l4 4L19 7', up: 'M7 14l5-5 5 5', thumbUp: 'M7 11v9H4v-9zM7 11l4-8a2 2 0 0 1 2 2v4h6a2 2 0 0 1 2 2l-1 6a2 2 0 0 1-2 2H7', thumbDn: 'M7 13V4H4v9zM7 13l4 8a2 2 0 0 0 2-2v-4h6a2 2 0 0 0 2-2l-1-6a2 2 0 0 0-2-2H7', keyboard: 'M3 6h18v12H3zM7 10h.01M11 10h.01M15 10h.01M7 14h10' };
+
+  /* ---------- reading preferences (applied on every page) ---------- */
+  var PREFS = LS.get('cmPrefs', { size: 1, width: 'normal', font: 'sans' });
+  function applyPrefs() {
+    root.style.setProperty('--rd-scale', PREFS.size);
+    root.setAttribute('data-rwidth', PREFS.width); root.setAttribute('data-rfont', PREFS.font);
+  }
+  function savePrefs() { LS.set('cmPrefs', PREFS); applyPrefs(); }
+  applyPrefs();
+  function setThemeName(t) { root.setAttribute('data-theme', t); try { localStorage.setItem('cmTheme', t); } catch (e) {} }
+
+  /* ---------- focus mode ---------- */
+  var exitPill = null;
+  function setFocus(on) {
+    root.classList.toggle('focus', on); LS.set('cmFocus', on ? 1 : 0);
+    if (on) {
+      if (!exitPill) { exitPill = el('button', 'cm-focus-exit'); exitPill.type = 'button'; exitPill.appendChild(sico(SI2.focus)); exitPill.appendChild(el('span', '', 'Exit focus')); exitPill.addEventListener('click', function () { setFocus(false); }); d.body.appendChild(exitPill); }
+      track('focus_mode', { on: 1 });
+    }
+    $$('.cm-tool-focus').forEach(function (b) { b.classList.toggle('on', on); });
+  }
+  function typingNow() { return /INPUT|TEXTAREA|SELECT/.test(d.activeElement.tagName) || d.activeElement.isContentEditable; }
+
+  /* ---------- read / resume / saved storage ---------- */
+  function readSet() { return LS.get('cmRead', []); }
+  function markRead(url) { var r = readSet(); if (r.indexOf(url) < 0) { r.push(url); LS.set('cmRead', r.slice(-300)); } }
+  function posMap() { return LS.get('cmPos', {}); }
+  function savedList() { return LS.get('cmSaved', []); }
+  function isSaved(url) { return savedList().some(function (s) { return s.url === url; }); }
+  function toggleSaved(item) {
+    var l = savedList(), i = -1; l.forEach(function (s, k) { if (s.url === item.url) i = k; });
+    if (i >= 0) l.splice(i, 1); else { l.unshift(item); track('save_post', { url: item.url }); }
+    LS.set('cmSaved', l.slice(0, 100)); updateSavedBadge(); return i < 0;
+  }
+  function updateSavedBadge() { var n = savedList().length; $$('.cm-sb-badge').forEach(function (b) { b.textContent = n || ''; b.hidden = !n; }); }
+
+  /* sidebar item "Saved" */
+  function savedItem() {
+    var li = el('li', 'cm-sb-li'), b = el('button', 'cm-sb-item'); b.type = 'button'; b.title = 'Saved posts';
+    b.appendChild(sico(SI2.bookmark)); b.appendChild(el('span', 'cm-sb-label', 'Saved')); var bd = el('span', 'cm-sb-badge'); b.appendChild(bd); li.appendChild(b);
+    b.addEventListener('click', openSaved); setTimeout(updateSavedBadge, 0); return li;
+  }
+  var savedModal = null;
+  function openSaved() {
+    if (!savedModal) {
+      savedModal = el('div', 'cm-find'); savedModal.hidden = true; savedModal.setAttribute('role', 'dialog'); savedModal.setAttribute('aria-label', 'Saved posts');
+      var back = el('div', 'cm-find-back'), panel = el('div', 'cm-find-panel');
+      var top = el('div', 'cm-find-top'); top.appendChild(sico(SI2.bookmark)); top.appendChild(el('b', 'cm-sv-h', 'Saved posts'));
+      var x = el('button', 'cm-find-esc'); x.type = 'button'; x.appendChild(el('kbd', '', 'Esc')); top.appendChild(x); panel.appendChild(top);
+      var list = el('div', 'cm-find-list'); list.id = 'cm-sv-list'; panel.appendChild(list);
+      savedModal.appendChild(back); savedModal.appendChild(panel); d.body.appendChild(savedModal);
+      var close = function () { savedModal.classList.remove('on'); B.classList.remove('find-open'); setTimeout(function () { savedModal.hidden = true; }, 160); };
+      back.addEventListener('click', close); x.addEventListener('click', close);
+      savedModal.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+      savedModal._close = close;
+    }
+    var list = $('#cm-sv-list', savedModal); list.textContent = '';
+    var items = savedList();
+    if (!items.length) { var em = el('div', 'cm-find-empty'); em.appendChild(el('b', '', 'Nothing saved yet')); em.appendChild(el('span', '', 'Use the bookmark button on a post to keep it here.')); list.appendChild(em); }
+    items.forEach(function (s) {
+      var row = el('a', 'cm-res'); row.href = s.url; var im = el('span', 'cm-res-img'); if (s.thumb) { var i = el('img'); i.src = bigImg(s.thumb, 128, 128); i.alt = ''; i.width = 56; i.height = 56; im.appendChild(i); }
+      var tx = el('span', 'cm-res-tx'); tx.appendChild(el('span', 'cm-res-t', s.title)); tx.appendChild(el('span', 'cm-res-m', s.date || ''));
+      var rm = el('button', 'cm-sv-rm', 'Remove'); rm.type = 'button'; rm.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); toggleSaved(s); openSaved(); });
+      row.appendChild(im); row.appendChild(tx); row.appendChild(rm); list.appendChild(row);
+    });
+    savedModal.hidden = false; B.classList.add('find-open'); requestAnimationFrame(function () { savedModal.classList.add('on'); }); savedModal.querySelector('.cm-find-esc').focus();
+  }
+
+  /* ---------- post tools bar (reading controls, focus, save, code) ---------- */
+  function seg(label, opts, cur, onPick) {
+    var row = el('div', 'cm-rd-row'); row.appendChild(el('span', 'cm-rd-l', label)); var s = el('div', 'cm-seg');
+    opts.forEach(function (o) { var b = el('button', cur === o[0] ? 'on' : '', o[1]); b.type = 'button'; b.addEventListener('click', function () { $$('button', s).forEach(function (x) { x.classList.toggle('on', x === b); }); onPick(o[0]); }); s.appendChild(b); });
+    row.appendChild(s); return row;
+  }
+  function buildTools(art, e, thumb) {
+    var bar = el('div', 'cm-tools'), url = location.href.split(/[?#]/)[0];
+    function tool(cls, path, label, fn) { var b = el('button', 'cm-tool ' + cls); b.type = 'button'; b.appendChild(sico(path)); b.appendChild(el('span', '', label)); b.addEventListener('click', fn); bar.appendChild(b); return b; }
+
+    /* reading controls popover */
+    var rb = tool('cm-tool-rd', SI2.aa, 'Reading', function (ev) { ev.stopPropagation(); pop.hidden = !pop.hidden; });
+    var pop = el('div', 'cm-rd-pop'); pop.hidden = true;
+    var sz = el('div', 'cm-rd-row'); sz.appendChild(el('span', 'cm-rd-l', 'Text size'));
+    var szc = el('div', 'cm-seg'), dec = el('button', '', 'A−'), val = el('span', 'cm-rd-val', Math.round(PREFS.size * 100) + '%'), inc = el('button', '', 'A+');
+    dec.type = inc.type = 'button';
+    dec.addEventListener('click', function () { PREFS.size = Math.max(.85, Math.round((PREFS.size - .05) * 100) / 100); val.textContent = Math.round(PREFS.size * 100) + '%'; savePrefs(); });
+    inc.addEventListener('click', function () { PREFS.size = Math.min(1.4, Math.round((PREFS.size + .05) * 100) / 100); val.textContent = Math.round(PREFS.size * 100) + '%'; savePrefs(); });
+    szc.appendChild(dec); szc.appendChild(val); szc.appendChild(inc); sz.appendChild(szc); pop.appendChild(sz);
+    pop.appendChild(seg('Width', [['narrow', 'Narrow'], ['normal', 'Normal'], ['wide', 'Wide']], PREFS.width, function (v) { PREFS.width = v; savePrefs(); }));
+    pop.appendChild(seg('Font', [['sans', 'Sans'], ['serif', 'Serif']], PREFS.font, function (v) { PREFS.font = v; savePrefs(); }));
+    pop.appendChild(seg('Theme', [['dark', 'Dark'], ['light', 'Light'], ['sepia', 'Sepia']], root.getAttribute('data-theme'), function (v) { setThemeName(v); }));
+    var wrapR = el('span', 'cm-rd-wrap'); wrapR.appendChild(pop); bar.appendChild(wrapR);
+    d.addEventListener('click', function (ev) { if (!pop.hidden && !pop.contains(ev.target) && !rb.contains(ev.target)) pop.hidden = true; });
+
+    tool('cm-tool-focus' + (root.classList.contains('focus') ? ' on' : ''), SI2.focus, 'Focus', function () { setFocus(!root.classList.contains('focus')); });
+    var bm = tool('cm-tool-save' + (isSaved(url) ? ' on' : ''), SI2.bookmark, isSaved(url) ? 'Saved' : 'Save', function () {
+      var on = toggleSaved({ url: url, title: e.title.$t, thumb: thumb || '', date: fmtDate(e.published.$t) }); bm.classList.toggle('on', on); bm.lastChild.textContent = on ? 'Saved' : 'Save';
+    });
+    var wins = $$('.cm-win', art);
+    if (wins.length >= 2) {
+      var allOpen = false;
+      var cb = tool('cm-tool-code', SI2.code, 'Expand code', function () {
+        allOpen = !allOpen; wins.forEach(function (w) { var dot = w.querySelector(allOpen ? '.d.g' : '.d.r'); if (dot) dot.click(); }); cb.lastChild.textContent = allOpen ? 'Collapse code' : 'Expand code'; track('code_toggle_all', { open: allOpen ? 1 : 0 });
+      });
+    }
+    var by = $('.cm-byline', art); if (by) by.insertAdjacentElement('afterend', bar);
+  }
+
+  /* ---------- progress: resume, read-time left, sections done ---------- */
+  function trackProgress(art, e, thumb) {
+    var body = $('#cm-body'); if (!body) return;
+    var url = location.href.split(/[?#]/)[0], title = e.title.$t, totalMin = readMin((e.content && e.content.$t) || ''), left = null, links = $$('#cm-toc a');
+    var tocBox = $('#cm-toc'); if (tocBox && links.length) { left = el('li', 'cm-toc-meta', ''); tocBox.insertBefore(left, tocBox.firstChild); }
+    var pos = posMap()[url], t = null, doneMarked = false;
+    function ratio() { var r = body.getBoundingClientRect(), h = r.height - innerHeight * .5; return h <= 0 ? 1 : Math.min(1, Math.max(0, (-r.top + innerHeight * .35) / h)); }
+    function tick() {
+      var r = ratio();
+      if (left) { var m = Math.max(0, Math.ceil(totalMin * (1 - r))); left.textContent = r > .97 ? 'Finished' : '~' + m + ' min left'; }
+      $$('#cm-toc a').forEach(function (a) { var h = d.getElementById(a.getAttribute('href').slice(1)); if (h) a.classList.toggle('done', h.getBoundingClientRect().top < 120); });
+      var map = posMap();
+      if (r >= .9) { if (!doneMarked) { doneMarked = true; markRead(url); track('read_complete', { url: url }); } if (map[url]) { delete map[url]; LS.set('cmPos', map); } }
+      else if (r > .04) { map[url] = { r: Math.round(r * 1000) / 1000, t: Date.now(), title: title, thumb: thumb || '' }; var keys = Object.keys(map).sort(function (a, b) { return map[b].t - map[a].t; }); keys.slice(20).forEach(function (k) { delete map[k]; }); LS.set('cmPos', map); }
+    }
+    window.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(tick, 250); }, { passive: true }); tick();
+    if (pos && pos.r > .05 && pos.r < .9 && window.scrollY < 80 && !location.hash) {
+      var bar = el('div', 'cm-toast cm-resume'); bar.appendChild(el('span', '', 'Continue where you left off (' + Math.round(pos.r * 100) + '%)?'));
+      var go = el('button', 'cm-btn', 'Resume'), no = el('button', 'cm-toast-x', 'Start over'); go.type = no.type = 'button';
+      go.addEventListener('click', function () { var r = body.getBoundingClientRect(); window.scrollTo({ top: Math.max(0, r.top + scrollY + pos.r * (r.height - innerHeight * .5) - innerHeight * .35), behavior: 'smooth' }); bar.remove(); });
+      no.addEventListener('click', function () { var m = posMap(); delete m[url]; LS.set('cmPos', m); bar.remove(); });
+      bar.appendChild(go); bar.appendChild(no); d.body.appendChild(bar); setTimeout(function () { bar.classList.add('on'); }, 50); setTimeout(function () { bar.remove(); }, 15000);
+    }
+  }
+
+  /* ---------- was this helpful ---------- */
+  function buildHelpful(art) {
+    var url = location.href.split(/[?#]/)[0], votes = LS.get('cmVote', {}), box = el('div', 'cm-helpful'), q = el('span', '', 'Was this helpful?'), yes = el('button', 'cm-vote'), no = el('button', 'cm-vote');
+    yes.type = no.type = 'button'; yes.appendChild(sico(SI2.thumbUp)); yes.appendChild(el('span', '', 'Yes')); no.appendChild(sico(SI2.thumbDn)); no.appendChild(el('span', '', 'No'));
+    function done(v) { box.textContent = ''; box.appendChild(el('span', 'cm-thanks', v > 0 ? 'Glad it helped. Thanks for the feedback.' : 'Thanks. Tell us what was missing in the comments or via Contact.')); }
+    function vote(v) { votes[url] = v; LS.set('cmVote', votes); track('helpful_vote', { value: v, url: url }); done(v); }
+    yes.addEventListener('click', function () { vote(1); }); no.addEventListener('click', function () { vote(-1); });
+    if (votes[url]) done(votes[url]); else { box.appendChild(q); box.appendChild(yes); box.appendChild(no); }
+    var tags = $('.cm-tags', art); if (tags) tags.insertAdjacentElement('beforebegin', box); else art.appendChild(box);
+  }
+
+  /* ---------- up next ---------- */
+  function buildNextUp(art, cm, e, series) {
+    var url = location.href.split(/[?#]/)[0].replace(/^https?:/, ''), place = function (p, kicker) {
+      var a = el('a', 'cm-nextup'); a.href = entryUrl(p); var im = el('span', 'cm-nu-img'), th = thumbOf(p); if (th) { var i = el('img'); i.src = bigImg(th, 640, 360); i.alt = ''; i.loading = 'lazy'; im.appendChild(i); }
+      var tx = el('span', 'cm-nu-tx'); tx.appendChild(el('span', 'cm-nu-k', kicker)); tx.appendChild(el('strong', '', p.title.$t)); tx.appendChild(el('span', 'cm-nu-s', plain((p.content && p.content.$t) || '').slice(0, 130) + '…')); tx.appendChild(el('span', 'cm-btn', 'Read next →'));
+      a.appendChild(im); a.appendChild(tx); var host = $('.cm-series', art.parentNode) || cm; host.parentNode.insertBefore(a, $('.cm-series') ? host.nextSibling : cm);
+    };
+    var fromFeed = function () {
+      onFeed(function (f) {
+        var mine = realLabels((e.category || []).map(function (c) { return c.term; })), pool = f.ents.filter(function (p) { return entryUrl(p).replace(/^https?:/, '') !== url; });
+        var rel = pool.filter(function (p) { return (p.category || []).some(function (c) { return mine.indexOf(c.term) >= 0; }); });
+        var pick = (rel.length ? rel : pool)[0]; if (pick) place(pick, rel.length ? 'Up next in ' + mine[0] : 'Up next');
+      });
+    };
+    if (series) getJSON('/feeds/posts/default/-/' + encodeURIComponent(series) + '?alt=json&max-results=100', function (j) {
+      var list = ((j && j.feed && j.feed.entry) || []).slice().sort(function (a, b) { return new Date(a.published.$t) - new Date(b.published.$t); }), cur = -1;
+      list.forEach(function (x, i) { if (entryUrl(x).replace(/^https?:/, '') === url) cur = i; });
+      if (cur >= 0 && cur < list.length - 1) place(list[cur + 1], 'Next in the series'); else fromFeed();
+    }); else fromFeed();
+  }
+
+  /* ---------- keyboard shortcuts help + J/K ---------- */
+  var helpModal = null;
+  function openHelp() {
+    if (!helpModal) {
+      helpModal = el('div', 'cm-find'); helpModal.hidden = true; helpModal.setAttribute('role', 'dialog'); helpModal.setAttribute('aria-label', 'Keyboard shortcuts');
+      var back = el('div', 'cm-find-back'), panel = el('div', 'cm-find-panel cm-help'); var top = el('div', 'cm-find-top'); top.appendChild(sico(SI2.keyboard)); top.appendChild(el('b', 'cm-sv-h', 'Keyboard shortcuts')); var x = el('button', 'cm-find-esc'); x.type = 'button'; x.appendChild(el('kbd', '', 'Esc')); top.appendChild(x); panel.appendChild(top);
+      var g = el('div', 'cm-help-grid');
+      [['/', 'or', 'Ctrl/Cmd + K', 'Search'], ['B', '', '', 'Toggle sidebar'], ['F', '', '', 'Focus mode (reading)'], ['J', '', '', 'Next (older) post'], ['K', '', '', 'Previous (newer) post'], ['?', '', '', 'Show this help'], ['Esc', '', '', 'Close dialogs, exit focus']].forEach(function (r) {
+        var row = el('div', 'cm-help-row'), k = el('span', 'cm-help-k'); k.appendChild(el('kbd', '', r[0])); if (r[2]) { k.appendChild(document.createTextNode(' ' + r[1] + ' ')); k.appendChild(el('kbd', '', r[2])); } row.appendChild(k); row.appendChild(el('span', '', r[3])); g.appendChild(row);
+      });
+      panel.appendChild(g); helpModal.appendChild(back); helpModal.appendChild(panel); d.body.appendChild(helpModal);
+      var close = function () { helpModal.classList.remove('on'); setTimeout(function () { helpModal.hidden = true; }, 160); };
+      back.addEventListener('click', close); x.addEventListener('click', close); helpModal._close = close;
+    }
+    helpModal.hidden = false; requestAnimationFrame(function () { helpModal.classList.add('on'); });
+  }
+  d.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (k === 'Escape') { if (helpModal && !helpModal.hidden) helpModal._close(); else if (savedModal && !savedModal.hidden) savedModal._close(); else if (root.classList.contains('focus')) setFocus(false); return; }
+    if (typingNow()) return;
+    if (k === '?') { e.preventDefault(); openHelp(); }
+    else if ((k === 'f' || k === 'F') && B.classList.contains('pt-item')) { e.preventDefault(); setFocus(!root.classList.contains('focus')); }
+    else if ((k === 'j' || k === 'J' || k === 'k' || k === 'K') && B.classList.contains('pt-item')) {
+      onFeed(function (f) {
+        var here = location.href.split(/[?#]/)[0].replace(/^https?:/, ''), i = -1; f.ents.forEach(function (p, n) { if (entryUrl(p).replace(/^https?:/, '') === here) i = n; });
+        var tgt = f.ents[i + (k === 'j' || k === 'J' ? 1 : -1)]; if (i >= 0 && tgt) location.href = entryUrl(tgt);
+      });
+    }
+  });
+
+  /* ---------- 404 page ---------- */
+  function renderNotFound() {
+    ensureShell();
+    onFeed(function (f) {
+      var wrap = el('div', 'cm-content'), box = el('section', 'cm-panel cm-404');
+      box.appendChild(el('div', 'cm-404-n', '404')); box.appendChild(el('h1', '', 'This page could not be found'));
+      box.appendChild(el('p', 'cm-muted', 'The link may be old or mistyped. Search the blog or pick one of the posts below.'));
+      var b = el('button', 'cm-btn', 'Search the blog'); b.type = 'button'; b.setAttribute('data-act', 'search'); box.appendChild(b); wrap.appendChild(box);
+      var p = el('section', 'cm-panel'), hd = el('div', 'cm-panel-head'); hd.appendChild(el('h2', '', 'Popular starting points')); p.appendChild(hd);
+      var g = el('div', 'cm-grid'); f.ents.slice(0, 6).forEach(function (x) { g.appendChild(cardFromEntry(x)); }); p.appendChild(g); wrap.appendChild(p);
+      setContent(wrap); track('page_not_found', { path: location.pathname });
+    });
+  }
+
+  /* ---------- per-post init (called from initArticle) ---------- */
+  function readingInit(art, e, series) {
+    var th = thumbOf(e);
+    buildTools(art, e, th); buildHelpful(art); trackProgress(art, e, th);
+    var cm = $('#comments'); if (cm) buildNextUp(art, cm, e, series);
+    if (LS.get('cmFocus', 0)) setFocus(true);
+    $$('.cm-win-copy').forEach(function (b) { b.addEventListener('click', function () { track('code_copy', {}); }); });
+  }
+  window.cmRead = { markRead: markRead, posMap: posMap, readSet: readSet };
+
+  /* =====================================================================
      SIDEBAR + PAGES: every page is drawn from the public feed into a
      3-column shell (collapsible sidebar / content / right rail)
      ===================================================================== */
   var main = $('#cm-main'), endMark = $('#cm-main-end');
   var isItem = B.classList.contains('pt-item'), isStatic = B.classList.contains('pt-static_page'), isHome = B.classList.contains('is-home');
   var curUrl = location.href.split(/[?#]/)[0].replace(/^https?:/, '');
-  var curLabel = '';
+  var curLabel = '', curSeries = '';
   function notCur(e) { return entryUrl(e).replace(/^https?:/, '') !== curUrl; }
   function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var k = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[k]; a[k] = t; } return a; }
   function sico(path, cls) { var sv = d.createElementNS('http://www.w3.org/2000/svg', 'svg'); sv.setAttribute('viewBox', '0 0 24 24'); sv.setAttribute('class', 'cm-i' + (cls ? ' ' + cls : '')); var p = d.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', path); sv.appendChild(p); return sv; }
@@ -2165,7 +2644,7 @@ body#layout .cm-wall{display:none}
   function onFeed(cb) { if (feedData) cb(feedData); else feedCbs.push(cb); }
   getJSON('/feeds/posts/default?alt=json&max-results=30', function (j) {
     var f = (j && j.feed) || {};
-    feedData = { ents: f.entry || [], cats: realLabels((f.category || []).map(function (c) { return c.term; })) };
+    feedData = { ents: f.entry || [], series: (f.category || []).map(function (c) { return c.term; }).filter(isSeries), cats: realLabels((f.category || []).map(function (c) { return c.term; })) };
     feedCbs.forEach(function (cb) { cb(feedData); });
   });
 
@@ -2267,7 +2746,7 @@ body#layout .cm-wall{display:none}
     $$('[data-act="sidebar"]').forEach(function (t) { t.setAttribute('aria-expanded', String(!on)); });
   }
   var saved = null; try { saved = localStorage.getItem('cmSb'); } catch (e) {}
-  root.setAttribute('data-sb', saved === 'full' ? 'full' : 'min');
+  root.setAttribute('data-sb', saved === 'full' ? 'full' : saved === 'min' ? 'min' : (ds.sbDefault === 'expanded' ? 'full' : 'min'));
   function toggleSb() {
     if (mq.matches) { B.classList.toggle('sb-open'); return; }
     setCollapsed(root.getAttribute('data-sb') !== 'min');
@@ -2313,6 +2792,7 @@ body#layout .cm-wall{display:none}
     ul.appendChild(sbItem('All articles', SI.article, '/search').li);
     if (isItem) { var tc = sbSub('On this page', SI.list, 'cm-toc'); tc.li.id = 'cm-toc-item'; tc.li.hidden = true; ul.appendChild(tc.li); }
     var cs = sbSub('Categories', SI.tag, 'cm-cat-sub'); ul.appendChild(cs.li); cs.sub.appendChild(sk('', '70%', '12px')); cs.sub.appendChild(sk('', '55%', '12px')); cs.sub.appendChild(sk('', '65%', '12px'));
+    ul.appendChild(savedItem());
     var seen = { home: 1, articles: 1, 'all articles': 1, categories: 1 };
     ($('#cm-nav') ? $('#cm-nav').getAttribute('data-links') || '' : '').split(';').forEach(function (p) {
       var i = p.indexOf('|'); if (i < 1) return; var n = p.slice(0, i).trim(), u = p.slice(i + 1).trim();
@@ -2398,6 +2878,8 @@ body#layout .cm-wall{display:none}
     var imgA = el('a', 'cm-img'); imgA.href = url; imgA.tabIndex = -1; imgA.setAttribute('aria-hidden', 'true');
     var th = thumbOf(e);
     if (th) { var im = el('img'); im.src = bigImg(th, 640, 360); im.alt = ''; im.loading = 'lazy'; im.width = 640; im.height = 360; imgA.appendChild(im); } else imgA.appendChild(el('div', 'cm-noimg'));
+    var lv = levelOf(e); if (lv) imgA.appendChild(el('span', 'cm-lvl ' + lvlClass(lv), lv));
+    var tp = realLabels((e.category || []).map(function (c) { return c.term; }))[0], topic = tp ? el('span', 'cm-topic', tp) : null;
     var h = el('h3'), ha = el('a', '', e.title.$t); ha.href = url; h.appendChild(ha);
     var content = (e.content && e.content.$t) || (e.summary && e.summary.$t) || '';
     var ex = el('p', 'cm-ex', plain(content).slice(0, 180));
@@ -2405,7 +2887,7 @@ body#layout .cm-wall{display:none}
     meta.appendChild(d.createTextNode(fmtDate(e.published.$t))); meta.appendChild(el('span', 'dot', ' ' + readMin(content) + ' min read'));
     var more = el('a', 'cm-more', 'Read more →'); more.href = url;
     foot.appendChild(meta); foot.appendChild(more);
-    [imgA, h, ex, foot].forEach(function (n) { c.appendChild(n); });
+    [imgA].concat(topic ? [topic] : [], [h, ex, foot]).forEach(function (n) { c.appendChild(n); });
     return c;
   }
   function bigFromEntry(e) {
@@ -2439,24 +2921,123 @@ body#layout .cm-wall{display:none}
       });
     });
   }
+  /* =====================================================================
+     HOME: hero + topic tiles, continue reading, "Start here", featured post,
+     newsletter strip, series cards with progress, filterable latest posts,
+     random topic panels.
+     ===================================================================== */
+  function levelOf(e) { var m = /data-level=["']([^"']+)["']/i.exec((e.content && e.content.$t) || ''); return m ? m[1] : ''; }
+  function lvlClass(l) { return 'lv-' + l.toLowerCase().replace(/[^a-z]/g, ''); }
+  var TOPIC_ICON = { shield: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z', cloud: 'M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1 .5 9z', layout: 'M3 4h18v16H3zM3 9h18M9 9v11', server: 'M4 5h16v6H4zM4 13h16v6H4zM8 8h.01M8 16h.01', code: 'M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14', tag: 'M3 12V4h8l10 10-8 8zM7.5 8.5h.01' };
+  function topicIcon(n) {
+    n = n.toLowerCase();
+    if (/secur|hack|pentest|cyber|malware|forensic|ctf/.test(n)) return TOPIC_ICON.shield;
+    if (/aws|cloud|azure|gcp|devops|terraform|kubern|docker/.test(n)) return TOPIC_ICON.cloud;
+    if (/front|react|css|html|vue|ui|ux/.test(n)) return TOPIC_ICON.layout;
+    if (/back|api|node|python|java|database|sql|server/.test(n)) return TOPIC_ICON.server;
+    if (/full|code|program|dev/.test(n)) return TOPIC_ICON.code;
+    return TOPIC_ICON.tag;
+  }
+  function section(title, link, linkText) {
+    var p = el('section', 'cm-panel'), hd = el('div', 'cm-panel-head'); hd.appendChild(el('h2', '', title));
+    if (link) { var a = el('a', '', linkText || 'View all →'); a.href = link; hd.appendChild(a); } p.appendChild(hd); return p;
+  }
+  function heroBlock(ents, cats) {
+    if (ds.showHero === 'no') return null;
+    var s = el('section', 'cm-hero2');
+    s.appendChild(el('span', 'cm-hero2-k', 'Hands-on tech guides'));
+    s.appendChild(el('h1', '', ds.heroTitle || 'Learn cybersecurity, AWS and full-stack by doing'));
+    s.appendChild(el('p', '', ds.heroSub || 'Practical, tested tutorials with copy-paste code, diagrams and cheat sheets.'));
+    var act = el('div', 'cm-hero2-act'), a1 = el('a', 'cm-btn', 'Start learning'), a2 = el('a', 'cm-btn ghost', 'Browse topics'); a1.href = '/search'; a2.href = '#cm-topics';
+    a2.addEventListener('click', function (e) { var t = $('#cm-topics'); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'center' }); } });
+    act.appendChild(a1); act.appendChild(a2); s.appendChild(act);
+    var tally = {}; ents.forEach(function (e) { realLabels((e.category || []).map(function (c) { return c.term; })).forEach(function (l) { tally[l] = (tally[l] || 0) + 1; }); });
+    var top = cats.slice().sort(function (a, b) { return (tally[b] || 0) - (tally[a] || 0); }).slice(0, 4);
+    if (top.length) {
+      var g = el('div', 'cm-tiles'); g.id = 'cm-topics';
+      top.forEach(function (c) { var t = el('a', 'cm-tile'); t.href = '/search/label/' + encodeURIComponent(c); var ic = el('span', 'cm-tile-i'); ic.appendChild(sico(topicIcon(c))); t.appendChild(ic); var tx = el('span', 'cm-tile-t'); tx.appendChild(el('b', '', c)); tx.appendChild(el('small', '', (tally[c] || 0) + ((tally[c] || 0) === 1 ? ' post' : ' posts'))); t.appendChild(tx); t.appendChild(sico(SI.chev, 'cm-tile-go')); g.appendChild(t); });
+      s.appendChild(g);
+    }
+    return s;
+  }
+  function continueBlock() {
+    var map = window.cmRead.posMap(), keys = Object.keys(map).filter(function (k) { return map[k].r < .9; }).sort(function (a, b) { return map[b].t - map[a].t; }).slice(0, 3);
+    if (!keys.length) return null;
+    var p = section('Continue reading'), g = el('div', 'cm-grid');
+    keys.forEach(function (k) {
+      var m = map[k], a = el('a', 'cm-post cm-cont'); a.href = k; var im = el('span', 'cm-img'); if (m.thumb) { var i = el('img'); i.src = bigImg(m.thumb, 640, 360); i.alt = ''; i.loading = 'lazy'; im.appendChild(i); } else im.appendChild(el('div', 'cm-noimg'));
+      a.appendChild(im); a.appendChild(el('h3', '', m.title));
+      var bar = el('span', 'cm-prog'), fill = el('i'); fill.style.width = Math.round(m.r * 100) + '%'; bar.appendChild(fill); a.appendChild(bar); a.appendChild(el('span', 'cm-meta', Math.round(m.r * 100) + '% read · ' + ago(new Date(m.t).toISOString())));
+      g.appendChild(a);
+    });
+    p.appendChild(g); return p;
+  }
+  function startHereBlock(wrap, before) {
+    getJSON('/feeds/posts/default/-/' + encodeURIComponent('Start here') + '?alt=json&max-results=3', function (j) {
+      var list = (j && j.feed && j.feed.entry) || []; if (!list.length) return;
+      var p = section('Start here'), g = el('div', 'cm-grid'); list.forEach(function (e) { g.appendChild(cardFromEntry(e)); }); p.appendChild(g); wrap.insertBefore(p, before);
+    });
+  }
+  function newsStrip() {
+    if (!ds.newsAction || ds.showNews === 'no') return null;
+    var s = el('section', 'cm-newsstrip'), tx = el('div'); tx.appendChild(el('h2', '', ds.newsTitle || 'Get new guides in your inbox')); tx.appendChild(el('p', '', ds.newsText || 'One email a week. No spam.'));
+    var f = el('form'); f.action = ds.newsAction; f.method = 'post'; f.target = '_blank'; var i = el('input'); i.type = 'email'; i.name = 'EMAIL'; i.required = true; i.placeholder = 'you@example.com'; i.setAttribute('aria-label', 'Email address');
+    var b = el('button', 'cm-btn', 'Subscribe'); b.type = 'submit'; f.appendChild(i); f.appendChild(b);
+    f.addEventListener('submit', function (e) { if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(i.value.trim())) { e.preventDefault(); i.style.borderColor = '#ef4444'; i.focus(); } else track('newsletter_submit', {}); });
+    s.appendChild(tx); s.appendChild(f); return s;
+  }
+  function seriesBlock(wrap, before) {
+    var list = (feedData.series || []).slice(0, 4); if (!list.length) return;
+    var p = section('Learning paths'), g = el('div', 'cm-series-grid'); p.appendChild(g); wrap.insertBefore(p, before);
+    var read = window.cmRead.readSet();
+    list.forEach(function (label) {
+      var card = el('div', 'cm-scard'); card.appendChild(sk('', '60%', '16px')); card.appendChild(sk('', '100%', '10px')); g.appendChild(card);
+      getJSON('/feeds/posts/default/-/' + encodeURIComponent(label) + '?alt=json&max-results=100', function (j) {
+        var parts = ((j && j.feed && j.feed.entry) || []).slice().sort(function (a, b) { return new Date(a.published.$t) - new Date(b.published.$t); });
+        if (!parts.length) { card.remove(); return; }
+        var done = parts.filter(function (x) { return read.indexOf(entryUrl(x).replace(/^http:/, 'https:')) >= 0 || read.indexOf(entryUrl(x)) >= 0; }).length, next = parts.filter(function (x) { return read.indexOf(entryUrl(x)) < 0; })[0] || parts[0];
+        card.textContent = ''; card.appendChild(el('span', 'cm-st-k', 'Series')); card.appendChild(el('h3', '', label.replace(/^series\s*:\s*/i, '')));
+        card.appendChild(el('span', 'cm-meta', parts.length + (parts.length === 1 ? ' part' : ' parts') + (done ? ' · ' + done + ' read' : '')));
+        var bar = el('span', 'cm-prog'), fill = el('i'); fill.style.width = Math.round(done / parts.length * 100) + '%'; bar.appendChild(fill); card.appendChild(bar);
+        var a = el('a', 'cm-btn' + (done ? '' : ' ghost'), done ? (done >= parts.length ? 'Read again' : 'Continue') : 'Start series'); a.href = entryUrl(next); card.appendChild(a);
+      });
+    });
+  }
+  function latestBlock(ents) {
+    var p = section('Latest articles', '/search', 'View full articles →'), chips = el('div', 'cm-fchips'), grid = el('div', 'cm-grid'), cur = 'All';
+    var levels = {}, labels = {}; ents.forEach(function (e) { var l = levelOf(e); if (l) levels[l] = 1; realLabels((e.category || []).map(function (c) { return c.term; })).forEach(function (x) { labels[x] = (labels[x] || 0) + 1; }); });
+    var order = ['Beginner', 'Intermediate', 'Advanced'].filter(function (l) { return levels[l]; });
+    var topL = Object.keys(labels).sort(function (a, b) { return labels[b] - labels[a]; }).slice(0, 4);
+    var opts = ['All'].concat(order, topL);
+    function matches(e) { if (cur === 'All') return true; if (levelOf(e) === cur) return true; return (e.category || []).some(function (c) { return c.term === cur; }); }
+    function draw() {
+      grid.textContent = ''; var list = ents.filter(matches).slice(0, 9);
+      if (!list.length) grid.appendChild(el('p', 'cm-muted', 'No posts match this filter yet.')).style.padding = '30px';
+      list.forEach(function (e) { grid.appendChild(cardFromEntry(e)); });
+      $$('button', chips).forEach(function (b) { b.classList.toggle('on', b.textContent === cur); b.setAttribute('aria-pressed', String(b.textContent === cur)); });
+    }
+    if (opts.length > 2) opts.forEach(function (o) { var b = el('button', 'cm-chip2', o); b.type = 'button'; b.addEventListener('click', function () { cur = o; draw(); track('home_filter', { value: o }); }); chips.appendChild(b); }); else chips.hidden = true;
+    p.appendChild(chips); p.appendChild(grid); draw(); return p;
+  }
   function buildHome() {
     homeWanted = false;
     var ents = feedData.ents; if (!ents.length) return;
-    var wrap = el('div', 'cm-content');
+    var wrap = el('div', 'cm-content'), hero = heroBlock(ents, feedData.cats); if (hero) wrap.appendChild(hero);
+    var cont = continueBlock(); if (cont) wrap.appendChild(cont);
     var feat = el('section', 'cm-panel cm-feature'), side = el('div', 'cm-hlist');
     ents.slice(1, 5).forEach(function (e) { side.appendChild(rowFromEntry(e)); });
-    feat.appendChild(bigFromEntry(ents[0])); feat.appendChild(side); wrap.appendChild(feat);
+    feat.appendChild(bigFromEntry(ents[0])); feat.appendChild(side);
+    var anchor = el('div'); wrap.appendChild(anchor); startHereBlock(wrap, anchor);
+    wrap.appendChild(feat);
     var adh = $('.cm-ad-home'); if (adh) wrap.appendChild(adh);
+    var ns = newsStrip(); if (ns) wrap.appendChild(ns);
+    var sAnchor = el('div'); wrap.appendChild(sAnchor); seriesBlock(wrap, sAnchor);
+    if (ents.length > 5) wrap.appendChild(latestBlock(ents));
     var host = el('div', 'cm-cats'); wrap.appendChild(host);
-    if (ents.length > 5) {
-      var lp = el('section', 'cm-panel'), hd = el('div', 'cm-panel-head'), g = el('div', 'cm-grid');
-      hd.appendChild(el('h2', '', 'Latest articles')); var all = el('a', '', 'View full articles →'); all.href = '/search'; hd.appendChild(all);
-      ents.slice(5, 14).forEach(function (e) { g.appendChild(cardFromEntry(e)); });
-      lp.appendChild(hd); lp.appendChild(g); wrap.appendChild(lp);
-    }
     var row = el('div', 'cm-actions-row'), btn = el('a', 'cm-btn', 'View full articles'); btn.href = '/search'; row.appendChild(btn); wrap.appendChild(row);
     setContent(wrap); randomCats(host, feedData.cats);
   }
+
   function renderHome() { homeWanted = true; ensureShell(); if (feedData) buildHome(); }
 
   /* ---------- LABEL / SEARCH / ARCHIVE ---------- */
@@ -2506,7 +3087,7 @@ body#layout .cm-wall{display:none}
     getJSON('/feeds/posts/default?alt=json&path=' + encodeURIComponent(location.pathname), function (j) {
       var e = j && j.feed && j.feed.entry && j.feed.entry[0]; if (!e) return;
       var ids = idsOf(e), allCats = (e.category || []).map(function (c) { return c.term; }), cats = realLabels(allCats), series = allCats.filter(isSeries)[0] || '';
-      curLabel = cats[0] || '';
+      curLabel = cats[0] || ''; curSeries = series;
       var content = (e.content && e.content.$t) || '', th = thumbOf(e);
       var an = (e.author && e.author[0] && e.author[0].name && e.author[0].name.$t) || '';
       var wrap = el('div', 'cm-content'), art = el('article', 'cm-article'); art.setAttribute('data-post-id', ids.post);
@@ -2516,6 +3097,7 @@ body#layout .cm-wall{display:none}
       var row = el('div', 'cm-byline'), au = el('div', 'cm-author'), av = el('span', 'av', an.charAt(0).toUpperCase()); av.setAttribute('aria-hidden', 'true');
       var ad = el('div'), nm = el('b', '', 'by ' + (an || 'Author')), mt = el('div', 'cm-meta');
       mt.appendChild(el('span', '', fmtDate(e.published.$t))); mt.appendChild(el('span', 'dot', ' ' + readMin(content) + ' min read'));
+      if (new Date(e.updated.$t) - new Date(e.published.$t) > 864e5 * 2) mt.appendChild(el('span', 'dot cm-upd', ' Updated ' + fmtDate(e.updated.$t)));
       ad.appendChild(nm); ad.appendChild(mt); au.appendChild(av); au.appendChild(ad); row.appendChild(au);
       var sh = el('div', 'cm-share'); row.appendChild(sh); art.appendChild(row);
       if (th && ds.heroImage !== 'no') { var fig = el('figure', 'cm-hero'), im = el('img'); im.src = bigImg(th, 1200, 675); im.alt = e.title.$t; im.width = 1200; im.height = 675; fig.appendChild(im); art.appendChild(fig); }
@@ -2644,6 +3226,7 @@ body#layout .cm-wall{display:none}
     var faq = $$('.cm-body details');
     if (faq.length) data.push({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(function (dt) { var s = dt.querySelector('summary'); return { '@type': 'Question', name: s ? s.textContent.trim() : '', acceptedAnswer: { '@type': 'Answer', text: dt.textContent.replace(s ? s.textContent : '', '').trim() } }; }) });
     var sj = el('script'); sj.type = 'application/ld+json'; sj.text = JSON.stringify(data); d.head.appendChild(sj);
+    readingInit(art, e, curSeries);
   }
 
   function renderComments(cm, ids) {
@@ -2680,6 +3263,7 @@ body#layout .cm-wall{display:none}
 
   /* ---------- route ---------- */
   if (isItem) renderItem();
+  else if (B.classList.contains('pt-error_page')) renderNotFound();
   else if (isStatic) renderStatic();
   else if (isHome && !qs('page') && !location.search) renderHome();
   else renderList();
