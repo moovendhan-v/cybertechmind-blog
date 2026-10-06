@@ -5,6 +5,7 @@
      ===================================================================== */
   var cmFind = (function () {
     var root_, panel, qIn, chipsEl, listEl, countEl, selAuthor, selScope, selYear, selSort, selSeries, serW, clearBtn, moreBtn;
+    var serverHits = {}, reqId = 0, typeT = null;
     var idx = null, loading = false, pending = [], open = false, sel = -1, shown = 0, PAGE = 20, lastFocus = null;
     var state = { q: '', cats: [], author: '', scope: 'all', year: '', series: '', sort: 'rel' };
     var RK = 'cmRecentSearch';
@@ -64,7 +65,13 @@
       ft.appendChild(countEl); ft.appendChild(keys); panel.appendChild(ft);
       root_.appendChild(panel); document.body.appendChild(root_);
 
-      qIn.addEventListener('input', function () { state.q = qIn.value; run(true); });
+      qIn.addEventListener('input', function () {
+        state.q = qIn.value; clearTimeout(typeT);
+        var q = state.q.trim();
+        if (!idx || q.length < 2) { reqId++; run(true); return; }
+        skeletonList('Searching\u2026');
+        typeT = setTimeout(function () { fetchServer(q); }, 260);
+      });
       selAuthor.addEventListener('change', function () { state.author = selAuthor.value; run(true); });
       selScope.addEventListener('change', function () { state.scope = selScope.value; run(true); });
       selYear.addEventListener('change', function () { state.year = selYear.value; run(true); });
@@ -88,15 +95,38 @@
       fillFilters.cats = Object.keys(cats).sort(function (a, b) { return cats[b] - cats[a] || (a < b ? -1 : 1); }).map(function (n) { return [n, cats[n]]; });
       drawChips();
     }
+    var chipsOpen = false, CHIP_LIMIT = 8;
     function drawChips() {
       chipsEl.textContent = ''; var cats = fillFilters.cats || [];
-      cats.forEach(function (c) {
+      var list = chipsOpen ? cats : cats.filter(function (c, i) { return i < CHIP_LIMIT || state.cats.indexOf(c[0]) >= 0; });
+      list.forEach(function (c) {
         var b = el('button', 'cm-chip2' + (state.cats.indexOf(c[0]) >= 0 ? ' on' : '')); b.type = 'button'; b.setAttribute('aria-pressed', String(state.cats.indexOf(c[0]) >= 0));
         b.appendChild(el('span', '', c[0])); b.appendChild(el('small', '', String(c[1])));
         b.addEventListener('click', function () { var i = state.cats.indexOf(c[0]); if (i >= 0) state.cats.splice(i, 1); else state.cats.push(c[0]); drawChips(); run(true); });
         chipsEl.appendChild(b);
       });
+      if (cats.length > list.length || (chipsOpen && cats.length > CHIP_LIMIT)) {
+        var mb = el('button', 'cm-chip2 more', chipsOpen ? 'Show less' : '+' + (cats.length - list.length) + ' more'); mb.type = 'button';
+        mb.addEventListener('click', function () { chipsOpen = !chipsOpen; drawChips(); }); chipsEl.appendChild(mb);
+      }
       chipsEl.hidden = !cats.length;
+    }
+
+    /* ---------- live server search (merges fresh hits into the index) ---------- */
+    function fetchServer(q) {
+      var my = ++reqId;
+      getJSON('/feeds/posts/default?alt=json&max-results=60&q=' + encodeURIComponent(q), function (j) {
+        if (my !== reqId || !open) return;
+        var ents = (j && j.feed && j.feed.entry) || [], hits = {};
+        ents.forEach(function (e) {
+          var url = entryUrl(e); hits[url] = true;
+          if (idx.some(function (p) { return p.url === url; })) return;
+          var content = (e.content && e.content.$t) || (e.summary && e.summary.$t) || '', text = plain(content).slice(0, 30000);
+          var au = (e.author && e.author[0] && e.author[0].name && e.author[0].name.$t) || '', allL = (e.category || []).map(function (c) { return c.term; }), dt = new Date(e.published.$t), labels = realLabels(allL);
+          idx.push({ e: e, title: e.title.$t, tl: e.title.$t.toLowerCase(), au: au, al: au.toLowerCase(), labels: labels, series: allL.filter(isSeries), ll: labels.join(' ').toLowerCase(), text: text, xl: text.toLowerCase(), date: dt, year: dt.getFullYear(), url: url, thumb: thumbOf(e), mins: readMin(content) });
+        });
+        serverHits[q.toLowerCase()] = hits; run(true);
+      });
     }
 
     /* ---------- matching ---------- */
@@ -134,6 +164,7 @@
           });
           if (!ok) return;
         }
+        var sh = serverHits[state.q.trim().toLowerCase()]; if (sh && sh[p.url]) score += 2;
         out.push({ p: p, s: score });
       });
       var by = state.sort === 'rel' && !toks.length ? 'new' : state.sort;
@@ -159,7 +190,7 @@
       a.addEventListener('click', function () { saveRecent(state.q); });
       return a;
     }
-    function skeletonList() { listEl.textContent = ''; for (var i = 0; i < 5; i++) { var r = el('div', 'cm-res'); r.appendChild(sk('', '56px', '56px')); var t = el('span', 'cm-res-tx'); t.appendChild(sk('', '70%', '14px')); t.appendChild(sk('', '40%', '11px')); t.lastChild.style.marginTop = '8px'; t.appendChild(sk('', '95%', '11px')); t.lastChild.style.marginTop = '8px'; r.appendChild(t); listEl.appendChild(r); } countEl.textContent = 'Loading posts…'; }
+    function skeletonList(msg) { listEl.textContent = ''; for (var i = 0; i < 5; i++) { var r = el('div', 'cm-res'); r.appendChild(sk('', '56px', '56px')); var t = el('span', 'cm-res-tx'); t.appendChild(sk('', '70%', '14px')); t.appendChild(sk('', '40%', '11px')); t.lastChild.style.marginTop = '8px'; t.appendChild(sk('', '95%', '11px')); t.lastChild.style.marginTop = '8px'; r.appendChild(t); listEl.appendChild(r); } countEl.textContent = msg || 'Loading posts…'; }
     function activeFilters() { return state.cats.length + (state.author ? 1 : 0) + (state.year ? 1 : 0) + (state.series ? 1 : 0) + (state.scope !== 'all' ? 1 : 0) + (state.sort !== 'rel' ? 1 : 0); }
     function run(reset) {
       if (!idx) return; if (reset) { shown = PAGE; sel = -1; }

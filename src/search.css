@@ -23,7 +23,7 @@ body.find-open{overflow:hidden}
 .cm-fsel:focus-within{border-color:var(--accent)}
 .cm-find-clear{margin-left:auto;border:0;background:none;color:var(--accent);font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;padding:6px 8px;border-radius:8px}
 .cm-find-clear:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
-.cm-find-chips{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;max-height:92px;overflow:auto;border-bottom:1px solid var(--line);scrollbar-width:thin}
+.cm-find-chips{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;border-bottom:1px solid var(--line);max-height:34vh;overflow:auto;scrollbar-width:thin}
 .cm-chip2{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--text);font:inherit;font-size:.82rem;font-weight:500;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
 .cm-chip2 small{color:var(--muted);font-size:.72rem}
 .cm-chip2 .cm-i{width:13px;height:13px;color:var(--muted)}
@@ -83,3 +83,5 @@ body.find-open{overflow:hidden}
 .cm-sb .cm-ad{margin:auto 0;padding:14px 0;text-align:center;overflow:hidden;max-width:100%}
 .cm-sb .cm-ad .widget{min-height:0}
 :root[data-sb="min"] .cm-sb .cm-ad{display:none}
+.cm-chip2.more{border-style:dashed;color:var(--accent);font-weight:600}
+.cm-chip2.more:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
