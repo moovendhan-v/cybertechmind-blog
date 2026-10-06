@@ -153,3 +153,11 @@ Hover (or keyboard-focus) a link inside a post to see a small card above it. You
 
 ## Comments freshness
 Comments are always fetched live (never cached) and re-checked when a visitor returns to the tab, so a comment posted on Blogger's comment page appears as soon as they come back. Other feed data is cached for 5 minutes per tab.
+
+## Author banner
+A wide banner image about the author (best at 4:1, e.g. 1584 x 396). It appears in three places:
+- at the top of the **author box** at the end of every post,
+- as a strip on the **home page** (between the featured post and the newsletter strip; hide it with `showBannerHome` = no),
+- anywhere in a Markdown page with `::: authorbanner` followed by `:::` (handy for the About page).
+
+Settings (Theme > Customize or the JSON gadget): `authorBanner` (image URL, currently set to the jsDelivr image of your GitHub repo), `authorBannerLink` (where a click goes; blank = `authorUrl`), `showBannerHome` (yes / no). Clear `authorBanner` to remove it everywhere.

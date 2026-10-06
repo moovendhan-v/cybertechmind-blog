@@ -313,6 +313,8 @@ def container(name, args, body):
     if name == 'video':
         v = video_embed(args.strip()) or args.strip()
         return '<iframe width="560" height="315" src="%s" frameborder="0" allowfullscreen></iframe>' % attr(v)
+    if name == 'authorbanner':
+        return '<div class="cm-authorbanner"></div>'
     if name == 'download':
         url = re.search(r'url=(\S+)', args)
         title = re.search(r'title="([^"]*)"', args)

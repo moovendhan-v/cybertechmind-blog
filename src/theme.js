@@ -545,6 +545,15 @@
     });
   }
 
+  /* wide author banner (theme variable authorBanner / JSON key); returns null when not set */
+  function bannerEl(cls) {
+    if (!ds.authorBanner) return null;
+    var a = el('a', cls || 'cm-w-banner'); a.href = ds.authorBannerLink || ds.authorUrl || '/'; a.target = '_blank'; a.rel = 'noopener';
+    a.setAttribute('aria-label', (ds.authorName || 'Author') + ' - about the author');
+    var im = el('img'); im.src = ds.authorBanner; im.alt = (ds.authorName || 'Author') + (ds.authorRole ? ', ' + ds.authorRole : ''); im.width = 1584; im.height = 396; im.loading = 'lazy'; im.decoding = 'async';
+    a.appendChild(im); return a;
+  }
+
   function authorBox(an) {
     var name = ds.authorName || an || 'Author', box = el('aside', 'cm-writer'), av = el('span', 'av');
     if (ds.authorImage) { var im = el('img'); im.src = ds.authorImage; im.alt = name; im.width = 56; im.height = 56; av.appendChild(im); } else av.textContent = name.charAt(0).toUpperCase();
@@ -552,7 +561,9 @@
     if (ds.authorRole) tx.appendChild(el('span', 'cm-w-role', ds.authorRole));
     if (ds.authorBio) tx.appendChild(el('p', '', ds.authorBio));
     if (ds.authorUrl) { var a = el('a', 'cm-w-link', 'View profile \u2192'); a.href = ds.authorUrl; a.target = '_blank'; a.rel = 'noopener'; tx.appendChild(a); }
-    box.appendChild(av); box.appendChild(tx); return box;
+    var bn = bannerEl('cm-w-banner'), row = el('div', 'cm-w-row'); row.appendChild(av); row.appendChild(tx);
+    if (bn) { box.classList.add('has-banner'); box.appendChild(el('div', 'cm-fkick', 'About the author')); box.appendChild(bn); }
+    box.appendChild(row); return box;
   }
 
   function buildSeries(label, art, cm) {

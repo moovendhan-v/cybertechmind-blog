@@ -332,6 +332,7 @@
 
   function enhanceBody(body) {
     if (!body || body.getAttribute('data-enhanced')) return; body.setAttribute('data-enhanced', '1');
+    $$('.cm-authorbanner', body).forEach(function (n) { var x = bannerEl('cm-banner-strip'); if (x) n.replaceWith(x); else n.remove(); });
     postInfo(body); changelogs(body); callouts(body); tables(body); embeds(body); sliders(body); figures(body);
     /* code groups (tabs) first, then single blocks */
     $$('.code-tabs,[data-code-tabs]', body).forEach(function (g) {

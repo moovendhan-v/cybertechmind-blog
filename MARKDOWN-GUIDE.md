@@ -65,6 +65,7 @@ Every conversion prints warnings (and runs `shellcheck` on bash blocks if it is 
 | `::: details Question?` ... `:::` | Accordion item |
 | `::: steps` + a numbered list + `:::` | Step timeline |
 | a YouTube or Vimeo link on its own line | Responsive video |
+| `::: authorbanner` then `:::` | The author banner image (for About / profile pages) |
 | `::: download title="Cheat sheet" url=https://...` + a sentence + `:::` | Download card |
 | `==text==`, `<kbd>Cmd</kbd>`, `~~text~~`, `` `code` `` | Highlight, key, strike, inline code |
 

@@ -20,3 +20,4 @@
 - Layout page arranged in rows (flattened wrappers + ordered flex), Theme options JSON gadget, favicon, toggles for left sidebar / right rail / header categories / footer, sidebar default state, runtime overrides for brand, logo, accent, width, contact, links.
 - Link hover previews (own posts, topics, GitHub, YouTube, external). Fixed stale comments: feed cache now expires after 5 minutes and comments always load fresh and refresh on tab focus.
 - Code windows now start open by default (codeDefault = open; closed and preview still available per block or site-wide).
+- Author banner image (authorBanner): top of the post author box, home page strip, and ::: authorbanner block for About pages.

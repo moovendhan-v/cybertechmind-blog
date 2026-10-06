@@ -5,6 +5,9 @@ labels: Page
 
 # About CyberTechMind
 
+::: authorbanner
+:::
+
 ## What this blog covers
 
 Cybersecurity, AWS cloud, backend, frontend and full-stack development, explained with commands you can copy and run.

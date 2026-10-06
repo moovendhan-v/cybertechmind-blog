@@ -107,6 +107,9 @@
 <Variable name="authorBio" description="Author bio one or two sentences" type="string" default="" value=""/>
 <Variable name="authorUrl" description="Author profile link" type="string" default="https://profile.cybertechmind.com" value="https://profile.cybertechmind.com"/>
 <Variable name="authorImage" description="Author photo URL" type="string" default="" value=""/>
+<Variable name="authorBanner" description="Author banner image URL wide 4 to 1 blank none" type="string" default="https://cdn.jsdelivr.net/gh/moovendhan-v/md2-slides@main/public/images/moovendhan_v_cybertechmind.png" value="https://cdn.jsdelivr.net/gh/moovendhan-v/md2-slides@main/public/images/moovendhan_v_cybertechmind.png"/>
+<Variable name="authorBannerLink" description="Author banner link blank author profile link" type="string" default="" value=""/>
+<Variable name="showBannerHome" description="Show the author banner on the home page yes or no" type="string" default="yes" value="yes"/>
 <Variable name="showSecurityNotice" description="Auto security notice on security posts yes or no" type="string" default="yes" value="yes"/>
 <Variable name="securityNotice" description="Security notice text" type="string" default="Authorised testing only. Try these techniques only on systems you own or have written permission to test." value="Authorised testing only. Try these techniques only on systems you own or have written permission to test."/>
 <Variable name="communityUrl" description="Community link Discord or GitHub Discussions blank hidden" type="string" default="" value=""/>
@@ -1060,6 +1063,37 @@ h2:hover>.cm-anchor,h3:hover>.cm-anchor,h4:hover>.cm-anchor{opacity:.8}
 @media (max-width:720px){.cm-writer{flex-direction:column}.cm-series{padding:16px}.cm-download{grid-template-columns:1fr}.cm-download em{grid-column:1;grid-row:auto;justify-self:start;margin-top:8px}}
 
 /* =====================================================================
+   26. AUTHOR BANNER (post author box, home strip, ::: authorbanner)
+   ===================================================================== */
+.cm-writer.has-banner{flex-direction:column;gap:18px;padding:14px 14px 20px}
+.cm-w-row{display:flex;align-items:flex-start;gap:16px;padding:0 8px}
+.cm-w-banner,.cm-banner-strip{display:block;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;transition:transform .2s,box-shadow .2s,border-color .2s}
+.cm-w-banner img,.cm-banner-strip img{display:block;width:100%;height:auto}
+.cm-w-banner:hover,.cm-banner-strip:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 14px 34px rgba(0,0,0,.28)}
+.cm-banner-strip{margin:0 0 28px}
+.cm-body .cm-banner-strip{margin:1.6em 0}
+@media (max-width:720px){.cm-w-row{flex-direction:column;padding:0 4px}.cm-writer.has-banner{padding:10px 10px 16px}}
+
+/* 27. HOME: latest-first feature + author caption ---------------------- */
+.cm-feature{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);margin-bottom:28px}
+.cm-fmain{display:flex;flex-direction:column;padding:18px 24px 6px;min-width:0}
+.cm-fmain .cm-big{padding:12px 0 14px;flex:1}
+.cm-fkick{display:flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.cm-hlist .cm-fkick{color:var(--muted);padding:10px 0 4px}
+.cm-live{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 25%,transparent)}
+.cm-hlist{justify-content:flex-start;padding:8px 20px 12px}
+.cm-hlist .cm-row{flex:1;align-items:center}
+.cm-hero2{margin-top:0}
+.cm-aboutauthor{margin:0 0 28px}
+.cm-aboutauthor .cm-fkick{margin:0 0 10px}
+.cm-aboutauthor .cm-banner-strip{margin:0}
+.cm-cap{margin:12px 2px 0;color:var(--muted);font-size:.95rem;line-height:1.55}
+.cm-cap b{color:var(--text)}
+.cm-cap a{color:var(--accent);font-weight:600;white-space:nowrap}
+.cm-writer.has-banner>.cm-fkick{margin:0 0 10px}
+@media(max-width:900px){.cm-feature{grid-template-columns:1fr}.cm-fmain{padding:16px 16px 4px}.cm-hlist{border-left:0;border-top:1px solid var(--line)}}
+
+/* =====================================================================
    20. SEARCH MODAL + SCROLL-AWARE HEADER + FULL-HEIGHT SIDEBAR
    ===================================================================== */
 /* ---- search modal (command palette) ---- */
@@ -1340,7 +1374,7 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
   </b:if>
 </head>
 
-<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-sb-default='data:skin.vars.sidebarDefault' expr:data-show-footer='data:skin.vars.showFooter' expr:data-show-lsb='data:skin.vars.showLeftSidebar' expr:data-show-rrail='data:skin.vars.showRightRail' expr:data-show-subnav='data:skin.vars.showHeaderCategories' expr:data-link-previews='data:skin.vars.linkPreviews' expr:data-hero-sub='data:skin.vars.heroSub' expr:data-hero-title='data:skin.vars.heroTitle' expr:data-news-action='data:skin.vars.newsletterAction' expr:data-news-text='data:skin.vars.newsletterText' expr:data-news-title='data:skin.vars.newsletterTitle' expr:data-show-hero='data:skin.vars.showHero' expr:data-show-news='data:skin.vars.showNewsletter' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
+<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-sb-default='data:skin.vars.sidebarDefault' expr:data-show-footer='data:skin.vars.showFooter' expr:data-show-lsb='data:skin.vars.showLeftSidebar' expr:data-show-rrail='data:skin.vars.showRightRail' expr:data-show-subnav='data:skin.vars.showHeaderCategories' expr:data-link-previews='data:skin.vars.linkPreviews' expr:data-hero-sub='data:skin.vars.heroSub' expr:data-hero-title='data:skin.vars.heroTitle' expr:data-news-action='data:skin.vars.newsletterAction' expr:data-news-text='data:skin.vars.newsletterText' expr:data-news-title='data:skin.vars.newsletterTitle' expr:data-show-hero='data:skin.vars.showHero' expr:data-show-news='data:skin.vars.showNewsletter' expr:data-author-banner='data:skin.vars.authorBanner' expr:data-author-banner-link='data:skin.vars.authorBannerLink' expr:data-show-banner-home='data:skin.vars.showBannerHome' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
   <a class='cm-skip' href='#cm-main'>Skip to content</a>
   <!-- THEME OPTIONS: paste or edit the JSON in the gadget below (Layout page). See README-CUSTOMISE.md for every key. -->
   <div class='cm-opts cm-lay'>
@@ -2381,6 +2415,7 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
 
   function enhanceBody(body) {
     if (!body || body.getAttribute('data-enhanced')) return; body.setAttribute('data-enhanced', '1');
+    $$('.cm-authorbanner', body).forEach(function (n) { var x = bannerEl('cm-banner-strip'); if (x) n.replaceWith(x); else n.remove(); });
     postInfo(body); changelogs(body); callouts(body); tables(body); embeds(body); sliders(body); figures(body);
     /* code groups (tabs) first, then single blocks */
     $$('.code-tabs,[data-code-tabs]', body).forEach(function (g) {
@@ -3147,17 +3182,31 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     if (opts.length > 2) opts.forEach(function (o) { var b = el('button', 'cm-chip2', o); b.type = 'button'; b.addEventListener('click', function () { cur = o; draw(); track('home_filter', { value: o }); }); chips.appendChild(b); }); else chips.hidden = true;
     p.appendChild(chips); p.appendChild(grid); draw(); return p;
   }
+  function authorStrip() {
+    var bn = bannerEl('cm-banner-strip'); if (!bn) return null;
+    var s = el('section', 'cm-aboutauthor'), h = el('div', 'cm-fkick', 'About the author');
+    s.appendChild(h); s.appendChild(bn);
+    var cap = el('p', 'cm-cap'), nm = el('b', '', ds.authorName || 'The author');
+    cap.appendChild(nm);
+    cap.appendChild(document.createTextNode((ds.authorRole ? ' - ' + ds.authorRole + '. ' : '. ') + (ds.authorBio || 'I write practical, tested guides on security, cloud and full-stack.') + ' '));
+    var a = el('a', '', 'Meet the author \u2192'); a.href = ds.authorUrl || ds.authorBannerLink || '/'; a.target = '_blank'; a.rel = 'noopener'; cap.appendChild(a);
+    s.appendChild(cap); return s;
+  }
   function buildHome() {
     homeWanted = false;
     var ents = feedData.ents; if (!ents.length) return;
-    var wrap = el('div', 'cm-content'), hero = heroBlock(ents, feedData.cats); if (hero) wrap.appendChild(hero);
-    var cont = continueBlock(); if (cont) wrap.appendChild(cont);
-    var feat = el('section', 'cm-panel cm-feature'), side = el('div', 'cm-hlist');
+    var wrap = el('div', 'cm-content');
+    var feat = el('section', 'cm-panel cm-feature'), side = el('div', 'cm-hlist'), main = el('div', 'cm-fmain');
+    var fk = el('div', 'cm-fkick'); fk.appendChild(el('span', 'cm-live')); fk.appendChild(document.createTextNode('Latest post')); main.appendChild(fk);
+    main.appendChild(bigFromEntry(ents[0]));
+    side.appendChild(el('div', 'cm-fkick', 'Also new'));
     ents.slice(1, 5).forEach(function (e) { side.appendChild(rowFromEntry(e)); });
-    feat.appendChild(bigFromEntry(ents[0])); feat.appendChild(side);
+    feat.appendChild(main); feat.appendChild(side); wrap.appendChild(feat);
+    var hero = heroBlock(ents, feedData.cats); if (hero) wrap.appendChild(hero);
+    var cont = continueBlock(); if (cont) wrap.appendChild(cont);
     var anchor = el('div'); wrap.appendChild(anchor); startHereBlock(wrap, anchor);
-    wrap.appendChild(feat);
     var adh = $('.cm-ad-home'); if (adh) wrap.appendChild(adh);
+    if (ds.showBannerHome !== 'no') { var ab = authorStrip(); if (ab) wrap.appendChild(ab); }
     var ns = newsStrip(); if (ns) wrap.appendChild(ns);
     var sAnchor = el('div'); wrap.appendChild(sAnchor); seriesBlock(wrap, sAnchor);
     if (ents.length > 5) wrap.appendChild(latestBlock(ents));
@@ -3248,6 +3297,15 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     });
   }
 
+  /* wide author banner (theme variable authorBanner / JSON key); returns null when not set */
+  function bannerEl(cls) {
+    if (!ds.authorBanner) return null;
+    var a = el('a', cls || 'cm-w-banner'); a.href = ds.authorBannerLink || ds.authorUrl || '/'; a.target = '_blank'; a.rel = 'noopener';
+    a.setAttribute('aria-label', (ds.authorName || 'Author') + ' - about the author');
+    var im = el('img'); im.src = ds.authorBanner; im.alt = (ds.authorName || 'Author') + (ds.authorRole ? ', ' + ds.authorRole : ''); im.width = 1584; im.height = 396; im.loading = 'lazy'; im.decoding = 'async';
+    a.appendChild(im); return a;
+  }
+
   function authorBox(an) {
     var name = ds.authorName || an || 'Author', box = el('aside', 'cm-writer'), av = el('span', 'av');
     if (ds.authorImage) { var im = el('img'); im.src = ds.authorImage; im.alt = name; im.width = 56; im.height = 56; av.appendChild(im); } else av.textContent = name.charAt(0).toUpperCase();
@@ -3255,7 +3313,9 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
     if (ds.authorRole) tx.appendChild(el('span', 'cm-w-role', ds.authorRole));
     if (ds.authorBio) tx.appendChild(el('p', '', ds.authorBio));
     if (ds.authorUrl) { var a = el('a', 'cm-w-link', 'View profile \u2192'); a.href = ds.authorUrl; a.target = '_blank'; a.rel = 'noopener'; tx.appendChild(a); }
-    box.appendChild(av); box.appendChild(tx); return box;
+    var bn = bannerEl('cm-w-banner'), row = el('div', 'cm-w-row'); row.appendChild(av); row.appendChild(tx);
+    if (bn) { box.classList.add('has-banner'); box.appendChild(el('div', 'cm-fkick', 'About the author')); box.appendChild(bn); }
+    box.appendChild(row); return box;
   }
 
   function buildSeries(label, art, cm) {

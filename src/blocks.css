@@ -217,3 +217,34 @@ h2:hover>.cm-anchor,h3:hover>.cm-anchor,h4:hover>.cm-anchor{opacity:.8}
 .cm-download span{grid-column:1;color:var(--muted);font-size:.9rem}
 .cm-download em{grid-column:2;grid-row:1/3;font-style:normal;font-weight:700;font-size:.85rem;padding:9px 16px;border-radius:10px;background:var(--accent);color:var(--on-accent)}
 @media (max-width:720px){.cm-writer{flex-direction:column}.cm-series{padding:16px}.cm-download{grid-template-columns:1fr}.cm-download em{grid-column:1;grid-row:auto;justify-self:start;margin-top:8px}}
+
+/* =====================================================================
+   26. AUTHOR BANNER (post author box, home strip, ::: authorbanner)
+   ===================================================================== */
+.cm-writer.has-banner{flex-direction:column;gap:18px;padding:14px 14px 20px}
+.cm-w-row{display:flex;align-items:flex-start;gap:16px;padding:0 8px}
+.cm-w-banner,.cm-banner-strip{display:block;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;transition:transform .2s,box-shadow .2s,border-color .2s}
+.cm-w-banner img,.cm-banner-strip img{display:block;width:100%;height:auto}
+.cm-w-banner:hover,.cm-banner-strip:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 14px 34px rgba(0,0,0,.28)}
+.cm-banner-strip{margin:0 0 28px}
+.cm-body .cm-banner-strip{margin:1.6em 0}
+@media (max-width:720px){.cm-w-row{flex-direction:column;padding:0 4px}.cm-writer.has-banner{padding:10px 10px 16px}}
+
+/* 27. HOME: latest-first feature + author caption ---------------------- */
+.cm-feature{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);margin-bottom:28px}
+.cm-fmain{display:flex;flex-direction:column;padding:18px 24px 6px;min-width:0}
+.cm-fmain .cm-big{padding:12px 0 14px;flex:1}
+.cm-fkick{display:flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.cm-hlist .cm-fkick{color:var(--muted);padding:10px 0 4px}
+.cm-live{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 25%,transparent)}
+.cm-hlist{justify-content:flex-start;padding:8px 20px 12px}
+.cm-hlist .cm-row{flex:1;align-items:center}
+.cm-hero2{margin-top:0}
+.cm-aboutauthor{margin:0 0 28px}
+.cm-aboutauthor .cm-fkick{margin:0 0 10px}
+.cm-aboutauthor .cm-banner-strip{margin:0}
+.cm-cap{margin:12px 2px 0;color:var(--muted);font-size:.95rem;line-height:1.55}
+.cm-cap b{color:var(--text)}
+.cm-cap a{color:var(--accent);font-weight:600;white-space:nowrap}
+.cm-writer.has-banner>.cm-fkick{margin:0 0 10px}
+@media(max-width:900px){.cm-feature{grid-template-columns:1fr}.cm-fmain{padding:16px 16px 4px}.cm-hlist{border-left:0;border-top:1px solid var(--line)}}

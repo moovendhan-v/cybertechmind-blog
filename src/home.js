@@ -96,17 +96,31 @@
     if (opts.length > 2) opts.forEach(function (o) { var b = el('button', 'cm-chip2', o); b.type = 'button'; b.addEventListener('click', function () { cur = o; draw(); track('home_filter', { value: o }); }); chips.appendChild(b); }); else chips.hidden = true;
     p.appendChild(chips); p.appendChild(grid); draw(); return p;
   }
+  function authorStrip() {
+    var bn = bannerEl('cm-banner-strip'); if (!bn) return null;
+    var s = el('section', 'cm-aboutauthor'), h = el('div', 'cm-fkick', 'About the author');
+    s.appendChild(h); s.appendChild(bn);
+    var cap = el('p', 'cm-cap'), nm = el('b', '', ds.authorName || 'The author');
+    cap.appendChild(nm);
+    cap.appendChild(document.createTextNode((ds.authorRole ? ' - ' + ds.authorRole + '. ' : '. ') + (ds.authorBio || 'I write practical, tested guides on security, cloud and full-stack.') + ' '));
+    var a = el('a', '', 'Meet the author \u2192'); a.href = ds.authorUrl || ds.authorBannerLink || '/'; a.target = '_blank'; a.rel = 'noopener'; cap.appendChild(a);
+    s.appendChild(cap); return s;
+  }
   function buildHome() {
     homeWanted = false;
     var ents = feedData.ents; if (!ents.length) return;
-    var wrap = el('div', 'cm-content'), hero = heroBlock(ents, feedData.cats); if (hero) wrap.appendChild(hero);
-    var cont = continueBlock(); if (cont) wrap.appendChild(cont);
-    var feat = el('section', 'cm-panel cm-feature'), side = el('div', 'cm-hlist');
+    var wrap = el('div', 'cm-content');
+    var feat = el('section', 'cm-panel cm-feature'), side = el('div', 'cm-hlist'), main = el('div', 'cm-fmain');
+    var fk = el('div', 'cm-fkick'); fk.appendChild(el('span', 'cm-live')); fk.appendChild(document.createTextNode('Latest post')); main.appendChild(fk);
+    main.appendChild(bigFromEntry(ents[0]));
+    side.appendChild(el('div', 'cm-fkick', 'Also new'));
     ents.slice(1, 5).forEach(function (e) { side.appendChild(rowFromEntry(e)); });
-    feat.appendChild(bigFromEntry(ents[0])); feat.appendChild(side);
+    feat.appendChild(main); feat.appendChild(side); wrap.appendChild(feat);
+    var hero = heroBlock(ents, feedData.cats); if (hero) wrap.appendChild(hero);
+    var cont = continueBlock(); if (cont) wrap.appendChild(cont);
     var anchor = el('div'); wrap.appendChild(anchor); startHereBlock(wrap, anchor);
-    wrap.appendChild(feat);
     var adh = $('.cm-ad-home'); if (adh) wrap.appendChild(adh);
+    if (ds.showBannerHome !== 'no') { var ab = authorStrip(); if (ab) wrap.appendChild(ab); }
     var ns = newsStrip(); if (ns) wrap.appendChild(ns);
     var sAnchor = el('div'); wrap.appendChild(sAnchor); seriesBlock(wrap, sAnchor);
     if (ents.length > 5) wrap.appendChild(latestBlock(ents));
