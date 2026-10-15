@@ -22,7 +22,7 @@ Every area is a normal drag-and-drop gadget area, like a commercial theme:
 | Featured post | Featured Post gadget | homepage |
 | Home ads - below featured posts | HTML / AdSense | homepage |
 | Blog posts | filled automatically, do not add anything | all pages |
-| Sidebar | Popular Posts, Labels, Search, Follow, etc. Right column on lists; under the ad in the right rail on posts. Hidden when empty | all pages |
+| Sidebar | Popular Posts, Labels, Followers (Follow button + follower avatars), Search, etc. Right column on lists; under the ad in the right rail on posts. Hidden when empty | all pages |
 | Post ads 1 | HTML / AdSense, before the post body | posts |
 | Post ads (inside content) | after paragraph N (`adParagraph`) | posts |
 | Post ads 2 | after the post body | posts |

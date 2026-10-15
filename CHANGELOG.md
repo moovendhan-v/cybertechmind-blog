@@ -21,6 +21,7 @@
 - Link hover previews (own posts, topics, GitHub, YouTube, external). Fixed stale comments: feed cache now expires after 5 minutes and comments always load fresh and refresh on tab focus.
 - Code windows now start open by default (codeDefault = open; closed and preview still available per block or site-wide).
 - Author banner image (authorBanner): top of the post author box, home page strip, and ::: authorbanner block for About pages.
+- Followers gadget in the sidebar: themed card with a Follow button and the Blogger follower avatars (Blogger API v3 has no followers endpoint, so this uses the native gadget).
 
 ## SEO pass
 - Per-page meta, robots, canonical, OG/Twitter; richer JSON-LD; breadcrumbs; related posts; LCP hints; noscript fallback; sitemap block and page; md2blog SEO lint and description/image/slug front matter.

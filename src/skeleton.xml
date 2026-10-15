@@ -272,6 +272,11 @@
     <b:section class='main' id='main' maxwidgets='1' name='Main Posts - Filled automatically from your posts, nothing to add' showaddelement='no'/>
 
     <aside class='cm-sidebar cm-lay' id='cm-sidebar'>
+      <section class='cm-box cm-follow' id='cm-follow'>
+        <h2>Follow this blog</h2>
+        <p class='cm-followers-text'>Follow this blog on Blogger to get new posts in your reading list.</p>
+        <a class='cm-followers-btn' expr:href='&quot;https://www.blogger.com/follow-blog.g?blogID=&quot; + data:blog.blogId' rel='nofollow noopener' target='_blank'><svg aria-hidden='true' height='16' viewBox='0 0 24 24' width='16'><path d='M15 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.7 0-8 1.3-8 4v2h16v-2c0-2.7-5.3-4-8-4z' fill='currentColor'/></svg>Follow</a>
+      </section>
       <b:section class='cm-sidebar-s' id='sidebar' maxwidgets='20' name='Sidebar - On all pages, add any gadgets' showaddelement='yes'>
         <b:widget id='PopularPosts151' locked='false' title='Popular posts' type='PopularPosts' version='2' visible='true'>
           <b:widget-settings>
@@ -312,6 +317,17 @@
                 <span class='label-size'><a class='label-name' expr:href='data:label.url'><data:label.name/><b:if cond='data:this.showFreqNumbers'><span class='label-count'><data:label.count/></span></b:if></a></span>
               </b:loop>
             </div>
+          </b:includable>
+        </b:widget>
+        <b:widget id='Followers1' locked='false' title='Followers' type='Followers' version='2' visible='true'>
+          <b:includable id='main' var='this'>
+            <b:include name='widget-title'/>
+            <div class='widget-content cm-followers'>
+              <b:if cond='data:codeSnippet != &quot;&quot;'>
+                <div class='cm-followers-grid' expr:id='data:widget.instanceId + &quot;-wrapper&quot;'><data:codeSnippet/></div>
+              </b:if>
+            </div>
+            <b:include name='quickedit'/>
           </b:includable>
         </b:widget>
       </b:section>
@@ -429,6 +445,11 @@
           <p><data:skin.vars.tagline/></p>
           <div class='cm-social' expr:data-links='data:skin.vars.socialLinks'>
             <ul class='cm-links'/>
+          </div>
+          <div class='cm-footfollow'>
+            <span class='cm-footfollow-t'>Follow this blog</span>
+            <a class='cm-followers-btn' expr:href='&quot;https://www.blogger.com/follow-blog.g?blogID=&quot; + data:blog.blogId' rel='nofollow noopener' target='_blank'><svg aria-hidden='true' height='16' viewBox='0 0 24 24' width='16'><path d='M15 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.7 0-8 1.3-8 4v2h16v-2c0-2.7-5.3-4-8-4z' fill='currentColor'/></svg>Follow</a>
+            <div class='cm-followers-grid' id='cm-foot-followers'/>
           </div>
           <b:if cond='data:skin.vars.newsletterAction != &quot;&quot; and data:skin.vars.showNewsletter == &quot;yes&quot;'>
             <form class='cm-subform' expr:action='data:skin.vars.newsletterAction' id='cm-subscribe' method='post' target='_blank'>

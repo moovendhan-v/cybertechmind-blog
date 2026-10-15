@@ -362,6 +362,7 @@
   function clearRows(b) { $$('.cm-row', b).forEach(function (n) { n.remove(); }); }
   function rightRail() {
     var right = el('aside', 'cm-rail cm-rail-r'), st = el('div', 'cm-sticky');
+    var fol = $('#cm-follow'); if (fol) st.appendChild(fol);
     st.appendChild(box('Recent posts', 'cm-recent')); st.appendChild(box('Recommended', 'cm-reco'));
     var adr = $('.cm-ad-sr'); if (adr) st.appendChild(adr);
     var sbw = $('#cm-sidebar'); if (sbw) st.appendChild(sbw);
@@ -713,6 +714,21 @@
     });
   });
   var tt0 = $('#cm-totop'); if (tt0) tt0.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+  /* ---------- footer: mirror the Followers gadget (avatars) ---------- */
+  (function () {
+    var box = $('#cm-foot-followers'); if (!box) return;
+    var tries = 0, t = setInterval(function () {
+      var src = $('.Followers iframe');
+      if (src && src.src) {
+        clearInterval(t);
+        var f = d.createElement('iframe');
+        f.src = src.src; f.title = 'Followers'; f.loading = 'lazy';
+        f.height = src.height || src.offsetHeight || 150;
+        box.appendChild(f);
+      } else if (++tries > 40) clearInterval(t);
+    }, 500);
+  })();
 
   /* ---------- route ---------- */
   if (isItem) renderItem();
