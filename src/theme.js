@@ -730,15 +730,65 @@
       if (total > MAX) faces.appendChild(el('span', 'cm-join-av cm-join-more', '+' + (total - MAX)));
       cnt.textContent = total + (total === 1 ? ' reader follows' : ' readers follow') + ' this blog';
     }
-    /* no relay: Blogger's own followers box (square avatars), coloured to the theme */
+    /* no relay: Blogger's own followers box, cropped to "Followers (N)" + one row of avatars and
+       masked into circles (its layout: 14px title, 32px photos every 38px from y=20, 8 per row at 320px) */
     function frame() {
-      var cs = getComputedStyle(d.documentElement), t = cs.getPropertyValue('--text').trim() || '#e8eaee', a = cs.getPropertyValue('--accent').trim() || '#6728FF';
+      var cs = getComputedStyle(d.documentElement), t = cs.getPropertyValue('--muted').trim() || '#9aa3b2', a = cs.getPropertyValue('--accent').trim() || '#6728FF';
       var c = btoa('\x3a' + String.fromCharCode(t.length) + t + '\x42' + String.fromCharCode(a.length) + a).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-      var f = el('iframe', 'cm-join-frame'); f.title = 'Followers'; f.height = 130;
+      var crop = el('div', 'cm-join-crop'), f = el('iframe', 'cm-join-frame'); f.title = 'Followers'; f.width = 320; f.height = 120; f.scrolling = 'no';
       f.src = 'https://www.blogger.com/followers/frame/' + id + '?colors=' + c + '&pageSize=21&hl=en&origin=' + encodeURIComponent(location.origin);
-      faces.textContent = ''; cnt.textContent = ''; faces.appendChild(f); sec.classList.add('is-frame');
+      f.onload = function () { sec.classList.add('is-ready'); };
+      crop.appendChild(f); faces.textContent = ''; cnt.textContent = ''; faces.appendChild(crop); sec.classList.add('is-frame');
     }
-    if (!api) { frame(); new MutationObserver(frame).observe(d.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); return; }
+    /* no relay, upgraded: work out the follower count from two frame heights (one avatar per row at 40px
+       wide = 54 + 42n; all in one row at 4000px = 82), then show each avatar in its own cropped frame */
+    var stacked = -1, SLOTS = 6;
+    function frameUrl(size) { return 'https://www.blogger.com/followers/frame/' + id + '?pageSize=' + size + '&hl=en&origin=' + encodeURIComponent(location.origin); }
+    function stack(n) {
+      if (stacked === n) return;
+      stacked = n; sec.classList.remove('is-frame'); faces.textContent = '';
+      try { localStorage.setItem('cmFollowersN', String(n)); } catch (e) {}
+      if (n < 1) { cnt.textContent = 'Be the first to follow this blog'; return; }
+      for (var i = 0; i < Math.min(n, SLOTS); i++) {
+        var a = el('span', 'cm-join-av cm-join-sk'), f = el('iframe', 'cm-join-slot'); a.setAttribute('role', 'listitem');
+        f.title = 'Follower ' + (i + 1); f.width = 320; f.height = 120; f.scrolling = 'no'; f.tabIndex = -1;
+        f.style.left = 'calc(' + (-i * 38) + 'px * var(--s))'; f.src = frameUrl(21);
+        f.onload = (function (s) { return function () { s.classList.remove('cm-join-sk'); }; })(a);
+        a.appendChild(f); faces.appendChild(a);
+      }
+      if (n > SLOTS) faces.appendChild(el('span', 'cm-join-av cm-join-more', '+' + (n - SLOTS)));
+      cnt.textContent = (n >= 100 ? '100+' : n) + (n === 1 ? ' reader follows' : ' readers follow') + ' this blog';
+    }
+    function probe() {
+      if (!(window.gapi && gapi.load)) return;
+      gapi.load('gapi.iframes', function () {
+        if (!gapi.iframes || !gapi.iframes.getContext) return;
+        var hs = {}, frs = [];
+        [40, 4000].forEach(function (w) {
+          var host = el('div', 'cm-join-probe'); host.style.width = w + 'px'; sec.appendChild(host);
+          var fr = gapi.iframes.getContext().openChild({
+            url: frameUrl(100), where: host, messageHandlersFilter: gapi.iframes.CROSS_ORIGIN_IFRAMES_FILTER,
+            messageHandlers: { '_ready': function (o) {
+              hs[w] = parseFloat(o.height); if (!(40 in hs && 4000 in hs)) return;
+              var x = (hs[40] - hs[4000] + 28) / 42, n = Math.round(x);
+              frs.forEach(function (f) { try { f.close(); } catch (e) {} }); $$('.cm-join-probe', sec).forEach(function (h) { h.remove(); });
+              if (isFinite(x) && Math.abs(x - n) < 0.25 && n >= 0 && n <= 100) stack(n);
+            } }
+          });
+          frs.push(fr);
+        });
+      });
+    }
+    if (!api) {
+      /* placeholders until the count is known (or the remembered count, instantly); Blogger's box only if counting fails */
+      var known = null; try { known = localStorage.getItem('cmFollowersN'); } catch (e) {}
+      if (known !== null && /^\d+$/.test(known)) stack(+known);
+      setTimeout(function () { if (stacked < 0) frame(); }, 6000);
+      new MutationObserver(function () { if (stacked < 0 && sec.classList.contains('is-frame')) frame(); }).observe(d.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      if (window.gapi && gapi.load) probe();
+      else { var gs = el('script'); gs.src = 'https://apis.google.com/js/platform.js'; gs.async = true; gs.onload = probe; gs.onerror = function () { if (stacked < 0) frame(); }; d.head.appendChild(gs); }
+      return;
+    }
     var cb = 'cmFollowers' + Date.now(), s = el('script');
     window[cb] = function (o) { done = true; try { delete window[cb]; } catch (e) {} s.remove(); render(o); };
     s.onerror = function () { if (!done) { done = true; frame(); } };

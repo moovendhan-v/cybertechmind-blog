@@ -126,7 +126,7 @@
 <Variable name="customChannelLabel" description="Extra community button label" type="string" default="Community" value="Community"/>
 <Variable name="communityUrl" description="Community link Discord or GitHub Discussions blank hidden" type="string" default="" value=""/>
 <Variable name="communityLabel" description="Community button label" type="string" default="Ask in the community" value="Ask in the community"/>
-<Variable name="followersApi" description="Followers relay URL Apps Script web app for the Join our community avatars blank Blogger box" type="string" default="" value=""/>
+<Variable name="followersApi" description="Followers relay URL blank Blogger box" type="string" default="" value=""/>
 </Group>
 <Group description="Newsletter">
 <Variable name="showNewsletter" description="Show newsletter panel yes no" type="string" default="yes" value="yes"/>
@@ -540,10 +540,10 @@ body.is-home .cm-home-only{display:block}
 .FollowByEmail .follow-by-email-inner td{display:block;padding:0}
 .FollowByEmail .follow-by-email-inner table{width:100%}
 /* join our community: full-width band, round overlapping follower avatars */
-.cm-join{display:flex;align-items:center;justify-content:center;min-height:440px;margin-top:56px;padding:56px 20px;text-align:center;background:var(--panel);border-top:1px solid var(--line)}
+.cm-join{display:flex;align-items:center;justify-content:center;min-height:220px;margin-top:56px;padding:28px 20px;text-align:center;background:var(--panel);border-top:1px solid var(--line)}
 .cm-join ~ .cm-footer{margin-top:0}
-.cm-join-in{display:flex;flex-direction:column;align-items:center;gap:26px;max-width:640px}
-.cm-join-t{margin:0;color:var(--text);font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.cm-join-in{display:flex;flex-direction:column;align-items:center;gap:14px;max-width:640px}
+.cm-join-t{margin:0;color:var(--text);font-size:clamp(1.4rem,2.6vw,1.9rem);font-weight:800;letter-spacing:-.02em;line-height:1.15}
 .cm-join-faces{display:flex;justify-content:center;align-items:center;padding-left:16px;min-height:64px}
 .cm-join-av{position:relative;flex:0 0 64px;width:64px;height:64px;margin-left:-16px;border-radius:50%;border:3px solid var(--panel);overflow:hidden;background:color-mix(in srgb,var(--text) 10%,var(--panel));transition:transform .2s}
 .cm-join-av img{display:block;width:100%;height:100%;object-fit:cover}
@@ -551,13 +551,23 @@ body.is-home .cm-home-only{display:block}
 .cm-join-more{display:inline-flex;align-items:center;justify-content:center;color:var(--text);font-size:.95rem;font-weight:700}
 .cm-join-sk{background:linear-gradient(90deg,color-mix(in srgb,var(--text) 8%,var(--panel)),color-mix(in srgb,var(--text) 16%,var(--panel)),color-mix(in srgb,var(--text) 8%,var(--panel)));background-size:200% 100%;animation:cm-sk 1.4s linear infinite}
 @keyframes cm-sk{to{background-position:-200% 0}}
-.cm-join-count{margin:-10px 0 0;color:var(--muted);font-size:.95rem}
+.cm-join-count{margin:-4px 0 0;color:var(--muted);font-size:.95rem}
 .cm-join-count:empty{display:none}
-.cm-join-btn{display:inline-flex;align-items:center;justify-content:center;min-width:180px;padding:14px 34px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:1rem;text-decoration:none;transition:filter .15s,transform .15s}
+.cm-join-btn{display:inline-flex;align-items:center;justify-content:center;min-width:160px;padding:10px 28px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:1rem;text-decoration:none;transition:filter .15s,transform .15s}
 .cm-join-btn:hover{filter:brightness(1.1);transform:translateY(-1px);color:var(--on-accent)}
-.cm-join.is-frame .cm-join-faces{padding:0;width:min(360px,90vw)}
-.cm-join-frame{display:block;width:100%;border:0;background:transparent;color-scheme:light}
-@media (max-width:600px){.cm-join{min-height:380px;padding:44px 16px}.cm-join-av{flex-basis:52px;width:52px;height:52px;margin-left:-14px}}
+.cm-join.is-frame .cm-join-faces{padding:0}
+/* Blogger box scaled 1.5x: title band (21px) + avatar row (48px circles every 57px), 6 shown */
+.cm-join-crop{position:relative;width:333px;max-width:100%;height:78px;overflow:hidden;opacity:0;transition:opacity .3s;
+  -webkit-mask:linear-gradient(#000,#000) 0 0/100% 22px no-repeat,radial-gradient(circle at 24px 24px,#000 23.5px,transparent 24px) 0 30px/57px 48px repeat-x;
+  mask:linear-gradient(#000,#000) 0 0/100% 22px no-repeat,radial-gradient(circle at 24px 24px,#000 23.5px,transparent 24px) 0 30px/57px 48px repeat-x}
+.cm-join.is-ready .cm-join-crop{opacity:1}
+.cm-join-frame{position:absolute;top:0;left:0;width:320px!important;max-width:none!important;height:120px!important;border:0;background:transparent;color-scheme:light;transform:scale(1.5);transform-origin:0 0}
+/* fallback stack: each avatar is a Blogger frame scaled --s (32px photo -> 58px, 46px on phones) and cropped to one photo */
+.cm-join-faces{--s:1.8125}
+.cm-join-slot{position:absolute;top:calc(-20px * var(--s));width:320px!important;max-width:none!important;height:120px!important;border:0;background:transparent;color-scheme:light;transform:scale(var(--s));transform-origin:0 0;pointer-events:none}
+.cm-join-probe{position:absolute;left:-10000px;top:0;height:0;overflow:hidden;visibility:hidden}
+.cm-join{position:relative}
+@media (max-width:600px){.cm-join{min-height:190px;padding:24px 16px}.cm-join-av{flex-basis:52px;width:52px;height:52px;margin-left:-14px}.cm-join-faces{--s:1.4375}}
 @media (prefers-reduced-motion:reduce){.cm-join-sk{animation:none}.cm-join-av,.cm-join-btn{transition:none}}
 .cm-pfe:not(:has(.widget)){display:none}
 .cm-pfe{margin-top:30px}
@@ -3977,15 +3987,65 @@ body#layout .cm-wall,body#layout .cm-skip{display:none}
       if (total > MAX) faces.appendChild(el('span', 'cm-join-av cm-join-more', '+' + (total - MAX)));
       cnt.textContent = total + (total === 1 ? ' reader follows' : ' readers follow') + ' this blog';
     }
-    /* no relay: Blogger's own followers box (square avatars), coloured to the theme */
+    /* no relay: Blogger's own followers box, cropped to "Followers (N)" + one row of avatars and
+       masked into circles (its layout: 14px title, 32px photos every 38px from y=20, 8 per row at 320px) */
     function frame() {
-      var cs = getComputedStyle(d.documentElement), t = cs.getPropertyValue('--text').trim() || '#e8eaee', a = cs.getPropertyValue('--accent').trim() || '#6728FF';
+      var cs = getComputedStyle(d.documentElement), t = cs.getPropertyValue('--muted').trim() || '#9aa3b2', a = cs.getPropertyValue('--accent').trim() || '#6728FF';
       var c = btoa('\x3a' + String.fromCharCode(t.length) + t + '\x42' + String.fromCharCode(a.length) + a).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-      var f = el('iframe', 'cm-join-frame'); f.title = 'Followers'; f.height = 130;
+      var crop = el('div', 'cm-join-crop'), f = el('iframe', 'cm-join-frame'); f.title = 'Followers'; f.width = 320; f.height = 120; f.scrolling = 'no';
       f.src = 'https://www.blogger.com/followers/frame/' + id + '?colors=' + c + '&pageSize=21&hl=en&origin=' + encodeURIComponent(location.origin);
-      faces.textContent = ''; cnt.textContent = ''; faces.appendChild(f); sec.classList.add('is-frame');
+      f.onload = function () { sec.classList.add('is-ready'); };
+      crop.appendChild(f); faces.textContent = ''; cnt.textContent = ''; faces.appendChild(crop); sec.classList.add('is-frame');
     }
-    if (!api) { frame(); new MutationObserver(frame).observe(d.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); return; }
+    /* no relay, upgraded: work out the follower count from two frame heights (one avatar per row at 40px
+       wide = 54 + 42n; all in one row at 4000px = 82), then show each avatar in its own cropped frame */
+    var stacked = -1, SLOTS = 6;
+    function frameUrl(size) { return 'https://www.blogger.com/followers/frame/' + id + '?pageSize=' + size + '&hl=en&origin=' + encodeURIComponent(location.origin); }
+    function stack(n) {
+      if (stacked === n) return;
+      stacked = n; sec.classList.remove('is-frame'); faces.textContent = '';
+      try { localStorage.setItem('cmFollowersN', String(n)); } catch (e) {}
+      if (n < 1) { cnt.textContent = 'Be the first to follow this blog'; return; }
+      for (var i = 0; i < Math.min(n, SLOTS); i++) {
+        var a = el('span', 'cm-join-av cm-join-sk'), f = el('iframe', 'cm-join-slot'); a.setAttribute('role', 'listitem');
+        f.title = 'Follower ' + (i + 1); f.width = 320; f.height = 120; f.scrolling = 'no'; f.tabIndex = -1;
+        f.style.left = 'calc(' + (-i * 38) + 'px * var(--s))'; f.src = frameUrl(21);
+        f.onload = (function (s) { return function () { s.classList.remove('cm-join-sk'); }; })(a);
+        a.appendChild(f); faces.appendChild(a);
+      }
+      if (n > SLOTS) faces.appendChild(el('span', 'cm-join-av cm-join-more', '+' + (n - SLOTS)));
+      cnt.textContent = (n >= 100 ? '100+' : n) + (n === 1 ? ' reader follows' : ' readers follow') + ' this blog';
+    }
+    function probe() {
+      if (!(window.gapi && gapi.load)) return;
+      gapi.load('gapi.iframes', function () {
+        if (!gapi.iframes || !gapi.iframes.getContext) return;
+        var hs = {}, frs = [];
+        [40, 4000].forEach(function (w) {
+          var host = el('div', 'cm-join-probe'); host.style.width = w + 'px'; sec.appendChild(host);
+          var fr = gapi.iframes.getContext().openChild({
+            url: frameUrl(100), where: host, messageHandlersFilter: gapi.iframes.CROSS_ORIGIN_IFRAMES_FILTER,
+            messageHandlers: { '_ready': function (o) {
+              hs[w] = parseFloat(o.height); if (!(40 in hs && 4000 in hs)) return;
+              var x = (hs[40] - hs[4000] + 28) / 42, n = Math.round(x);
+              frs.forEach(function (f) { try { f.close(); } catch (e) {} }); $$('.cm-join-probe', sec).forEach(function (h) { h.remove(); });
+              if (isFinite(x) && Math.abs(x - n) < 0.25 && n >= 0 && n <= 100) stack(n);
+            } }
+          });
+          frs.push(fr);
+        });
+      });
+    }
+    if (!api) {
+      /* placeholders until the count is known (or the remembered count, instantly); Blogger's box only if counting fails */
+      var known = null; try { known = localStorage.getItem('cmFollowersN'); } catch (e) {}
+      if (known !== null && /^\d+$/.test(known)) stack(+known);
+      setTimeout(function () { if (stacked < 0) frame(); }, 6000);
+      new MutationObserver(function () { if (stacked < 0 && sec.classList.contains('is-frame')) frame(); }).observe(d.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      if (window.gapi && gapi.load) probe();
+      else { var gs = el('script'); gs.src = 'https://apis.google.com/js/platform.js'; gs.async = true; gs.onload = probe; gs.onerror = function () { if (stacked < 0) frame(); }; d.head.appendChild(gs); }
+      return;
+    }
     var cb = 'cmFollowers' + Date.now(), s = el('script');
     window[cb] = function (o) { done = true; try { delete window[cb]; } catch (e) {} s.remove(); render(o); };
     s.onerror = function () { if (!done) { done = true; frame(); } };
