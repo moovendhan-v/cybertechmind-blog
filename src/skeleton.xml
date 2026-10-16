@@ -49,7 +49,7 @@
   </b:if>
 </head>
 
-<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-sb-default='data:skin.vars.sidebarDefault' expr:data-show-footer='data:skin.vars.showFooter' expr:data-show-lsb='data:skin.vars.showLeftSidebar' expr:data-show-rrail='data:skin.vars.showRightRail' expr:data-show-subnav='data:skin.vars.showHeaderCategories' expr:data-link-previews='data:skin.vars.linkPreviews' expr:data-hero-sub='data:skin.vars.heroSub' expr:data-hero-title='data:skin.vars.heroTitle' expr:data-news-action='data:skin.vars.newsletterAction' expr:data-news-text='data:skin.vars.newsletterText' expr:data-news-title='data:skin.vars.newsletterTitle' expr:data-show-hero='data:skin.vars.showHero' expr:data-show-news='data:skin.vars.showNewsletter' expr:data-author-banner='data:skin.vars.authorBanner' expr:data-author-banner-link='data:skin.vars.authorBannerLink' expr:data-show-banner-home='data:skin.vars.showBannerHome' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-twitter='data:skin.vars.twitter' expr:data-author-same-as='data:skin.vars.authorSameAs' expr:data-locale='data:skin.vars.locale' expr:data-show-connect='data:skin.vars.showConnect' expr:data-connect-places='data:skin.vars.connectPlaces' expr:data-connect-title='data:skin.vars.connectTitle' expr:data-connect-text='data:skin.vars.connectText' expr:data-discord-url='data:skin.vars.discordUrl' expr:data-telegram-url='data:skin.vars.telegramUrl' expr:data-whatsapp-url='data:skin.vars.whatsappUrl' expr:data-slack-url='data:skin.vars.slackUrl' expr:data-reddit-url='data:skin.vars.redditUrl' expr:data-custom-channel-url='data:skin.vars.customChannelUrl' expr:data-custom-channel-label='data:skin.vars.customChannelLabel' expr:data-logo-shape='data:skin.vars.logoShape' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage'>
+<body expr:class='(data:view.isSingleItem ? &quot;pt-item&quot; : (data:view.isPage ? &quot;pt-static_page&quot; : (data:view.isError ? &quot;pt-error_page&quot; : &quot;pt-index&quot;))) + (data:view.isHomepage ? &quot; is-home&quot; : &quot;&quot;)' expr:data-brand='data:skin.vars.brandName != &quot;&quot; ? data:skin.vars.brandName : data:blog.title' expr:data-cat-count='data:skin.vars.catCount' expr:data-cat-exclude='data:skin.vars.catExclude' expr:data-cat-posts='data:skin.vars.catPosts' expr:data-ad-para='data:skin.vars.adParagraph' expr:data-toc='data:skin.vars.showToc' expr:data-sb-default='data:skin.vars.sidebarDefault' expr:data-show-footer='data:skin.vars.showFooter' expr:data-show-lsb='data:skin.vars.showLeftSidebar' expr:data-show-rrail='data:skin.vars.showRightRail' expr:data-show-subnav='data:skin.vars.showHeaderCategories' expr:data-link-previews='data:skin.vars.linkPreviews' expr:data-hero-sub='data:skin.vars.heroSub' expr:data-hero-title='data:skin.vars.heroTitle' expr:data-news-action='data:skin.vars.newsletterAction' expr:data-news-text='data:skin.vars.newsletterText' expr:data-news-title='data:skin.vars.newsletterTitle' expr:data-show-hero='data:skin.vars.showHero' expr:data-show-news='data:skin.vars.showNewsletter' expr:data-author-banner='data:skin.vars.authorBanner' expr:data-author-banner-link='data:skin.vars.authorBannerLink' expr:data-show-banner-home='data:skin.vars.showBannerHome' expr:data-author-bio='data:skin.vars.authorBio' expr:data-author-image='data:skin.vars.authorImage' expr:data-author-name='data:skin.vars.authorName' expr:data-author-role='data:skin.vars.authorRole' expr:data-author-url='data:skin.vars.authorUrl' expr:data-community-label='data:skin.vars.communityLabel' expr:data-community-url='data:skin.vars.communityUrl' expr:data-sec-notice='data:skin.vars.securityNotice' expr:data-show-sec='data:skin.vars.showSecurityNotice' expr:data-code-default='data:skin.vars.codeDefault' expr:data-code-lines='data:skin.vars.codeLines' expr:data-subtitle='data:skin.vars.showSubtitle' expr:data-hero-image='data:skin.vars.showHeroImage' expr:data-ga='data:skin.vars.gaId' expr:data-twitter='data:skin.vars.twitter' expr:data-author-same-as='data:skin.vars.authorSameAs' expr:data-locale='data:skin.vars.locale' expr:data-show-connect='data:skin.vars.showConnect' expr:data-connect-places='data:skin.vars.connectPlaces' expr:data-connect-title='data:skin.vars.connectTitle' expr:data-connect-text='data:skin.vars.connectText' expr:data-discord-url='data:skin.vars.discordUrl' expr:data-telegram-url='data:skin.vars.telegramUrl' expr:data-whatsapp-url='data:skin.vars.whatsappUrl' expr:data-slack-url='data:skin.vars.slackUrl' expr:data-reddit-url='data:skin.vars.redditUrl' expr:data-custom-channel-url='data:skin.vars.customChannelUrl' expr:data-custom-channel-label='data:skin.vars.customChannelLabel' expr:data-logo-shape='data:skin.vars.logoShape' expr:data-share-image='data:skin.vars.shareImage' expr:data-logo='data:skin.vars.logoImage' expr:data-followers-api='data:skin.vars.followersApi'>
   <a class='cm-skip' href='#cm-main'>Skip to content</a>
   <noscript>
     <div style='max-width:760px;margin:24px auto;padding:0 16px;font-family:sans-serif'>
@@ -272,11 +272,6 @@
     <b:section class='main' id='main' maxwidgets='1' name='Main Posts - Filled automatically from your posts, nothing to add' showaddelement='no'/>
 
     <aside class='cm-sidebar cm-lay' id='cm-sidebar'>
-      <section class='cm-box cm-follow' id='cm-follow'>
-        <h2>Follow this blog</h2>
-        <p class='cm-followers-text'>Follow this blog on Blogger to get new posts in your reading list.</p>
-        <a class='cm-followers-btn' expr:href='&quot;https://www.blogger.com/follow-blog.g?blogID=&quot; + data:blog.blogId' rel='nofollow noopener' target='_blank'><svg aria-hidden='true' height='16' viewBox='0 0 24 24' width='16'><path d='M15 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.7 0-8 1.3-8 4v2h16v-2c0-2.7-5.3-4-8-4z' fill='currentColor'/></svg>Follow</a>
-      </section>
       <b:section class='cm-sidebar-s' id='sidebar' maxwidgets='20' name='Sidebar - On all pages, add any gadgets' showaddelement='yes'>
         <b:widget id='PopularPosts151' locked='false' title='Popular posts' type='PopularPosts' version='2' visible='true'>
           <b:widget-settings>
@@ -317,17 +312,6 @@
                 <span class='label-size'><a class='label-name' expr:href='data:label.url'><data:label.name/><b:if cond='data:this.showFreqNumbers'><span class='label-count'><data:label.count/></span></b:if></a></span>
               </b:loop>
             </div>
-          </b:includable>
-        </b:widget>
-        <b:widget id='Followers1' locked='false' title='Followers' type='Followers' version='2' visible='true'>
-          <b:includable id='main' var='this'>
-            <b:include name='widget-title'/>
-            <div class='widget-content cm-followers'>
-              <b:if cond='data:codeSnippet != &quot;&quot;'>
-                <div class='cm-followers-grid' expr:id='data:widget.instanceId + &quot;-wrapper&quot;'><data:codeSnippet/></div>
-              </b:if>
-            </div>
-            <b:include name='quickedit'/>
           </b:includable>
         </b:widget>
       </b:section>
@@ -421,6 +405,16 @@
     <div id='cm-main-end'/>
   </main>
 
+  <!-- ===== JOIN OUR COMMUNITY (follower avatars + Follow) ===== -->
+  <section class='cm-join cm-lay' expr:data-blog='data:blog.blogId' id='cm-join'>
+    <div class='cm-join-in'>
+      <h2 class='cm-join-t'>Join our community</h2>
+      <div aria-label='Followers' class='cm-join-faces' role='list'><span class='cm-join-av cm-join-sk'/><span class='cm-join-av cm-join-sk'/><span class='cm-join-av cm-join-sk'/><span class='cm-join-av cm-join-sk'/><span class='cm-join-av cm-join-sk'/><span class='cm-join-av cm-join-sk'/></div>
+      <p class='cm-join-count'/>
+      <a class='cm-join-btn' expr:href='&quot;https://www.blogger.com/follow-blog.g?blogID=&quot; + data:blog.blogId' rel='nofollow noopener' target='_blank'>Follow</a>
+    </div>
+  </section>
+
   <!-- AD SLOT: footer -->
   <div class='cm-ad cm-wrap cm-lay'>
     <b:section class='cm-adsec' id='ad-footer' maxwidgets='1' name='Footer Ads - Above the footer' showaddelement='yes'>
@@ -445,11 +439,6 @@
           <p><data:skin.vars.tagline/></p>
           <div class='cm-social' expr:data-links='data:skin.vars.socialLinks'>
             <ul class='cm-links'/>
-          </div>
-          <div class='cm-footfollow'>
-            <span class='cm-footfollow-t'>Follow this blog</span>
-            <a class='cm-followers-btn' expr:href='&quot;https://www.blogger.com/follow-blog.g?blogID=&quot; + data:blog.blogId' rel='nofollow noopener' target='_blank'><svg aria-hidden='true' height='16' viewBox='0 0 24 24' width='16'><path d='M15 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.7 0-8 1.3-8 4v2h16v-2c0-2.7-5.3-4-8-4z' fill='currentColor'/></svg>Follow</a>
-            <div class='cm-followers-grid' id='cm-foot-followers'/>
           </div>
           <b:if cond='data:skin.vars.newsletterAction != &quot;&quot; and data:skin.vars.showNewsletter == &quot;yes&quot;'>
             <form class='cm-subform' expr:action='data:skin.vars.newsletterAction' id='cm-subscribe' method='post' target='_blank'>

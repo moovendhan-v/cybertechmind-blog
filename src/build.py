@@ -91,6 +91,7 @@ VARS = [
   ("customChannelLabel","Extra community button label","string","Community"),
   ("communityUrl","Community link Discord or GitHub Discussions (blank = hidden)","string",""),
   ("communityLabel","Community button label","string","Ask in the community"),
+  ("followersApi","Followers relay URL Apps Script web app for the Join our community avatars (blank = Blogger box)","string",""),
  ]),
  ("Newsletter", [
   ("showNewsletter","Show newsletter panel (yes / no)","string","yes"),

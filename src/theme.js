@@ -362,7 +362,6 @@
   function clearRows(b) { $$('.cm-row', b).forEach(function (n) { n.remove(); }); }
   function rightRail() {
     var right = el('aside', 'cm-rail cm-rail-r'), st = el('div', 'cm-sticky');
-    var fol = $('#cm-follow'); if (fol) st.appendChild(fol);
     st.appendChild(box('Recent posts', 'cm-recent')); st.appendChild(box('Recommended', 'cm-reco'));
     var adr = $('.cm-ad-sr'); if (adr) st.appendChild(adr);
     var sbw = $('#cm-sidebar'); if (sbw) st.appendChild(sbw);
@@ -715,19 +714,36 @@
   });
   var tt0 = $('#cm-totop'); if (tt0) tt0.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
-  /* ---------- footer: mirror the Followers gadget (avatars) ---------- */
+  /* ---------- join our community: round follower avatars + Follow ---------- */
   (function () {
-    var box = $('#cm-foot-followers'); if (!box) return;
-    var tries = 0, t = setInterval(function () {
-      var src = $('.Followers iframe');
-      if (src && src.src) {
-        clearInterval(t);
-        var f = d.createElement('iframe');
-        f.src = src.src; f.title = 'Followers'; f.loading = 'lazy';
-        f.height = src.height || src.offsetHeight || 150;
-        box.appendChild(f);
-      } else if (++tries > 40) clearInterval(t);
-    }, 500);
+    var sec = $('#cm-join'); if (!sec) return;
+    var faces = $('.cm-join-faces', sec), cnt = $('.cm-join-count', sec), id = sec.getAttribute('data-blog'), api = ds.followersApi, MAX = 8, done = false;
+    function render(o) {
+      var us = (o && o.users) || [], total = (o && o.count) || us.length;
+      if (!us.length) return frame();
+      faces.textContent = '';
+      us.slice(0, MAX).forEach(function (u) {
+        var a = el('span', 'cm-join-av'), im = el('img'); a.setAttribute('role', 'listitem'); a.title = u.name;
+        im.src = u.avatar; im.alt = u.name; im.width = im.height = 64; im.loading = 'lazy'; im.referrerPolicy = 'no-referrer';
+        a.appendChild(im); faces.appendChild(a);
+      });
+      if (total > MAX) faces.appendChild(el('span', 'cm-join-av cm-join-more', '+' + (total - MAX)));
+      cnt.textContent = total + (total === 1 ? ' reader follows' : ' readers follow') + ' this blog';
+    }
+    /* no relay: Blogger's own followers box (square avatars), coloured to the theme */
+    function frame() {
+      var cs = getComputedStyle(d.documentElement), t = cs.getPropertyValue('--text').trim() || '#e8eaee', a = cs.getPropertyValue('--accent').trim() || '#6728FF';
+      var c = btoa('\x3a' + String.fromCharCode(t.length) + t + '\x42' + String.fromCharCode(a.length) + a).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      var f = el('iframe', 'cm-join-frame'); f.title = 'Followers'; f.height = 130;
+      f.src = 'https://www.blogger.com/followers/frame/' + id + '?colors=' + c + '&pageSize=21&hl=en&origin=' + encodeURIComponent(location.origin);
+      faces.textContent = ''; cnt.textContent = ''; faces.appendChild(f); sec.classList.add('is-frame');
+    }
+    if (!api) { frame(); new MutationObserver(frame).observe(d.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); return; }
+    var cb = 'cmFollowers' + Date.now(), s = el('script');
+    window[cb] = function (o) { done = true; try { delete window[cb]; } catch (e) {} s.remove(); render(o); };
+    s.onerror = function () { if (!done) { done = true; frame(); } };
+    setTimeout(function () { if (!done) { done = true; frame(); } }, 8000);
+    s.src = api + (api.indexOf('?') < 0 ? '?' : '&') + 'callback=' + cb; d.body.appendChild(s);
   })();
 
   /* ---------- route ---------- */

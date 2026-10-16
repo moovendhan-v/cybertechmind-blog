@@ -22,7 +22,7 @@ Every area is a normal drag-and-drop gadget area, like a commercial theme:
 | Featured post | Featured Post gadget | homepage |
 | Home ads - below featured posts | HTML / AdSense | homepage |
 | Blog posts | filled automatically, do not add anything | all pages |
-| Sidebar | Popular Posts, Labels, Followers (Follow button + follower avatars), Search, etc. Right column on lists; under the ad in the right rail on posts. Hidden when empty | all pages |
+| Sidebar | Popular Posts, Labels, Search, Follow, etc. Right column on lists; under the ad in the right rail on posts. Hidden when empty | all pages |
 | Post ads 1 | HTML / AdSense, before the post body | posts |
 | Post ads (inside content) | after paragraph N (`adParagraph`) | posts |
 | Post ads 2 | after the post body | posts |
@@ -34,6 +34,15 @@ Every area is a normal drag-and-drop gadget area, like a commercial theme:
 | Footer ads | HTML / AdSense | all pages |
 
 Empty areas take no space, and the defaults (text logo, variable menu, default credits) are used until you add a gadget.
+
+## Join our community (followers)
+A full-width band above the footer on every page: "Join our community", up to 8 round follower avatars (plus a "+N" circle), the follower count and a Follow button. Blogger's API has no followers endpoint and browsers can't read blogger.com from your pages, so the round avatars come through a free relay you deploy once:
+
+1. Open https://script.google.com, create a project and paste `tools/followers-proxy.gs` (set `BLOG_ID` and `SITE` at the top).
+2. Deploy > New deployment > Web app; Execute as **Me**; Who has access **Anyone**. Copy the `/exec` URL.
+3. Paste it into Theme > Customise > **followersApi** (or add `"followersApi": "<url>"` to the Community JSON gadget).
+
+Without a relay URL the band shows Blogger's own followers box (square avatars) in the middle instead. The relay caches for an hour, so new followers can take up to an hour to appear.
 
 ## Other settings (Theme > Customize)
 Site name, tagline, logo URL, colors, fonts, width, radius, wallpaper, banner, toggles, newsletter, GA4 and verification codes are theme variables. Social icons use the `socialLinks` variable (`Label|URL;Label|URL`).
